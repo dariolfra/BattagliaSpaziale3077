@@ -1,19 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="45dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- ImageView per l'immagine della nave -->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- GridView -->
+
+    <ImageView
+        android:id="@+id/naveda1"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:src="@drawable/naveda1"
+        android:visibility="visible"
+        android:layout_marginStart="5dp"
+
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="100dp"
+        android:elevation="10dp"/>
+
+    <ImageView
+        android:id="@+id/naveda2"
+        android:layout_width="200px"
+        android:layout_height="100px"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="0dp"
+
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/naveda2"
+        android:visibility="visible"
+        android:elevation="10dp"/>
+    <ImageView
+        android:id="@+id/naveda3"
+        android:layout_width="300px"
+        android:layout_height="100px"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="0dp"
+
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/naveda3"
+        android:visibility="visible"
+        android:elevation="10dp"/>
+    <ImageView
+        android:id="@+id/naveda4"
+        android:layout_width="400px"
+        android:layout_height="100px"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="0dp"
+
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/naveda4"
+        android:visibility="visible"
+        android:elevation="10dp" />
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="1000px"
+        android:layout_height="1000px"
+        android:layout_marginStart="15dp"
+
+        android:layout_marginTop="123dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="227dp"
+
+        android:background="@drawable/immagine"
+        android:numColumns="10" />
+
+</FrameLayout>
+

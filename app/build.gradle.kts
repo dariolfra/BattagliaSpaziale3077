@@ -6,6 +6,9 @@ android {
     namespace = "com.example.battagliaspaziale3077"
     compileSdk = 34
 
+    buildFeatures{
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.example.battagliaspaziale3077"
         minSdk = 28
