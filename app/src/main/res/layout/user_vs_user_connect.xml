@@ -7,14 +7,13 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="523dp"
-        android:layout_height="962dp"
+        android:layout_width="634dp"
+        android:layout_height="910dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.502"
+        app:layout_constraintVertical_bias="0.507"
         app:srcCompat="@drawable/background" />
 
     <Button
@@ -125,5 +124,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_ip_server"
         app:layout_constraintVertical_bias="0.831" />
+
+    <TextView
+        android:id="@+id/lbl_titolo_pagina"
+        android:layout_width="296dp"
+        android:layout_height="73dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:paddingTop="3dp"
+        android:text="CONNETTITI AD UNA PARTITA"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

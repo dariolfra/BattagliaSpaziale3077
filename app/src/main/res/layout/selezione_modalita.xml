@@ -91,7 +91,7 @@
         android:layout_height="45dp"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:paddingTop="7sp"
+        android:paddingTop="8sp"
         android:text="SELEZIONA MODALITA'"
         android:textAlignment="center"
         android:textColor="@color/white"

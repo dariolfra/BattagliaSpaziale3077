@@ -7,12 +7,13 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="445dp"
-        android:layout_height="775dp"
+        android:layout_width="607dp"
+        android:layout_height="924dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.502"
         app:srcCompat="@drawable/background" />
 
     <Button
@@ -28,10 +29,10 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintVertical_bias="0.921" />
 
     <Button
         android:id="@+id/btn_stop_server"
@@ -49,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.869"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintVertical_bias="0.921" />
 
     <TextView
         android:id="@+id/lbl_server_ip"
@@ -102,14 +103,16 @@
         android:layout_height="45dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingTop="7dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.218" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/lbl_server_porta_box"
@@ -117,29 +120,49 @@
         android:layout_height="45dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingTop="7dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
+        app:layout_constraintVertical_bias="0.478" />
 
     <TextView
         android:id="@+id/lbl_connessioni_box"
-        android:layout_width="280dp"
-        android:layout_height="45dp"
+        android:layout_width="282dp"
+        android:layout_height="75dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingTop="7dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.594" />
+        app:layout_constraintVertical_bias="0.71" />
+
+    <TextView
+        android:id="@+id/lbl_titolo_pagina"
+        android:layout_width="361dp"
+        android:layout_height="48dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:paddingTop="6dp"
+        android:text="OSPITA UNA PARTITA"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.055" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

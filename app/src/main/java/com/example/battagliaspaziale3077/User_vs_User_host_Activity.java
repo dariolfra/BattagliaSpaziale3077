@@ -1,5 +1,6 @@
 package com.example.battagliaspaziale3077;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -19,8 +20,9 @@ import java.net.Socket;
 public class User_vs_User_host_Activity extends AppCompatActivity {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
     Button btn_start_sv, btn_stop_sv;
-    private String serverIP = "192.168.1.102"; //mettere quello del proprio telefono
-    private int serverPort = 42069; //>1023 no porte riservate
+    String serverIP = "192.168.1.102"; //mettere quello del proprio telefono
+    int serverPort = 42069; //>1023 no porte riservate
+    private ServerThread serverThread;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +43,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
 
         lbl_ip_sv_box.setText(serverIP);
-        lbl_porta_sv_box.setText(serverPort);
+        lbl_porta_sv_box.setText(String.valueOf(serverPort));
     }
-
-    private ServerThread serverThread;
 
     public void onClickStartServer(View view){
         serverThread = new ServerThread();
