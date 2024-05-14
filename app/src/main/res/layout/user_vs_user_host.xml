@@ -22,6 +22,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="onClickStartServer"
         android:text="Start Server"
         android:textColor="@color/white"
         android:textSize="18dp"
@@ -39,6 +40,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="onClickStopServer"
         android:text="Stop Server"
         android:textColor="@color/white"
         android:textSize="18dp"
@@ -58,9 +60,11 @@
         android:textColor="@color/white"
         android:textSize="22dp"
         app:layout_constraintBottom_toTopOf="@+id/lbl_server_ip_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.909"
-        tools:layout_editor_absoluteX="78dp" />
+        app:layout_constraintVertical_bias="0.893" />
 
     <TextView
         android:id="@+id/lbl_porta_server"

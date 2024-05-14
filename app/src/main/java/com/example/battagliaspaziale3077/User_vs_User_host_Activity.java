@@ -17,9 +17,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class User_vs_User_host_Activity extends AppCompatActivity {
-
-    private TextView tvServername, tvServerPort, tvStatus;
-    private String serverIP = "192.168.1.73"; //mettere quello del proprio telefono
+    TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
+    Button btn_start_sv, btn_stop_sv;
+    private String serverIP = "192.168.1.102"; //mettere quello del proprio telefono
     private int serverPort = 42069; //>1023 no porte riservate
 
     @Override
@@ -31,8 +31,17 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
-        //associare le variabili alle label
+        lbl_ip_sv = (TextView) findViewById(R.id.lbl_server_ip);
+        lbl_ip_sv_box = (TextView) findViewById(R.id.lbl_server_ip_box);
+        lbl_porta_sv = (TextView) findViewById(R.id.lbl_porta_server);
+        lbl_porta_sv_box = (TextView) findViewById(R.id.lbl_server_porta_box);
+        lbl_conn = (TextView) findViewById(R.id.lbl_connessioni);
+        lbl_conn_box = (TextView) findViewById(R.id.lbl_connessioni_box);
+        btn_start_sv = (Button) findViewById(R.id.btn_start_server);
+        btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
 
+        lbl_ip_sv_box.setText(serverIP);
+        lbl_porta_sv_box.setText(serverPort);
     }
 
     private ServerThread serverThread;
@@ -65,7 +74,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvStatus.setText("waiting for other player");
+                        lbl_conn_box.setText("waiting for other player");
                     }
                 });
 
@@ -76,7 +85,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvStatus.setText("connected " + socket.getInetAddress() + " " + count);
+                            lbl_conn_box.setText("connected " + socket.getInetAddress() + " " + count);
                         }
                     });
 
@@ -105,7 +114,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("connection stopped");
+                                    lbl_conn_box.setText("connection stopped");
                                 }
                             });
                         } catch (IOException e) {
