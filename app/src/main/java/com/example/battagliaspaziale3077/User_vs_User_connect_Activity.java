@@ -22,12 +22,9 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class User_vs_User_connect_Activity extends AppCompatActivity {
-    TextInputEditText txt_nome;
-    TextInputEditText txt_ip_server;
-    TextInputEditText txt_porta_server;
-    String serverName;
+    TextInputEditText txt_nome, txt_ip_server, txt_porta_server;
+    String serverName, nome_giocatore;
     int serverPort;
-    String nome_giocatore;
     Button btn_connettiti;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
