@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="513dp"
+        android:layout_height="1009dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_Gioca"
+        android:layout_width="184dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="153dp"
+        android:layout_marginTop="569dp"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="159dp"
+        android:backgroundTint="@android:color/transparent"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:text="GIOCA"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="@+id/background"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:layout_constraintVertical_bias="0.497"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/descrizione_gioco"
+        android:layout_width="246dp"
+        android:layout_height="167dp"
+        android:layout_marginTop="244dp"
+        android:background="@drawable/bordo_rettangolo"
+        android:fontFamily="@font/orbitron_regular"
+        android:paddingTop="15dp"
+        android:text="BATTAGLIA SPAZIALE è una versione futuristica di Battaglia Navale ambientata nello spazio, dove i giocatori comandano navi da guerra avanzate e si sfidano per distruggere le flotte nemiche."
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Gioca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.396" />
+
+    <TextView
+        android:id="@+id/titolo_gioco"
+        android:layout_width="253dp"
+        android:layout_height="84dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:paddingTop="10dp"
+        android:text="BATTAGLIA SPAZIALE"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/descrizione_gioco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.528" />
+
+    <Button
+        android:id="@+id/bnt_vai_a_gioco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VAI A GIOCO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Gioca"
+        app:layout_constraintVertical_bias="0.51" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
