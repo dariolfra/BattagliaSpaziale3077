@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.388"
         app:srcCompat="@drawable/background"
         tools:ignore="MissingConstraints" />
 
@@ -48,20 +49,20 @@
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titolo_pagina_selezione_modalita"
-        app:layout_constraintVertical_bias="0.601"
+        app:layout_constraintVertical_bias="0.612"
         app:srcCompat="@drawable/right" />
 
     <TextView
         android:id="@+id/lbl_user_vs_user_conn"
-        android:layout_width="182dp"
-        android:layout_height="36dp"
+        android:layout_width="203dp"
+        android:layout_height="41dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="76dp"
         android:fontFamily="@font/orbitron_regular"
         android:text="USER VS USER (Unisciti ad una partita)"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_user_vs_ai"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,21 +70,21 @@
 
     <TextView
         android:id="@+id/lbl_user_vs_user_host"
-        android:layout_width="160dp"
-        android:layout_height="34dp"
+        android:layout_width="171dp"
+        android:layout_height="41dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="56dp"
         android:fontFamily="@font/orbitron_regular"
         android:text="USER VS USER (Crea una partita)"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_user_vs_ai"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_user_vs_user_conn"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.083" />
 
     <TextView
         android:id="@+id/titolo_pagina_selezione_modalita"
@@ -100,12 +101,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.256"
+        app:layout_constraintVertical_bias="0.243"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/lbl_user_vs_ai"
-        android:layout_width="103dp"
+        android:layout_width="140dp"
         android:layout_height="21dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="96dp"
@@ -113,9 +114,9 @@
         android:text="USER VS AI"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_user_vs_ai"
-        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titolo_pagina_selezione_modalita" />
 
@@ -134,7 +135,7 @@
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_user_vs_ai"
-        app:layout_constraintVertical_bias="0.053"
+        app:layout_constraintVertical_bias="0.14"
         app:srcCompat="@drawable/right"
         tools:ignore="MissingConstraints" />
 

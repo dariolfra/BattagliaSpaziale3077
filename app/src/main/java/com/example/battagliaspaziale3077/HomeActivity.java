@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
-
+    Button btn_gioca, btn_vai_a_gioco;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -28,9 +28,9 @@ public class HomeActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), color.black));
 
-        Button btn_gioca = findViewById(id.btn_Gioca);
+        btn_gioca = findViewById(id.btn_Gioca);
 
-        Button btn_vai_a_gioco = findViewById(id.bnt_vai_a_gioco);
+        btn_vai_a_gioco = findViewById(id.bnt_vai_a_gioco);
 
         btn_gioca.setOnClickListener(new View.OnClickListener(){
             @Override

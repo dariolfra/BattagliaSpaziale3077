@@ -14,17 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class ModalitaActivity extends AppCompatActivity {
-
-
-
+    ImageButton btn_User_vs_AI, btn_User_vs_User_connect, btn_User_vs_User_hosted;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selezione_modalita);
 
-        ImageButton btn_User_vs_AI = findViewById(R.id.btn_user_vs_ai);
-        ImageButton btn_User_vs_User_connect = findViewById(R.id.btn_mod_user_vs_user_conn);
-        ImageButton btn_User_vs_User_hosted = findViewById(R.id.bnt_mod_user_vs_user_host);
+        btn_User_vs_AI = findViewById(R.id.btn_user_vs_ai);
+        btn_User_vs_User_connect = findViewById(R.id.btn_mod_user_vs_user_conn);
+        btn_User_vs_User_hosted = findViewById(R.id.bnt_mod_user_vs_user_host);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
