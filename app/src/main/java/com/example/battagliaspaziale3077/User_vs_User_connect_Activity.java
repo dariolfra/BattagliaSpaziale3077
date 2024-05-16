@@ -102,7 +102,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                             txt_ip_server.setText("");
                             txt_porta_server.setText("");
 
-                            Intent gioco = new Intent(User_vs_User_connect_Activity.this, MainActivity.class);
+                            Intent gioco = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
                             gioco.putExtra("mod", modalita);
                             gioco.putExtra("nome", nome_giocatore);
                             startActivity(gioco);

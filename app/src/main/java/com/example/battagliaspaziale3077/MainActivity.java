@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
     ActivityMainBinding binding;
     ImageView[] navi;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     String nome_giocatore;
     int modalita;
+    int personaggio;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -51,15 +51,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    Intent gioco = getIntent();
-                    nome_giocatore = gioco.getStringExtra("nome");
-                    modalita = gioco.getIntExtra("mod", 1);
+                    Intent personaggi = getIntent();
+                    nome_giocatore = personaggi.getStringExtra("nome");
+                    modalita = personaggi.getIntExtra("mod", 1);
+                    personaggio = personaggi.getIntExtra("personaggio", 1);
                     dati_arrivati_correttamente = true;
                 }catch (Exception e){
-                    Toast.makeText(context, "DATI NON PASSATI CORRETTAMENTE", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Dati non passati correttamente", Toast.LENGTH_LONG).show();
                 }
                 if(dati_arrivati_correttamente){
-                    Toast.makeText(context, "Giocatore : " + nome_giocatore + " Modalità : " + modalita , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Giocatore: " + nome_giocatore + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT).show();
                 }
             }
         });

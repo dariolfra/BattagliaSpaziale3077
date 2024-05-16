@@ -68,7 +68,7 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
                 }
                 if(nome_corretto){
                     txt_nome.setText("");
-                    Intent gioco = new Intent(User_vs_Ai_Activity.this, MainActivity.class);
+                    Intent gioco = new Intent(User_vs_Ai_Activity.this, PersonaggiActivity.class);
                     gioco.putExtra("mod", modalita);
                     gioco.putExtra("nome", nome_giocatore);
                     startActivity(gioco);

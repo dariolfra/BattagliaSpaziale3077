@@ -35,7 +35,6 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
     Context context;
     Socket client;
     //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
-
     public  boolean connessione_instaurata;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
