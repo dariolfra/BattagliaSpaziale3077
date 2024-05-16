@@ -1,6 +1,8 @@
 package com.example.battagliaspaziale3077;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,10 +20,15 @@ import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
     ActivityMainBinding binding;
     ImageView[] navi;
     float startX, startY;
     int[] shipSizes = {3, 2, 2, 4,4,3}; // Dimensioni delle navi
+    Boolean dati_arrivati_correttamente = false;
+    Context context;
+    String nome_giocatore;
+    int modalita;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -41,6 +48,25 @@ public class MainActivity extends AppCompatActivity {
         navi[5] = findViewById(R.id.navel);
 
 
+
+        context = this.getApplicationContext();
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Intent gioco = getIntent();
+                    nome_giocatore = gioco.getStringExtra("nome");
+                    modalita = gioco.getIntExtra("mod", 1);
+                    dati_arrivati_correttamente = true;
+                }catch (Exception e){
+                    Toast.makeText(context, "DATI NON PASSATI CORRETTAMENTE", Toast.LENGTH_LONG).show();
+                }
+                if(dati_arrivati_correttamente){
+                    Toast.makeText(context, "Giocatore : " + nome_giocatore + " Modalità : " + modalita , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         for (int i = 0; i < navi.length; i++) {
             final int index = i;
