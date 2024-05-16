@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,8 +32,14 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     int serverPort;
     Button btn_connettiti;
     int modalita = 2;
-    Boolean connessione_instaurata;
+    boolean connessione_instaurata;
     Context context;
+    public boolean server_ha_scritto;
+
+    Socket client;
+
+    //User_vs_User_host_Activity server = new User_vs_User_host_Activity();
+    String txtFromServer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +69,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                connessione_instaurata = false;
                 try{
                     nome_giocatore = txt_nome.getText().toString();
                     serverName = txt_ip_server.getText().toString();
@@ -72,64 +78,62 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                         throw new Exception();
                     }
 
-                    Socket client = new Socket(serverName, serverPort);
+                    client = new Socket(serverName, serverPort);
 
                     //lettura da server
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    String txtFromServer = br_input.readLine();
+                    txtFromServer = br_input.readLine();
+                    Log.i("CLIENT", "MESSAGGIO LETTO : " + txtFromServer);
 
                     //scrittura su server
-                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
-                    outputServer.write("ciao da client");
-                    outputServer.flush();
+//                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
+//                    outputServer.flush();
+//                    outputServer.write("ciao da client");
+//                    outputServer.flush();
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            try{
-                                Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-                                Thread.sleep(1000);
-                                connessione_instaurata = true;
-                            }catch (InterruptedException e){
-                                System.out.println(e.toString());
-                            }
+                            Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
+
+                            //connessione_instaurata = true;
+
+                            txt_nome.setText("");
+                            txt_ip_server.setText("");
+                            txt_porta_server.setText("");
+
+                            Intent gioco = new Intent(User_vs_User_connect_Activity.this, MainActivity.class);
+                            gioco.putExtra("mod", modalita);
+                            gioco.putExtra("nome", nome_giocatore);
+                            startActivity(gioco);
+                            //server.connessione_instaurata = true;
                         }
                     });
                 }catch (IOException e){
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "CONNESSIONE AL SERVER NON RIUSCITA", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Connessione al server non riuscita", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                     System.out.println(e);
                     txt_ip_server.setText("");
                     txt_porta_server.setText("");
-                    connessione_instaurata = false;
+                    //connessione_instaurata = false;
                 }catch (Exception e){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "DATI INSERITI NON VALIDI", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Dati inseriti non validi", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                     System.out.println(e);
-                    connessione_instaurata = false;
-                }
-                if(connessione_instaurata){
-                    txt_nome.setText("");
-                    txt_ip_server.setText("");
-                    txt_porta_server.setText("");
-
-                    Intent gioco = new Intent(User_vs_User_connect_Activity.this, MainActivity.class);
-                    gioco.putExtra("mod", modalita);
-                    gioco.putExtra("nome", nome_giocatore);
-                    startActivity(gioco);
+                    //connessione_instaurata = false;
                 }
             }
         }).start();
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.battagliaspaziale3077;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,15 +27,16 @@ import java.net.Socket;
 public class User_vs_User_host_Activity extends AppCompatActivity {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
     Button btn_start_sv, btn_stop_sv;
-    String serverIP = "192.168.1.103"; //mettere quello del proprio telefono
+    String serverIP = "192.168.55.139"; //mettere quello del proprio telefono
     int serverPort = 42069; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;
     String txt_from_client;
-    Boolean finito_con_successo;
-
     Context context;
+    Socket client;
+    //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
 
+    public  boolean connessione_instaurata;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,6 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                finito_con_successo = false;
                 serverSocket = new ServerSocket(serverPort);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -93,34 +94,39 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
 
                 while(serverRunning)
                 {
-                    Socket socket = serverSocket.accept();
+                    client = serverSocket.accept();
                     count++;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            lbl_conn_box.setText("Dispositivo " + socket.getInetAddress() + " connesso, numero : " + count);
+                            lbl_conn_box.setText("Dispositivo " + client.getInetAddress() + " connesso");
                         }
                     });
 
-                    PrintWriter outputServer = new PrintWriter(socket.getOutputStream());
+                    PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
                     outputServer.write("ciao da server");
-                    outputServer.flush();
-                    Thread.sleep(100);
+                    Log.i("SERVER", "MESSAGGIO INVIATO");
+                    //client.server_ha_scritto = true;
 
-                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    txt_from_client = sv_reader.readLine();
-                    Thread.sleep(100);
+//                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                    txt_from_client = sv_reader.readLine();
 
-                    socket.close();
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(context, txt_from_client, Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+                    //Thread.sleep(100);
+                    synchronized (this){
+                        Log.i("CLIENT", "STO ASPETTANDO");
+                        client.wait();
+                    }
                 }
-                finito_con_successo = true;
             } catch (IOException e) {
                 e.printStackTrace();
-            }catch (InterruptedException e){
-
-            }
-            if(finito_con_successo){
-                Toast.makeText(context, txt_from_client, Toast.LENGTH_SHORT).show();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
 
