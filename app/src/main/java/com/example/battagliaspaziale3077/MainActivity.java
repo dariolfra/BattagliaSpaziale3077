@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ImageView[] navi;
     float startX, startY;
-    int[] shipSizes = {1, 2, 3, 4}; // Dimensioni delle navi
+    int[] shipSizes = {3, 2, 2, 4,4,3}; // Dimensioni delle navi
     Boolean dati_arrivati_correttamente = false;
     Context context;
     String nome_giocatore;
@@ -39,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
         int[] immaginiCasella = new int[100];
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
 
-        navi = new ImageView[4];
-        navi[0] = findViewById(R.id.naveda1);
+        navi = new ImageView[6];
+        navi[0] = findViewById(R.id.navecap);
         navi[1] = findViewById(R.id.naveda2);
-        navi[2] = findViewById(R.id.naveda3);
+        navi[2] = findViewById(R.id.naveangolo);
         navi[3] = findViewById(R.id.naveda4);
+        navi[4] = findViewById(R.id.navedaottorino);
+        navi[5] = findViewById(R.id.navel);
+
+
 
         context = this.getApplicationContext();
 
@@ -90,17 +94,29 @@ public class MainActivity extends AppCompatActivity {
                         int size = shipSizes[index];
                         if (column + size <= 10 && gridAdapter.ControllaSeLiberi(position, size)) {
                             for (int j = 0; j < size; j++) {
-                                immaginiCasella[position + j] = R.drawable.naveda1;
+                                if(position < 10 && index == 0 || position < 10 && index == 2 || position < 10 && index == 4 || position < 10 && index == 5){
+                                    Toast.makeText(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                                else{
+                                    immaginiCasella[position + j] = R.drawable.naveda1;
+                                    if(index == 0 && j == 1 || index == 2 && j == 0 || index == 4 && j == 2 || index == 5 && j == 2){
+                                        int p = position - 10;
+                                        immaginiCasella[p + j] = R.drawable.naveda1;
+                                    }
+                                    navi[index].setVisibility(View.INVISIBLE);
+                                }
+
                             }
-                            Toast.makeText(this, "Posizione della nave " + position + " - " + (position + size - 1), Toast.LENGTH_SHORT).show();
-                            navi[index].setVisibility(View.INVISIBLE);
+                            //Toast.makeText(this, "Posizione della nave " + position + " - " + (position + size - 1), Toast.LENGTH_SHORT).show();
+
                         } else {
 
                             Toast.makeText(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT).show();
-                            navi[index].setX(startX); // Resetta la posizione x
-                            navi[index].setY(startY);  // Resetta la posizione y
-                            //NON RITORNANO AL POSTO ORIGINALE
                         }
+
+                        navi[index].setX(startX); // Resetta la posizione x
+                        navi[index].setY(startY);  // Resetta la posizione y
                         gridAdapter.notifyDataSetChanged();
                         break;
                 }
