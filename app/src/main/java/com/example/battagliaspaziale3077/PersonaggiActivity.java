@@ -113,6 +113,7 @@ public class PersonaggiActivity extends AppCompatActivity {
         indici_immagini.put(1, getResources().getDrawable(R.drawable.draghi, context.getTheme()));
         indici_immagini.put(2, getResources().getDrawable(R.drawable.salvini, context.getTheme()));
         indici_immagini.put(3, getResources().getDrawable(R.drawable.meloni, context.getTheme()));
+
     }
 
     public void popola_hashmap_descrizioni(){
