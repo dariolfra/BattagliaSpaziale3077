@@ -117,15 +117,13 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
 //                        }
 //                    });
                     //Thread.sleep(100);
-                    synchronized (this){
-                        Log.i("CLIENT", "STO ASPETTANDO");
-                        client.wait();
-                    }
+                    //synchronized (this){
+                    //    Log.i("CLIENT", "STO ASPETTANDO");
+                    //    client.wait();
+                    //}
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
 

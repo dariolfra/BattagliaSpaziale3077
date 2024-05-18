@@ -107,8 +107,14 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                             gioco.putExtra("nome", nome_giocatore);
                             startActivity(gioco);
                             //server.connessione_instaurata = true;
+
                         }
                     });
+
+                    synchronized (this){
+                        Log.i("CLIENT", "STO ASPETTANDO");
+                        client.wait();
+                    }
                 }catch (IOException e){
                     runOnUiThread(new Runnable() {
                         @Override

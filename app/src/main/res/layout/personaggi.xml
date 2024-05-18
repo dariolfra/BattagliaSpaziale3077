@@ -16,6 +16,21 @@
         app:srcCompat="@drawable/background" />
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:text="ABILITA'"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_abilita"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_descr_pers"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
         android:id="@+id/titolo_pagina"
         android:layout_width="309dp"
         android:layout_height="67dp"
@@ -31,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintVertical_bias="0.046" />
 
     <ImageView
         android:id="@+id/img_pers"
@@ -42,13 +57,13 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32"
+        app:layout_constraintVertical_bias="0.235"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/lbl_descr_pers"
-        android:layout_width="311dp"
-        android:layout_height="155dp"
+        android:layout_width="350dp"
+        android:layout_height="134dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
         android:textAlignment="center"
@@ -56,9 +71,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintVertical_bias="0.623" />
 
     <Button
         android:id="@+id/btn_seleziona_personaggio"
@@ -75,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.927" />
+        app:layout_constraintVertical_bias="0.962" />
 
     <ImageButton
         android:id="@+id/btn_pers_succ"
@@ -90,7 +106,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.363"
+        app:layout_constraintVertical_bias="0.3"
         app:srcCompat="@drawable/right" />
 
     <ImageButton
@@ -102,9 +118,35 @@
         android:paddingLeft="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/img_pers"
-        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.363"
+        app:layout_constraintVertical_bias="0.301"
         app:srcCompat="@drawable/left" />
+
+    <TextView
+        android:id="@+id/lbl_abilita"
+        android:layout_width="350dp"
+        android:layout_height="59dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_regular"
+        android:foreground="@drawable/bordo_rettangolo_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/orbitron_bold"
+        android:text="DESCRIZIONE"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_descr_pers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_pers" />
 </androidx.constraintlayout.widget.ConstraintLayout>
