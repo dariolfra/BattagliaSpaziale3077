@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -66,6 +67,7 @@ public class PersonaggiActivity extends AppCompatActivity {
         indice = 1;
         img_personaggio.setImageDrawable(indici_immagini.get(indice));
         lbl_descr_pers.setText(indici_descrizione.get(indice));
+        lbl_abilita_pers.setText(indici_abilita.get(indice));
 
         btn_pers_succ.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +112,8 @@ public class PersonaggiActivity extends AppCompatActivity {
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome", nome_personaggio);
+                MediaPlayer mp = MediaPlayer.create(context, R.raw.blur);
+                mp.start();
                 startActivity(gioco);
             }
         });
@@ -131,13 +135,13 @@ public class PersonaggiActivity extends AppCompatActivity {
 
     public void popola_hashmap_descrizioni(){
         indici_descrizione = new HashMap<>();
-        indici_descrizione.put(1, "Giammarco Tocco aka Blur è uno streamer italiano, è in grado di creare contenuti orginali e divertenti senza l'utilizzo di termini come bestemmie o senza il riciclo di contenuti altrui.");
-        indici_descrizione.put(2, "Giorgia Meloni è l'attuale presidente del consiglio in italia, è a capo del governo e combina la grinta di un leone con la determinazione di un bambino che vuole un gelato a dicembre.");
-        indici_descrizione.put(3, "Er Brasiliano, è un personaggio italiano conosciuto per il suo corpo quasi completamente tatuato e la sua calvizia, noto inoltre anche per la sua posizione sul web definita da alcuni con stampa fascista.");
-        indici_descrizione.put(4, "Cicciogamer89 è uno youtuber e streamer italiano di fama mondiale, conosciuto per i suoi famosissimi e inimitabili CiccioBurgher, noto per la fama di Campobranco dei suoi paguri ovvero la sua community, è inoltre il protagonista del chest opening di clash royale più grnade di sempre '104mila gemme signori e signore'.");
+        indici_descrizione.put(1, "Giammarco Tocco aka Blur è uno streamer italiano, è in grado di creare contenuti orginali e divertenti senza l'utilizzo di termini come bestemmie o senza il riciclo di contenuti altrui. E' un grande amico di TheRealMarzaa.");
+        indici_descrizione.put(2, "Giorgia Meloni è l'attuale presidente del consiglio in italia, è a capo del governo e combina la grinta di un leone con la determinazione di un bambino che vuole un gelato a dicembre. Al suo fianco amici fedeli come Matteo Salvini e Silvio Berlusconi ormai scomparso.");
+        indici_descrizione.put(3, "Er Brasiliano, è un personaggio italiano conosciuto per il suo corpo quasi completamente tatuato e la sua calvizia, noto inoltre anche per la sua posizione sul web definita da alcuni con stampa fascista. E' infine un gymbro ineguagliabile.");
+        indici_descrizione.put(4, "Cicciogamer89 è uno youtuber e streamer italiano, conosciuto per i suoi deliziosi CiccioBurgher, si identifica come il Campobranco dei suoi paguri,ed è infine il protagonista del chest opening di Clash Royale più grande d'Italia '104mila gemme signori e signore'.");
         indici_descrizione.put(5, "Francesco Marzano aka TheRealMarzaa è uno youtuber e streamer italiano, ha origini baresi e il suo accento barese è molto spiccato, dimostra un carattere tranquillo e possiede due cani a cui dimostra sempre amore e affetto.");
         indici_descrizione.put(6, "Optimus Prime, l'ultimo della sua specie, possiede tecnologie Autobot avanzate e inisieme ai sui fedeli compagni Autobot ha salvato il mondo, dispone di una potenza di fuoco incommensurabile e grandi abilità di combattimento corpo a corpo.");
-        indici_descrizione.put(7, "Papa Francesco, potenfice italiano e figura importante e indispensabile per i suoi fedeli, la sua unica e infinatemente potente arma e questa gli permette di riuscire nei suoi scopi di pontefice.");
+        indici_descrizione.put(7, "Papa Francesco, potenfice italiano e figura importante e indispensabile per i suoi fedeli, la sua unica e infinatemente potente arma e questa gli permette di riuscire nei suoi scopi di pontefice. Originario dell'Argentina ma ormai inseparabile dall'italia.");
         indici_descrizione.put(8, "Dario Moccia è uno youtuber e streamer italiano, ha una grande passione per manga e anime affronta le situazioni con tranquillità e spensieratezza, dispone di una grande cultura e di frasi iconiche dei suoi canali.");
         indici_descrizione.put(9, "Andrea Arrigoni aka Shiva è un rapper italiano noto per la sua carrierra discografica, cresciuta molto negli ultimi anni, ha creato canzoni importanti e con un significato profonodo come Syrup, Take 4 e Fendi Belt.");
         indici_descrizione.put(10, "Po, protagonista dei diversi film intitolati Kung Fu Panda, è un panda figlio adottivo di un'oca, sin da piccolo dimostra un'immenso appetito e farebbe di tutto per il cibo, in lui risiede una forza ineguagliabe e viene soprannominato Il Guerriero Dragone.");
@@ -147,13 +151,13 @@ public class PersonaggiActivity extends AppCompatActivity {
         indici_abilita = new HashMap<>();
         indici_abilita.put(1, "La sua abilità speciale è neutralizzare le flotte nemiche attraverso l'urlo degli stalloni.");
         indici_abilita.put(2, "La sua abilità speciale è sconfiggere le flotte nemiche attraverso una politica perfetta e impeccabile.");
-        indici_abilita.put(3, "La sua abilità è sfondare le flotte nemiche a ritmo di 'Volevo te... pensavo solo a te e e...'");
-        indici_abilita.put(4, "La sua abilità speciale è quella di sbaragliare le linee nemiche attraverso un'arma ineguagliabile e un tempo sua nemica, il cornetto alla nutella.");
+        indici_abilita.put(3, "La sua abilità speciale è sfondare le flotte nemiche sulle note di 'Volevo te... pensavo solo a te e e...'");
+        indici_abilita.put(4, "La sua abilità speciale è quella di debellare le flotte nemiche attraverso un suo nemico storico il cornetto alla nutella.");
         indici_abilita.put(5, "La sua abilità speciale è annichilire le flotte nemiche attraverso il dialetto barese.");
         indici_abilita.put(6, "La sua abilità speciale è devastare le flotte nemiche combattendo affiano ai suoi fedeli Autobots.");
         indici_abilita.put(7, "La sua abilità speciale è appacificare le flotte nemiche attraverso la sua fede e la parola di Dio.");
         indici_abilita.put(8, "La sua abilità speciale e annientare le flotte nemiche a colpi di PEFFORZAAA e SI VA A LETTOOO.");
         indici_abilita.put(9, "La sua abilità speciale è sterminare le flotte nemiche attraverso la sua mira infallibile.");
-        indici_abilita.put(10, "La sua abilità speciale è debellare le flotte nemiche attraverso il suo kung fu.");
+        indici_abilita.put(10, "La sua abilità speciale è sbaragliare le flotte nemiche attraverso il suo Kung Fu.");
     }
 }

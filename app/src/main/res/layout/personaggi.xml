@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501"
         app:srcCompat="@drawable/background" />
 
     <TextView
@@ -42,24 +43,28 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.235"
+        app:layout_constraintVertical_bias="0.218"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/lbl_descr_pers"
         android:layout_width="350dp"
-        android:layout_height="134dp"
+        android:layout_height="142dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingLeft="3dp"
+        android:paddingTop="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="3dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.609" />
 
     <Button
         android:id="@+id/btn_seleziona_personaggio"
@@ -91,7 +96,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.274"
         app:srcCompat="@drawable/right" />
 
     <ImageButton
@@ -106,16 +111,23 @@
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301"
+        app:layout_constraintVertical_bias="0.273"
         app:srcCompat="@drawable/left" />
 
     <TextView
         android:id="@+id/lbl_abilita"
-        android:layout_width="350dp"
-        android:layout_height="59dp"
+        android:layout_width="353dp"
+        android:layout_height="68dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingLeft="3dp"
+        android:paddingTop="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="3dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +145,8 @@
         app:layout_constraintBottom_toTopOf="@+id/lbl_descr_pers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_pers" />
+        app:layout_constraintTop_toBottomOf="@+id/img_pers"
+        app:layout_constraintVertical_bias="0.894" />
 
     <TextView
         android:id="@+id/textView3"
@@ -146,5 +159,6 @@
         app:layout_constraintBottom_toTopOf="@+id/lbl_abilita"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_descr_pers" />
+        app:layout_constraintTop_toBottomOf="@+id/lbl_descr_pers"
+        app:layout_constraintVertical_bias="0.888" />
 </androidx.constraintlayout.widget.ConstraintLayout>
