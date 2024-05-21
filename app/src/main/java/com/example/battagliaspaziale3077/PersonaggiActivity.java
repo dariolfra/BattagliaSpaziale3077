@@ -163,27 +163,45 @@ public class PersonaggiActivity extends AppCompatActivity {
     }
 
     public void suono_personaggio(int indice){
-        switch (indice){
-            case 1: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 2: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 3: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 4: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 5: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 6: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 7: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 8: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 9: mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
-            case 10:mp = MediaPlayer.create(context, R.raw.blur);
-                    break;
+        if(indice == 1){
+            mp = MediaPlayer.create(context, R.raw.blur);
+            mp.start();
+        }
+        else if (indice == 2){
+            mp = MediaPlayer.create(context, R.raw.meloni);
+            mp.start();
+        }
+        else if(indice == 3){
+            mp = MediaPlayer.create(context, R.raw.brasiliano);
+            mp.start();
+        }
+        else if(indice == 4){
+            mp = MediaPlayer.create(context, R.raw.ciccio);
+            mp.start();
+        }
+        else if(indice == 5){
+            mp = MediaPlayer.create(context, R.raw.marza);
+            mp.start();
+        }
+        else if(indice == 6){
+            mp = MediaPlayer.create(context, R.raw.optimusprime);
+            mp.start();
+        }
+        else if(indice == 7){
+            mp = MediaPlayer.create(context, R.raw.papa);
+            mp.start();
+        }
+        else if(indice == 8){
+            mp = MediaPlayer.create(context, R.raw.pefforza);
+            mp.start();
+        }
+        else if(indice == 9) {
+            mp = MediaPlayer.create(context, R.raw.shiva);
+            mp.start();
+        }
+        else if(indice == 10){
+            mp = MediaPlayer.create(context, R.raw.kungfupanda);
+            mp.start();
         }
 
     }

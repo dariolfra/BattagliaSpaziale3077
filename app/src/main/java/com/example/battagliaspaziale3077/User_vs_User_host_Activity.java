@@ -95,6 +95,9 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                 if(nome_giocatore.isEmpty()){
                     throw new Exception();
                 }
+                else{
+
+                }
                 serverSocket = new ServerSocket(serverPort);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -147,7 +150,12 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
-                CustomToast.showToast(context, "Nome Giocatore non inserito", Toast.LENGTH_SHORT);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CustomToast.showToast(context, "Nome Giocatore non inserito", Toast.LENGTH_SHORT);
+                    }
+                });
             }
         }
 
