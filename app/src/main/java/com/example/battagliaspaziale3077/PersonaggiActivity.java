@@ -38,6 +38,8 @@ public class PersonaggiActivity extends AppCompatActivity {
     String nome_personaggio;
     int modalita;
 
+    MediaPlayer mp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,8 +114,7 @@ public class PersonaggiActivity extends AppCompatActivity {
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome", nome_personaggio);
-                MediaPlayer mp = MediaPlayer.create(context, R.raw.blur);
-                mp.start();
+                suono_personaggio(indice);
                 startActivity(gioco);
             }
         });
@@ -159,5 +160,31 @@ public class PersonaggiActivity extends AppCompatActivity {
         indici_abilita.put(8, "La sua abilità speciale e annientare le flotte nemiche a colpi di PEFFORZAAA e SI VA A LETTOOO.");
         indici_abilita.put(9, "La sua abilità speciale è sterminare le flotte nemiche attraverso la sua mira infallibile.");
         indici_abilita.put(10, "La sua abilità speciale è sbaragliare le flotte nemiche attraverso il suo Kung Fu.");
+    }
+
+    public void suono_personaggio(int indice){
+        switch (indice){
+            case 1: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 2: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 3: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 4: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 5: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 6: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 7: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 8: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 9: mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+            case 10:mp = MediaPlayer.create(context, R.raw.blur);
+                    break;
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.battagliaspaziale3077;
 import static com.example.battagliaspaziale3077.R.*;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
     Button btn_gioca, btn_vai_a_gioco;
+
+    Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -27,6 +31,8 @@ public class HomeActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), color.black));
+
+        context = this.getApplicationContext();
 
         btn_gioca = findViewById(id.btn_Gioca);
 
