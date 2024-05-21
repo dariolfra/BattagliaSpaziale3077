@@ -29,10 +29,10 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
+        app:layout_constraintVertical_bias="0.962" />
 
     <Button
         android:id="@+id/btn_stop_server"
@@ -47,10 +47,10 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.869"
+        app:layout_constraintHorizontal_bias="0.865"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
+        app:layout_constraintVertical_bias="0.962" />
 
     <TextView
         android:id="@+id/lbl_server_ip"
@@ -65,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.893" />
+        app:layout_constraintVertical_bias="0.969" />
 
     <TextView
         android:id="@+id/lbl_porta_server"
@@ -80,7 +80,7 @@
         app:layout_constraintHorizontal_bias="0.378"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_server_ip_box"
-        app:layout_constraintVertical_bias="0.777" />
+        app:layout_constraintVertical_bias="0.901" />
 
     <TextView
         android:id="@+id/lbl_connessioni"
@@ -95,7 +95,7 @@
         app:layout_constraintHorizontal_bias="0.343"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_server_porta_box"
-        app:layout_constraintVertical_bias="0.775" />
+        app:layout_constraintVertical_bias="0.895" />
 
     <TextView
         android:id="@+id/lbl_server_ip_box"
@@ -112,7 +112,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <TextView
         android:id="@+id/lbl_server_porta_box"
@@ -126,10 +126,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+        app:layout_constraintVertical_bias="0.572" />
 
     <TextView
         android:id="@+id/lbl_connessioni_box"
@@ -143,10 +143,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71" />
+        app:layout_constraintVertical_bias="0.788" />
 
     <TextView
         android:id="@+id/lbl_titolo_pagina"
@@ -164,5 +164,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.055" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/orbitron_regular"
+        android:text="NOME"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_nome_giocatore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.231"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_titolo_pagina"
+        app:layout_constraintVertical_bias="0.736" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txt_nome_giocatore"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_regular"
+        android:foreground="@drawable/bordo_rettangolo_label"
+        android:paddingLeft="7dp"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.204" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

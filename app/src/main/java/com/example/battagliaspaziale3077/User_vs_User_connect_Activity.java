@@ -83,13 +83,12 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                     //lettura da server
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     txtFromServer = br_input.readLine();
-                    Log.i("CLIENT", "MESSAGGIO LETTO : " + txtFromServer);
 
                     //scrittura su server
-//                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
-//                    outputServer.flush();
-//                    outputServer.write("ciao da client");
-//                    outputServer.flush();
+                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
+                    outputServer.flush();
+                    outputServer.write("ciao da client");
+                    outputServer.flush();
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -102,19 +101,15 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                             txt_ip_server.setText("");
                             txt_porta_server.setText("");
 
-                            Intent gioco = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
-                            gioco.putExtra("mod", modalita);
-                            gioco.putExtra("nome", nome_giocatore);
-                            startActivity(gioco);
+                            Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
+                            personaggi.putExtra("mod", modalita);
+                            personaggi.putExtra("nome", nome_giocatore);
+                            startActivity(personaggi);
                             //server.connessione_instaurata = true;
 
                         }
                     });
 
-                    synchronized (this){
-                        Log.i("CLIENT", "STO ASPETTANDO");
-                        client.wait();
-                    }
                 }catch (IOException e){
                     runOnUiThread(new Runnable() {
                         @Override

@@ -2,6 +2,7 @@ package com.example.battagliaspaziale3077;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -26,16 +29,20 @@ import java.net.Socket;
 
 public class User_vs_User_host_Activity extends AppCompatActivity {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
+    TextInputEditText txt_nome_giocatore;
     Button btn_start_sv, btn_stop_sv;
     String serverIP = "192.168.55.139"; //mettere quello del proprio telefono
     int serverPort = 42069; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;
+    String nome_giocatore;
     String txt_from_client;
     Context context;
     Socket client;
     //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
     public  boolean connessione_instaurata;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         lbl_conn_box = (TextView) findViewById(R.id.lbl_connessioni_box);
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);
         btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
+        txt_nome_giocatore = (TextInputEditText) findViewById(R.id.txt_nome_giocatore);
 
         lbl_ip_sv_box.setText(serverIP);
         lbl_porta_sv_box.setText(String.valueOf(serverPort));
@@ -91,8 +99,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                     }
                 });
 
-                while(serverRunning)
-                {
+                while(serverRunning) {
                     client = serverSocket.accept();
                     count++;
                     runOnUiThread(new Runnable() {
@@ -107,8 +114,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                     Log.i("SERVER", "MESSAGGIO INVIATO");
                     //client.server_ha_scritto = true;
 
-//                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                    txt_from_client = sv_reader.readLine();
+                    //BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    //txt_from_client = sv_reader.readLine();
 
 //                    runOnUiThread(new Runnable() {
 //                        @Override
@@ -121,6 +128,18 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                     //    Log.i("CLIENT", "STO ASPETTANDO");
                     //    client.wait();
                     //}
+                    client.close();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nome_giocatore = txt_nome_giocatore.getText().toString();
+                            Toast.makeText(context, "Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita, Toast.LENGTH_SHORT).show();
+                            Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
+                            personaggi.putExtra("mod", modalita);
+                            personaggi.putExtra("nome",nome_giocatore);
+                            startActivity(personaggi);
+                        }
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();
