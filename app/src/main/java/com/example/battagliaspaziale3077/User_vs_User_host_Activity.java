@@ -91,6 +91,10 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         @Override
         public void run() {
             try {
+                nome_giocatore = txt_nome_giocatore.getText().toString();
+                if(nome_giocatore.isEmpty()){
+                    throw new Exception();
+                }
                 serverSocket = new ServerSocket(serverPort);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -132,8 +136,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            nome_giocatore = txt_nome_giocatore.getText().toString();
-                            Toast.makeText(context, "Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita, Toast.LENGTH_SHORT).show();
+                            CustomToast.showToast(context, "Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita, Toast.LENGTH_SHORT);
                             Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                             personaggi.putExtra("mod", modalita);
                             personaggi.putExtra("nome",nome_giocatore);
@@ -143,6 +146,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                CustomToast.showToast(context, "Nome Giocatore non inserito", Toast.LENGTH_SHORT);
             }
         }
 

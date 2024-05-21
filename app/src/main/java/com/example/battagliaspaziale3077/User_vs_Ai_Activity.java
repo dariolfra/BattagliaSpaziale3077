@@ -56,14 +56,8 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
                     }
                 }catch (Exception e){
                     System.out.println(e.toString());
-                    Toast toast = Toast.makeText(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
-                    View view = toast.getView();
-                    if (view != null) {
-                        view.setBackgroundResource(R.drawable.bordo_rettangolo_label);
-                        TextView text = (TextView) view.findViewById(android.R.id.message);
-                        text.setTextColor(Color.parseColor("#FFFFFF"));
-                    }
-                    toast.show();
+                    //Toast toast = Toast.makeText(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
                     nome_corretto = false;
                 }
                 if(nome_corretto){

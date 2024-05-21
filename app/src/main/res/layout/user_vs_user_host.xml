@@ -187,6 +187,7 @@
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
+        android:inputType="textShortMessage"
         android:paddingLeft="7dp"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"

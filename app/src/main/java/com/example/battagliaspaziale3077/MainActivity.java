@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
                     personaggio = personaggi.getIntExtra("personaggio", 1);
                     dati_arrivati_correttamente = true;
                 }catch (Exception e){
-                    Toast.makeText(context, "Dati non passati correttamente", Toast.LENGTH_LONG).show();
+                    CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
                 }
                 if(dati_arrivati_correttamente){
-                    Toast.makeText(context, "Giocatore: " + nome_giocatore + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT).show();
+                    CustomToast.showToast(context, "Giocatore: " + nome_giocatore + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         if (column + size <= 10 && gridAdapter.ControllaSeLiberi(position, size)) {
                             for (int j = 0; j < size; j++) {
                                 if(position < 10 && index == 0 || position < 10 && index == 2 || position < 10 && index == 4 || position < 10 && index == 5){
-                                    Toast.makeText(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT).show();
+                                    CustomToast.showToast(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT);
                                     break;
                                 }
                                 else{
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
                         } else {
 
-                            Toast.makeText(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT).show();
+                            CustomToast.showToast(this, "La nave non può essere posizionata qui " + position, Toast.LENGTH_SHORT);
                         }
 
                         navi[index].setX(startX); // Resetta la posizione x

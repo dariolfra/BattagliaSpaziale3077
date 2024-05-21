@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
-    Button btn_gioca, btn_vai_a_gioco;
 
+    Button btn_gioca, btn_vai_a_gioco;
     Context context;
 
     @Override

@@ -93,8 +93,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-
+                            //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
+                            CustomToast.showToast(context, txtFromServer, Toast.LENGTH_SHORT);
                             //connessione_instaurata = true;
 
                             txt_nome.setText("");
@@ -114,7 +114,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "Connessione al server non riuscita", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToast(context, "Connessione al server non riuscita", Toast.LENGTH_SHORT);
                         }
                     });
 
@@ -126,7 +126,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "Dati inseriti non validi", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToast(context, "Dati inseriti non validi", Toast.LENGTH_SHORT);
                         }
                     });
 
