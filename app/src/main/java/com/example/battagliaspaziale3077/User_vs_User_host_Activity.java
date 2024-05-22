@@ -66,15 +66,19 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);
         btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
         txt_nome_giocatore = (TextInputEditText) findViewById(R.id.txt_nome_giocatore);
+
+        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_up);
     }
 
     public void onClickStartServer(View view){
+        btn_start_sv.startAnimation(scale_down);
+        btn_start_sv.startAnimation(scale_up);
+
         nome_giocatore = String.valueOf(txt_nome_giocatore.getText());
         serverThread = new ServerThread(nome_giocatore, serverPort);
         serverThread.SetActivity(this);
-
-        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
-        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+        serverThread.startServer();
 
         lbl_ip_sv_box.setText(serverIP);
         lbl_porta_sv_box.setText(String.valueOf(serverPort));
@@ -88,8 +92,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
 
     public void onClickStopServer(View view)
     {
-        btn_stop_sv.startAnimation(scale_up);
         btn_stop_sv.startAnimation(scale_down);
+        btn_stop_sv.startAnimation(scale_up);
         if(serverThread != null){
             if(serverThread.isServerRunning()){
                 serverThread.StopServer();

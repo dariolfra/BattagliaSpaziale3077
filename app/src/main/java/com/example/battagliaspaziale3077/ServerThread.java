@@ -47,7 +47,6 @@ class ServerThread extends Thread implements Runnable {
     }
 
     public void startServer() {
-        serverRunning = true;
         start();
     }
 
@@ -56,6 +55,9 @@ class ServerThread extends Thread implements Runnable {
         try {
             if(nome_giocatore.isEmpty()){
                 throw new Exception();
+            }
+            else{
+                serverRunning = true;
             }
             HostActivity.SetAddressPort(serverIP, serverPort);
             serverSocket = new ServerSocket(serverPort);
@@ -136,6 +138,7 @@ class ServerThread extends Thread implements Runnable {
             e.printStackTrace();
         } catch (Exception e) {
             //per ora ignoro il problema
+            //toast
         }
         return false;
     }
@@ -166,6 +169,7 @@ class ServerThread extends Thread implements Runnable {
         else
         {
             return "ERRORE DI CONNESSIONE";
+            //toast
         }
     }
 
@@ -193,6 +197,7 @@ class ServerThread extends Thread implements Runnable {
             e.printStackTrace();
         } catch (Exception e) {
             //per ora ignoro il problema
+            //toast
         }
         return txt_from_client;
     }

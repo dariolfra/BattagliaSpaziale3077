@@ -21,12 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
-
     Button btn_gioca, btn_vai_a_gioco;
     Context context;
     Animation scale_down, scale_up;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
