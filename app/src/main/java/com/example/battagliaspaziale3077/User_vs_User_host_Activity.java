@@ -63,14 +63,19 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);
         btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
         txt_nome_giocatore = (TextInputEditText) findViewById(R.id.txt_nome_giocatore);
-
-        lbl_ip_sv_box.setText(serverIP);
-        lbl_porta_sv_box.setText(String.valueOf(serverPort));
     }
 
     public void onClickStartServer(View view){
-        serverThread = new ServerThread();
+        nome_giocatore = String.valueOf(txt_nome_giocatore.getText());
+        serverThread = new ServerThread(nome_giocatore, serverPort);
+        serverThread.SetActivity(this);
         serverThread.startServer();
+    }
+
+    public void SetAddressPort(String sIP, int sPort)
+    {
+        lbl_ip_sv_box.setText(sIP);
+        lbl_porta_sv_box.setText(String.valueOf(sPort));
     }
 
     public void onClickStopServer(View view)
@@ -78,109 +83,38 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         serverThread.StopServer();
     }
 
-    class ServerThread extends Thread implements Runnable {
-        private boolean serverRunning;
-        private ServerSocket serverSocket;
-        private int count = 0;
-
-        public void startServer() {
-            serverRunning = true;
-            start();
-        }
-
-        @Override
-        public void run() {
-            try {
-                nome_giocatore = txt_nome_giocatore.getText().toString();
-                if(nome_giocatore.isEmpty()){
-                    throw new Exception();
-                }
-                else{
-
-                }
-                serverSocket = new ServerSocket(serverPort);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        lbl_conn_box.setText("Aspettando una connessione");
-                    }
-                });
-
-                while(serverRunning) {
-                    client = serverSocket.accept();
-                    count++;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            lbl_conn_box.setText("Dispositivo " + client.getInetAddress() + " connesso");
-                        }
-                    });
-
-                    PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                    outputServer.write("ciao da server");
-                    Log.i("SERVER", "MESSAGGIO INVIATO");
-                    //client.server_ha_scritto = true;
-
-                    //BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    //txt_from_client = sv_reader.readLine();
-
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(context, txt_from_client, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-                    //Thread.sleep(100);
-                    //synchronized (this){
-                    //    Log.i("CLIENT", "STO ASPETTANDO");
-                    //    client.wait();
-                    //}
-                    client.close();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CustomToast.showToast(context, "Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita, Toast.LENGTH_SHORT);
-                            Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
-                            personaggi.putExtra("mod", modalita);
-                            personaggi.putExtra("nome",nome_giocatore);
-                            startActivity(personaggi);
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CustomToast.showToast(context, "Nome Giocatore non inserito", Toast.LENGTH_SHORT);
-                    }
-                });
+    public void ChangeLabelText(String message)
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                lbl_conn_box.setText(message);
             }
-        }
+        });
+    }
 
-        public void StopServer()
-        {
-            serverRunning = false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if(serverSocket != null)
-                    {
-                        try {
-                            serverSocket.close();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    lbl_conn_box.setText("Connessione server chiusa");
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        }
+    public void ChangePage()
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ShowToast("Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita);
+                Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
+                personaggi.putExtra("mod", modalita);
+                personaggi.putExtra("nome",nome_giocatore);
+                personaggi.putExtra("comms", ServerThread.class);
+                startActivity(personaggi);
+            }
+        });
+    }
+
+    public void ShowToast(String text)
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CustomToast.showToast(context, text, Toast.LENGTH_SHORT);
+            }
+        });
     }
 }
