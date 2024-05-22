@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +28,8 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
     TextInputEditText txt_nome;
     String nome_giocatore;
     Boolean nome_corretto;
-
     int modalita = 1;
+    Animation scale_down, scale_up;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
 
         btn_gioca = (Button) findViewById(R.id.btn_gioca);
         txt_nome = (TextInputEditText) findViewById(R.id.txt_nome);
+
+        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
         btn_gioca.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
@@ -61,6 +66,8 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
                     nome_corretto = false;
                 }
                 if(nome_corretto){
+                    btn_gioca.startAnimation(scale_down);
+                    btn_gioca.startAnimation(scale_up);
                     txt_nome.setText("");
                     Intent gioco = new Intent(User_vs_Ai_Activity.this, PersonaggiActivity.class);
                     gioco.putExtra("mod", modalita);

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
     Socket client;
     //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
     public  boolean connessione_instaurata;
+    Animation scale_up, scale_down;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,7 +72,12 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         nome_giocatore = String.valueOf(txt_nome_giocatore.getText());
         serverThread = new ServerThread(nome_giocatore, serverPort);
         serverThread.SetActivity(this);
-        serverThread.startServer();
+
+        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+
+        lbl_ip_sv_box.setText(serverIP);
+        lbl_porta_sv_box.setText(String.valueOf(serverPort));
     }
 
     public void SetAddressPort(String sIP, int sPort)
@@ -80,7 +88,19 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
 
     public void onClickStopServer(View view)
     {
-        serverThread.StopServer();
+        btn_stop_sv.startAnimation(scale_up);
+        btn_stop_sv.startAnimation(scale_down);
+        if(serverThread != null){
+            if(serverThread.isServerRunning()){
+                serverThread.StopServer();
+            }
+            else {
+                CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
+            }
+        }
+        else{
+            CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
+        }
     }
 
     public void ChangeLabelText(String message)
@@ -90,9 +110,9 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
             public void run() {
                 lbl_conn_box.setText(message);
             }
-        });
+        }
+        );
     }
-
     public void ChangePage()
     {
         runOnUiThread(new Runnable() {

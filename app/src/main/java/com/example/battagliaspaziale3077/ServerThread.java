@@ -16,13 +16,11 @@ class ServerThread extends Thread implements Runnable {
     private boolean serverRunning;
     private ServerSocket serverSocket;
     private int count = 0;
-
     private String nome_giocatore;
     private int serverPort;
     private String serverIP;
     private Socket client;
     private User_vs_User_host_Activity HostActivity;
-
     private String clientIP;
 
     public ServerThread(String nome, int sPort)
@@ -106,6 +104,10 @@ class ServerThread extends Thread implements Runnable {
 
     public void SetActivity(User_vs_User_host_Activity A){
         HostActivity = A;
+    }
+
+    public boolean isServerRunning(){
+        return serverRunning;
     }
 
     public boolean Connect()

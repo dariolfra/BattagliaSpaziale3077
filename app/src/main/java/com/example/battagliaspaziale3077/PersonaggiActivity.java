@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,8 +39,8 @@ public class PersonaggiActivity extends AppCompatActivity {
     Context context;
     String nome_personaggio;
     int modalita;
-
     MediaPlayer mp;
+    Animation scale_down, scale_up;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class PersonaggiActivity extends AppCompatActivity {
         img_personaggio = (ImageView) findViewById(R.id.img_pers);
         btn_seleziona_personaggio = (Button) findViewById(R.id.btn_seleziona_personaggio);
 
+        scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+
         popola_hashmap_immagini();
         popola_hashmap_descrizioni();
         popola_hasmap_abilita();
@@ -74,6 +79,8 @@ public class PersonaggiActivity extends AppCompatActivity {
         btn_pers_succ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_pers_succ.startAnimation(scale_down);
+                btn_pers_succ.startAnimation(scale_up);
                 if(indice == 10){
                     indice = 1;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
@@ -92,6 +99,8 @@ public class PersonaggiActivity extends AppCompatActivity {
         btn_pers_prec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_pers_prec.startAnimation(scale_down);
+                btn_pers_prec.startAnimation(scale_up);
                 if(indice == 1){
                     indice = 10;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
@@ -110,6 +119,8 @@ public class PersonaggiActivity extends AppCompatActivity {
         btn_seleziona_personaggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_seleziona_personaggio.startAnimation(scale_down);
+                btn_seleziona_personaggio.startAnimation(scale_up);
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);

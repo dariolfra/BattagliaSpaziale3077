@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     boolean connessione_instaurata;
     Context context;
     public boolean server_ha_scritto;
-
+    Animation scale_down, scale_up;
     Socket client;
 
     //User_vs_User_host_Activity server = new User_vs_User_host_Activity();
@@ -51,6 +53,9 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         txt_ip_server = (TextInputEditText) findViewById(R.id.txt_input_ip_server);
         txt_porta_server = (TextInputEditText) findViewById(R.id.txt_input_porta_server);
 
+        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
@@ -59,6 +64,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         btn_connettiti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_connettiti.startAnimation(scale_down);
+                btn_connettiti.startAnimation(scale_up);
                 onClickConnect();
             }
         });

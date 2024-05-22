@@ -112,7 +112,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.384" />
+        app:layout_constraintVertical_bias="0.367" />
 
     <TextView
         android:id="@+id/lbl_server_porta_box"
@@ -129,12 +129,12 @@
         app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintVertical_bias="0.555" />
 
     <TextView
         android:id="@+id/lbl_connessioni_box"
-        android:layout_width="282dp"
-        android:layout_height="75dp"
+        android:layout_width="280dp"
+        android:layout_height="87dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
         android:paddingTop="7dp"
@@ -143,27 +143,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788" />
-
-    <TextView
-        android:id="@+id/lbl_titolo_pagina"
-        android:layout_width="361dp"
-        android:layout_height="48dp"
-        android:fontFamily="@font/orbitron_bold"
-        android:foreground="@drawable/bordo_rettangolo"
-        android:paddingTop="6dp"
-        android:text="OSPITA UNA PARTITA"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="26dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.055" />
+        app:layout_constraintVertical_bias="0.777" />
 
     <TextView
         android:id="@+id/textView"
@@ -176,9 +159,7 @@
         app:layout_constraintBottom_toTopOf="@+id/txt_nome_giocatore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.231"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_titolo_pagina"
-        app:layout_constraintVertical_bias="0.736" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/txt_nome_giocatore"
@@ -188,13 +169,13 @@
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
         android:inputType="textShortMessage"
-        android:paddingLeft="7dp"
+        android:paddingStart="10dp"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204" />
+        app:layout_constraintVertical_bias="0.172" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
