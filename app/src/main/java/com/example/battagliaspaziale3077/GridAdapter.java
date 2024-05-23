@@ -52,6 +52,9 @@ public class GridAdapter extends BaseAdapter {
     }
 
     public boolean ControllaSeLiberi(int position, int size,int index, int rotation) {
+        if (position < 0 || position >= immaginiCasella.length){
+            return false;
+        }
         //Per risolvere bug
         boolean celleLibere = true;
         if(index == 0 && (rotation == 0 || rotation == 180 || rotation == 90) ||
@@ -70,10 +73,6 @@ public class GridAdapter extends BaseAdapter {
 
         //Verifica se le celle dove la nave deve essere inserita sono libere
         for (int i = 0; i < size; i++) {
-            int newPosition = position + i;
-            if (newPosition < 0 || newPosition >= immaginiCasella.length || immaginiCasella[newPosition] != 0) {
-                return false;
-            }
             if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 4) && rotation == 0 || (index == 1 || index == 3) && rotation == 180 || index == 2 && rotation == 270)  {
                 if (CellaOccupata(position + i, immaginiCasella)) {
                     return false;
