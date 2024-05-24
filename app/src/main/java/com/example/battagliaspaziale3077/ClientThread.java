@@ -14,7 +14,7 @@ import java.util.*;
 
 class ClientThread extends ConnectionThread implements Runnable {
     private String serverIp;
-    private String nome_giocatore;
+    private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String txtFromServer;
     private Socket client;
@@ -28,7 +28,7 @@ class ClientThread extends ConnectionThread implements Runnable {
     public ClientThread(String nome, int sPort)
     {
         serverPort = sPort;
-        nome_giocatore = nome;
+        nome_giocatore1 = nome;
         primaConnessione = true;
     }
 
@@ -41,11 +41,11 @@ class ClientThread extends ConnectionThread implements Runnable {
         try {
             if(primaConnessione)
             {
-                nome_giocatore = ClientActivity.GetName();
+                nome_giocatore1 = ClientActivity.GetName();
                 serverName = ClientActivity.GetServerName();
                 serverPort = ClientActivity.GetServerPort();
 
-                if (nome_giocatore.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
+                if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
                     throw new Exception();
                 }
 
@@ -54,11 +54,12 @@ class ClientThread extends ConnectionThread implements Runnable {
                 //lettura da server
                 BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 txtFromServer = br_input.readLine();
+                nome_giocatore2 = txtFromServer;
 
                 //scrittura su server
                 PrintWriter outputServer = new PrintWriter(client.getOutputStream());
                 outputServer.flush();
-                outputServer.write("ciao da client");
+                outputServer.write(nome_giocatore1);
                 outputServer.flush();
 
                 //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();

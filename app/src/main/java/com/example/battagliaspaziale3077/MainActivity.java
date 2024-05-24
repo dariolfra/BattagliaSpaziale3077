@@ -29,12 +29,9 @@ public class MainActivity extends AppCompatActivity {
     int[] shipSizes = {3, 2, 2, 4,4,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
     boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
-
-
-
     Boolean dati_arrivati_correttamente = false;
     Context context;
-    String nome_giocatore;
+    String nome_giocatore1, nome_giocatore2;
     int modalita;
     int personaggio;
 
@@ -63,7 +60,13 @@ public class MainActivity extends AppCompatActivity {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent attacco = new Intent(MainActivity.this, Attack.class);
+                attacco.putExtra("nome1", nome_giocatore1);
+                attacco.putExtra("nome2", nome_giocatore2);
+                attacco.putExtra("mod", modalita);
+                attacco.putExtra("personaggio", personaggio);
+                //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
+                startActivity(attacco);
             }
         });
 
@@ -78,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try{
                     Intent personaggi = getIntent();
-                    nome_giocatore = personaggi.getStringExtra("nome");
+                    nome_giocatore1 = personaggi.getStringExtra("nome1");
+                    nome_giocatore2 = personaggi.getStringExtra("nome2");
                     modalita = personaggi.getIntExtra("mod", 1);
                     personaggio = personaggi.getIntExtra("personaggio", 1);
                     dati_arrivati_correttamente = true;
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
                 }
                 if(dati_arrivati_correttamente){
-                    CustomToast.showToast(context, "Giocatore: " + nome_giocatore + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "Giocatore: " + nome_giocatore1 + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT);
                 }
             }
         });
