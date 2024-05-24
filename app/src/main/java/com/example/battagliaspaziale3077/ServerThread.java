@@ -146,6 +146,7 @@ class ServerThread extends ConnectionThread implements Serializable {
                                 //per ora ignoro il problema
                                 //toast
                             }
+                            notifyAll();
                             riceviMessaggio = false;
                         }
                         else
