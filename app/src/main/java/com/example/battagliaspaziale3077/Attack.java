@@ -87,16 +87,14 @@ public class Attack extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //view.setBackgroundColor(getResources().getColor(R.color.black));
-                Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
-                CellaColpita(position);
+                //restituisce la posizione della cella cliccata
+                //Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
+                pos = position;
+                canAttack();
             }
         });
     }
 
-    public void CellaColpita(int pos){
-        casellaColpita[pos] = R.drawable.naveda1;
-    }
     public Attack()
     {
         casellaColpita = new int[99];
