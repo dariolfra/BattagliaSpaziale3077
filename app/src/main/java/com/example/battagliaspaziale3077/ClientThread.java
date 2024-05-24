@@ -24,12 +24,14 @@ class ClientThread extends ConnectionThread implements Runnable {
     private boolean inviaMessaggio;
     private boolean riceviMessaggio;
     private String mess;
+    private boolean gameEnded;
 
     public ClientThread(String nome, int sPort)
     {
         serverPort = sPort;
         nome_giocatore1 = nome;
         primaConnessione = true;
+        gameEnded = false;
     }
 
     public void startServer() {
@@ -37,6 +39,7 @@ class ClientThread extends ConnectionThread implements Runnable {
     }
 
     @Override
+<<<<<<< Updated upstream
     public void run() {
         try {
             if(primaConnessione)
@@ -75,53 +78,94 @@ class ClientThread extends ConnectionThread implements Runnable {
             else
             {
                 if(inviaMessaggio)
+=======
+    public void run()
+    {
+        while(!gameEnded)
+        {
+            try {
+                if(primaConnessione)
+>>>>>>> Stashed changes
                 {
-                    Connect();
-                    try {
-                        PrintWriter outputServer = new PrintWriter(client.getOutputStream());
-                        outputServer.flush();
-                        outputServer.write(mess);
-                        outputServer.flush();
-                        client.close();
+                    serverName = ClientActivity.GetServerName();
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        //per ora ignoro il problema
+                    if (nome_giocatore.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
+                        throw new Exception();
                     }
-                    mess = "";
-                    inviaMessaggio = false;
+
+                    client = new Socket(serverName, serverPort);
+
+                    //lettura da server
+                    BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    txtFromServer = br_input.readLine();
+
+                    //scrittura su server
+                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
+                    outputServer.flush();
+                    outputServer.write("ciao da client");
+                    outputServer.flush();
+
+                    //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
+                    ClientActivity.ShowToast(txtFromServer);
+                    //connessione_instaurata = true;
+
+                    ClientActivity.ResetTxb();
+                    ClientActivity.ChangePage();
+                    //server.connessione_instaurata = true;
+                    txtFromServer = "";
+                    primaConnessione = false;
                 }
-                else if(riceviMessaggio)
+                else
                 {
-                    Connect();
-                    try {
-                        while(txtFromServer != "") {
-                            BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                            txtFromServer = sv_reader.readLine();
-                            Thread.sleep(100);
+                    if(inviaMessaggio)
+                    {
+                        Connect();
+                        try {
+                            PrintWriter outputServer = new PrintWriter(client.getOutputStream());
+                            outputServer.flush();
+                            outputServer.write(mess);
+                            outputServer.flush();
                             client.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        //per ora ignoro il problema
-                        //toast
-                    }
-                    mess = "";
-                    riceviMessaggio = false;
-                }
-            }
-        } catch (IOException e) {
-            ClientActivity.ShowToast("Connessione al server non riuscita");
 
-            System.out.println(e);
-            ClientActivity.ResetTxb();
-            //connessione_instaurata = false;
-        } catch (Exception e) {
-            ClientActivity.ShowToast("Dati inseriti non validi");
-            System.out.println(e);
-            //connessione_instaurata = false;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            //per ora ignoro il problema
+                        }
+                        mess = "";
+                        inviaMessaggio = false;
+                    }
+                    else if(riceviMessaggio)
+                    {
+                        Connect();
+                        try {
+                            while(txtFromServer != "") {
+                                BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                                txtFromServer = sv_reader.readLine();
+                                Thread.sleep(100);
+                                client.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            //per ora ignoro il problema
+                            //toast
+                        }
+                        mess = "";
+                        riceviMessaggio = false;
+                    }
+                }
+            } catch (IOException e) {
+                ClientActivity.ShowToast("Connessione al server non riuscita");
+
+                System.out.println(e);
+                ClientActivity.ResetTxb();
+                //connessione_instaurata = false;
+            } catch (Exception e) {
+                ClientActivity.ShowToast("Dati inseriti non validi");
+                System.out.println(e);
+                //connessione_instaurata = false;
+            }
         }
     }
 

@@ -26,6 +26,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -126,7 +127,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
                 Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                 personaggi.putExtra("mod", modalita);
                 personaggi.putExtra("nome",nome_giocatore);
-                personaggi.putExtra("comms", ServerThread.class);
+                personaggi.putExtra("comms", (Serializable) serverThread);
                 startActivity(personaggi);
             }
         });

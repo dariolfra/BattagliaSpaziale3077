@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     Animation scale_down, scale_up;
     Socket client;
     String txtFromServer;
+    private ClientThread comms;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,11 +69,17 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
                 onClickConnect();
             }
         });
-
     }
 
+<<<<<<< Updated upstream
     public void onClickConnect(){
 
+=======
+    public void onClickConnect()
+    {
+        comms = new ClientThread(txt_nome.getText().toString(), Integer.valueOf(txt_porta_server.getText().toString()));
+        comms.start();
+>>>>>>> Stashed changes
     }
 
     public void ShowToast(String text)
@@ -84,19 +92,9 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         });
     }
 
-    public String GetName()
-    {
-        return txt_nome.getText().toString();
-    }
-
     public String GetServerName()
     {
         return txt_ip_server.getText().toString();
-    }
-
-    public int GetServerPort()
-    {
-        return Integer.valueOf(txt_porta_server.getText().toString());
     }
 
     public void ResetTxb()
@@ -110,8 +108,13 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     {
         Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
         personaggi.putExtra("mod", modalita);
+<<<<<<< Updated upstream
         personaggi.putExtra("nome1", nome_giocatore/*1*/);
         //personaggi.putExtra("nome2", /*nome_giocatore2*/);
+=======
+        personaggi.putExtra("nome", nome_giocatore);
+        personaggi.putExtra("comms", (Serializable) comms);
+>>>>>>> Stashed changes
         startActivity(personaggi);
     }
 }

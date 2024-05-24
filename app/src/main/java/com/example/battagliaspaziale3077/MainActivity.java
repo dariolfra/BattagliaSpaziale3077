@@ -17,6 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 
+<<<<<<< Updated upstream
+=======
+import java.io.Serializable;
+import java.util.zip.Inflater;
+
+>>>>>>> Stashed changes
 public class MainActivity extends AppCompatActivity {
     //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
 
@@ -29,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
     int[] shipSizes = {3, 2, 2, 4,4,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
     boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
+<<<<<<< Updated upstream
+=======
+    private ConnectionThread comms;
+
+
+>>>>>>> Stashed changes
     Boolean dati_arrivati_correttamente = false;
     Context context;
     String nome_giocatore1, nome_giocatore2;
@@ -65,7 +77,11 @@ public class MainActivity extends AppCompatActivity {
                 attacco.putExtra("nome2", nome_giocatore2);
                 attacco.putExtra("mod", modalita);
                 attacco.putExtra("personaggio", personaggio);
+<<<<<<< Updated upstream
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
+=======
+                attacco.putExtra("comms", (Serializable) comms);
+>>>>>>> Stashed changes
                 startActivity(attacco);
             }
         });
@@ -85,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     nome_giocatore2 = personaggi.getStringExtra("nome2");
                     modalita = personaggi.getIntExtra("mod", 1);
                     personaggio = personaggi.getIntExtra("personaggio", 1);
+                    comms = (ConnectionThread) personaggi.getSerializableExtra("comms");
                     dati_arrivati_correttamente = true;
                 }catch (Exception e){
                     CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);

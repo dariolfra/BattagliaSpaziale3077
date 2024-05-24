@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat;
 
 import org.w3c.dom.Text;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Dictionary;
 import java.util.HashMap;
 
@@ -35,6 +37,7 @@ public class PersonaggiActivity extends AppCompatActivity {
     HashMap<Integer, Drawable> indici_immagini;
     HashMap<Integer, String> indici_descrizione;
     HashMap<Integer, String> indici_abilita;
+    ConnectionThread comms;
     int indice;
     Context context;
     String nome_personaggio1, nome_personaggio2;
@@ -57,6 +60,7 @@ public class PersonaggiActivity extends AppCompatActivity {
         nome_personaggio1 = modalita.getStringExtra("nome");
         nome_personaggio2 = modalita.getStringExtra("nome");
         this.modalita = modalita.getIntExtra("mod", 1);
+        comms = (ConnectionThread) modalita.getSerializableExtra("comms");
 
         btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
         btn_pers_succ = (ImageButton) findViewById(R.id.btn_pers_succ);
@@ -125,8 +129,15 @@ public class PersonaggiActivity extends AppCompatActivity {
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);
+<<<<<<< Updated upstream
                 gioco.putExtra("nome1", nome_personaggio1);
                 gioco.putExtra("nome2", nome_personaggio2);
+=======
+                gioco.putExtra("nomeg1", nome_g1);
+                gioco.putExtra("nomeg2", nome_g2);
+                gioco.putExtra("comms", (Serializable) comms);
+
+>>>>>>> Stashed changes
                 suono_personaggio(indice);
                 startActivity(gioco);
             }
