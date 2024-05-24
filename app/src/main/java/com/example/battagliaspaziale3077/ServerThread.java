@@ -22,6 +22,11 @@ class ServerThread extends Thread implements Runnable {
     private Socket client;
     private User_vs_User_host_Activity HostActivity;
     private String clientIP;
+    private String mess;
+    private String txt_from_client;
+    private boolean primaConnessione;
+    private boolean inviaMessaggio;
+    private boolean riceviMessaggio;
 
     public ServerThread(String nome, int sPort)
     {
@@ -44,6 +49,8 @@ class ServerThread extends Thread implements Runnable {
                 }
             }
         } catch (Exception ignored) { } // for now eat exceptions
+
+
     }
 
     public void startServer() {
@@ -53,30 +60,80 @@ class ServerThread extends Thread implements Runnable {
     @Override
     public void run() {
         try {
-            if(nome_giocatore.isEmpty()){
-                throw new Exception();
-            }
-            else{
-                serverRunning = true;
-            }
-            HostActivity.SetAddressPort(serverIP, serverPort);
-            serverSocket = new ServerSocket(serverPort);
-            HostActivity.ChangeLabelText("Aspettando una connessione");
-
             while(serverRunning) {
-                client = serverSocket.accept();
-                count++;
-                clientIP = String.valueOf(client.getInetAddress());
-                HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
+                if(primaConnessione)
+                {
+                    if(nome_giocatore.isEmpty()){
+                        throw new Exception();
+                    }
+                    else{
+                        serverRunning = true;
+                    }
+                    HostActivity.SetAddressPort(serverIP, serverPort);
+                    serverSocket = new ServerSocket(serverPort);
+                    HostActivity.ChangeLabelText("Aspettando una connessione");
 
-                PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                outputServer.write("ciao da server");
-                Log.i("SERVER", "MESSAGGIO INVIATO");
-                //client.server_ha_scritto = true;
+                    client = serverSocket.accept();
+                    count++;
+                    clientIP = String.valueOf(client.getInetAddress());
+                    HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
+
+                    PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
+                    outputServer.write("ciao da server");
+                    Log.i("SERVER", "MESSAGGIO INVIATO");
+                    //client.server_ha_scritto = true;
 
 
-                client.close();
-                HostActivity.ChangePage();
+                    client.close();
+                    HostActivity.ChangePage();
+                    primaConnessione = false;
+                }
+                else
+                {
+                    if(inviaMessaggio)
+                    {
+                        Connect();
+                        try {
+                            if(!serverRunning){
+                                throw new Exception();
+                            }
+
+                            PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
+                            outputServer.write(mess);
+                            Log.i("SERVER", "MESSAGGIO INVIATO");
+                            client.close();
+                            count--;
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            //per ora ignoro il problema
+                        }
+                        inviaMessaggio = false;
+                    }
+                    else if(riceviMessaggio)
+                    {
+                        Connect();
+                        try {
+                            if(!serverRunning){
+                                throw new Exception();
+                            }
+                            while(serverRunning) {
+                                BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                                txt_from_client = sv_reader.readLine();
+                                Thread.sleep(100);
+                                client.close();
+                                count--;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            //per ora ignoro il problema
+                            //toast
+                        }
+                        riceviMessaggio = false;
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,21 +175,16 @@ class ServerThread extends Thread implements Runnable {
             if(!serverRunning){
                 throw new Exception();
             }
-            serverSocket = new ServerSocket(serverPort);
-            int i = 0;
-            while(serverRunning && i  < 10000) {
-                client = serverSocket.accept();
-                count++;
-                if(String.valueOf(client.getInetAddress()) == clientIP)
-                {
-                    return true;
-                }
-                else
-                {
-                    client.close();
-                    count--;
-                }
-                i++;
+            client = serverSocket.accept();
+            count++;
+            if(String.valueOf(client.getInetAddress()) == clientIP)
+            {
+                return true;
+            }
+            else
+            {
+                client.close();
+                count--;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,62 +195,14 @@ class ServerThread extends Thread implements Runnable {
         return false;
     }
 
-    public String InviaAttacco(String messaggio)
+    public void InviaMessaggio(String messaggio)
     {
-        try {
-            if(!serverRunning){
-                throw new Exception();
-            }
-            serverSocket = new ServerSocket(serverPort);
-
-            PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-            outputServer.write(messaggio);
-            Log.i("SERVER", "MESSAGGIO INVIATO");
-            client.close();
-            count--;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            //per ora ignoro il problema
-        }
-        if(Connect())
-        {
-            return RiceviRisposta();
-        }
-        else
-        {
-            return "ERRORE DI CONNESSIONE";
-            //toast
-        }
+        inviaMessaggio = true;
+        mess = messaggio;
     }
 
-    public String RiceviRisposta()
+    public void RiceviRisposta()
     {
-        String txt_from_client = "ERRORE: NO MESSAGGIO";
-        try {
-            if(!serverRunning){
-                throw new Exception();
-            }
-            serverSocket = new ServerSocket(serverPort);
-
-            while(serverRunning) {
-                BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                txt_from_client = sv_reader.readLine();
-                Thread.sleep(100);/*
-                synchronized (this){
-                    Log.i("CLIENT", "STO ASPETTANDO");
-                    client.wait();
-                }*/
-                client.close();
-                count--;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            //per ora ignoro il problema
-            //toast
-        }
-        return txt_from_client;
+        riceviMessaggio = true;
     }
 }

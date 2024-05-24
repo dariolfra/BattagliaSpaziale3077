@@ -40,22 +40,8 @@ public class Attack extends Activity {
 
     public boolean Attaco(int pos)
     {
-        if(immaginiCasella[pos] == 0)
-        {
-            casellaColpita[pos] = 1;
-            return false;
-        }
-        else
-        {
-            int nave = immaginiCasella[pos];
-            casellaColpita[pos] = 2;
-            countNavi[nave]++;
-            if(countNavi[nave] == nave)
-            {
-                NaveAffondata(nave);
-            }
-            return true;
-        }
+        casellaColpita[pos] = 1;
+        return false;
     }
 
     public void NaveAffondata(int nave)
