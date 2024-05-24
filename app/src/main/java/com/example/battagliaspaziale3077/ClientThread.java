@@ -39,57 +39,16 @@ class ClientThread extends ConnectionThread implements Runnable {
     }
 
     @Override
-<<<<<<< Updated upstream
-    public void run() {
-        try {
-            if(primaConnessione)
-            {
-                nome_giocatore1 = ClientActivity.GetName();
-                serverName = ClientActivity.GetServerName();
-                serverPort = ClientActivity.GetServerPort();
-
-                if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
-                    throw new Exception();
-                }
-
-                client = new Socket(serverName, serverPort);
-
-                //lettura da server
-                BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                txtFromServer = br_input.readLine();
-                nome_giocatore2 = txtFromServer;
-
-                //scrittura su server
-                PrintWriter outputServer = new PrintWriter(client.getOutputStream());
-                outputServer.flush();
-                outputServer.write(nome_giocatore1);
-                outputServer.flush();
-
-                //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-                ClientActivity.ShowToast(txtFromServer);
-                //connessione_instaurata = true;
-
-                ClientActivity.ResetTxb();
-                ClientActivity.ChangePage();
-                //server.connessione_instaurata = true;
-                txtFromServer = "";
-                primaConnessione = false;
-            }
-            else
-            {
-                if(inviaMessaggio)
-=======
     public void run()
     {
         while(!gameEnded)
         {
             try {
                 if(primaConnessione)
->>>>>>> Stashed changes
                 {
                     serverName = ClientActivity.GetServerName();
 
-                    if (nome_giocatore.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
+                    if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
                         throw new Exception();
                     }
 

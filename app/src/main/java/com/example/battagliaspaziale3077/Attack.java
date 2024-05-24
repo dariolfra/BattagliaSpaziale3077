@@ -83,7 +83,7 @@ public class Attack extends Activity {
 
     }
 
-    public Attack(int[] img)
+    public Attack()
     {
         casellaColpita = new int[99];
     }
@@ -147,7 +147,8 @@ public class Attack extends Activity {
         }
     }
 
-    public void popola_mosse_speciale(){
+    public void popola_mosse_speciale()
+    {
         indici_mossaspeciale = new HashMap<>();
         indici_mossaspeciale.put(1, getResources().getDrawable(R.drawable.attaccoserpente, context.getTheme()));
         indici_mossaspeciale.put(2, getResources().getDrawable(R.drawable.attaccot, context.getTheme()));
@@ -161,7 +162,8 @@ public class Attack extends Activity {
         indici_mossaspeciale.put(10, getResources().getDrawable(R.drawable.attaccot, context.getTheme()));
     }
 
-    public void popola_personaggi(){
+    public void popola_personaggi()
+    {
         indici_personaggi = new HashMap<>();
         indici_personaggi.put(1, getResources().getDrawable(R.drawable.blur, context.getTheme()));
         indici_personaggi.put(2, getResources().getDrawable(R.drawable.meloni, context.getTheme()));
@@ -175,7 +177,13 @@ public class Attack extends Activity {
         indici_personaggi.put(10, getResources().getDrawable(R.drawable.panda, context.getTheme()));
     }
 
-    public void genera_img_mossa_speciale(){
+    public void genera_img_mossa_speciale()
+    {
         img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+    }
+
+    public void CambiaImmagini()
+    {
+
     }
 }

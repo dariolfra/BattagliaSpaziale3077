@@ -31,7 +31,7 @@ import java.util.Optional;
 
 public class User_vs_User_connect_Activity extends AppCompatActivity {
     TextInputEditText txt_nome, txt_ip_server, txt_porta_server;
-    String serverName, nome_giocatore;
+    String serverName, nome_giocatore1, nome_giocatore2;
     int serverPort;
     Button btn_connettiti;
     int modalita = 2;
@@ -70,16 +70,10 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
             }
         });
     }
-
-<<<<<<< Updated upstream
-    public void onClickConnect(){
-
-=======
     public void onClickConnect()
     {
         comms = new ClientThread(txt_nome.getText().toString(), Integer.valueOf(txt_porta_server.getText().toString()));
         comms.start();
->>>>>>> Stashed changes
     }
 
     public void ShowToast(String text)
@@ -108,13 +102,9 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     {
         Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
         personaggi.putExtra("mod", modalita);
-<<<<<<< Updated upstream
-        personaggi.putExtra("nome1", nome_giocatore/*1*/);
-        //personaggi.putExtra("nome2", /*nome_giocatore2*/);
-=======
-        personaggi.putExtra("nome", nome_giocatore);
+        personaggi.putExtra("nome1", nome_giocatore1);
+        personaggi.putExtra("nome2", nome_giocatore2);
         personaggi.putExtra("comms", (Serializable) comms);
->>>>>>> Stashed changes
         startActivity(personaggi);
     }
 }
