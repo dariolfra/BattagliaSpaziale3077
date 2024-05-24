@@ -1,11 +1,15 @@
 package com.example.battagliaspaziale3077;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.HashMap;
 
 public class Attack extends Activity {
 
@@ -15,9 +19,13 @@ public class Attack extends Activity {
     int modalita;
     int id_pers;
     private ConnectionThread comms;
+    Context context;
+    HashMap<Integer, Drawable> indici_mossaspeciale;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attack);
+
+        context = this.getApplicationContext();
 
         Intent gioco = getIntent();
         id_pers = gioco.getIntExtra("personaggio", 1);
@@ -76,5 +84,19 @@ public class Attack extends Activity {
                 immaginiCasella[i] = -nave;
             }
         }
+    }
+
+    public void popola_mosse_speciale(){
+        indici_mossaspeciale = new HashMap<>();
+        indici_mossaspeciale.put(1, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(2, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(3, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(4, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(5, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(6, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(7, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(8, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(9, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_mossaspeciale.put(10, getResources().getDrawable(R.drawable.blur, context.getTheme()));
     }
 }
