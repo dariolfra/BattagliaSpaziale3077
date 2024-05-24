@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
 
-        background = (ImageView) findViewById(R.id.background);
+        background = (ImageView) findViewById(R.id.imageView8);
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, getTheme()));
 
         //Inizializzazione delle navi
