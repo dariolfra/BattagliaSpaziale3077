@@ -8,6 +8,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -24,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
     ImageView[] navi;
     float startX, startY;
     float[] initialX, initialY;
+    Button btnConferma;
     int[] shipSizes = {3, 2, 2, 4,4,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
+    boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
+
 
 
     Boolean dati_arrivati_correttamente = false;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         int[] immaginiCasella = new int[100];
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
 
+        //Inizializzazione delle navi
         navi = new ImageView[6];
         navi[0] = findViewById(R.id.navecap);
         navi[1] = findViewById(R.id.naveda2);
@@ -50,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
         navi[3] = findViewById(R.id.naveda4);
         navi[4] = findViewById(R.id.navedaottorino);
         navi[5] = findViewById(R.id.navel);
+
+        btnConferma = findViewById(R.id.btnConferma);
+        btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
+
+        //Metodo per confermare e per far partire il gioco
+        btnConferma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         // Inizializza gli array per le posizioni iniziali
         initialX = new float[navi.length];
@@ -139,6 +155,12 @@ public class MainActivity extends AppCompatActivity {
                         navi[index].setX(initialX[index]);
                         navi[index].setY(initialY[index]);
                         gridAdapter.notifyDataSetChanged();
+
+                        // Controlla se tutte le navi sono state inserite
+                        if (allShipsPlaced()) {
+                            btnConferma.setVisibility(View.VISIBLE);
+                        }
+
                         break;
                 }
                 return true;
@@ -244,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         navi[index].setVisibility(View.INVISIBLE);
+        shipPlaced[index] = true; // Segna la nave inserita
     }
 
     public void ImmaginiNavi(int position,int index,int[] immaginiCasella){
@@ -261,6 +284,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (index == 5) {
             immaginiCasella[position] = R.drawable.navexelle;
         }
+    }
+    private boolean allShipsPlaced() { //controlla se tutte le navi sono state inserite
+        for (boolean placed : shipPlaced) {
+            if (!placed) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
