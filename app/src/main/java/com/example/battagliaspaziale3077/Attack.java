@@ -59,22 +59,4 @@ public class Attack extends Activity {
             return true;
         }
     }
-
-    public boolean Attaco(int pos)
-    {
-        casellaColpita[pos] = 1;
-        return false;
-    }
-
-    public void NaveAffondata(int nave)
-    {
-        for(int i = 0; i < immaginiCasella.length; i++)
-        {
-            if(immaginiCasella[i] == nave)
-            {
-                casellaColpita[i] = 3;
-                immaginiCasella[i] = -nave;
-            }
-        }
-    }
 }
