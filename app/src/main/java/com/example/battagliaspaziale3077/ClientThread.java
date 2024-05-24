@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ClientThread extends ConnectionThread implements Runnable {
+class ClientThread extends ConnectionThread implements Serializable {
     private String serverIp;
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
@@ -26,9 +26,10 @@ class ClientThread extends ConnectionThread implements Runnable {
     private String mess;
     private boolean gameEnded;
 
-    public ClientThread(String nome, int sPort)
+    public ClientThread(String nome, int sPort, String serverIp)
     {
         serverPort = sPort;
+        serverName = serverIp;
         nome_giocatore1 = nome;
         primaConnessione = true;
         gameEnded = false;
@@ -46,11 +47,11 @@ class ClientThread extends ConnectionThread implements Runnable {
             try {
                 if(primaConnessione)
                 {
-                    serverName = ClientActivity.GetServerName();
+                    //serverName = ClientActivity.GetServerName();
 
-                    if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
+                    /*if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
                         throw new Exception();
-                    }
+                    }*/
 
                     client = new Socket(serverName, serverPort);
 
@@ -58,12 +59,15 @@ class ClientThread extends ConnectionThread implements Runnable {
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     txtFromServer = br_input.readLine();
                     nome_giocatore2 = txtFromServer;
+                    br_input.close();
 
                     //scrittura su server
-                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
+                    PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
                     outputServer.flush();
                     outputServer.write(nome_giocatore1);
                     outputServer.flush();
+                    outputServer.close();
+
 
                     //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
                     ClientActivity.ShowToast(txtFromServer);

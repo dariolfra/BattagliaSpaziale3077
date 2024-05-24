@@ -97,6 +97,21 @@
         android:elevation="10dp"
         android:rotation="0"/>
 
+    <Button
+        android:id="@+id/btnConferma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="0dp"
+        android:text="Conferma" />
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="539dp"
+        android:layout_height="956dp"
+        app:srcCompat="@drawable/background" />
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="1000px"
@@ -109,14 +124,6 @@
 
         android:background="@drawable/griglia"
         android:numColumns="10" />
-    <Button
-        android:id="@+id/btnConferma"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginEnd="0dp"
-        android:text="Conferma" />
 
 
 </FrameLayout>

@@ -70,10 +70,27 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
             }
         });
     }
-    public void onClickConnect()
-    {
-        comms = new ClientThread(txt_nome.getText().toString(), Integer.valueOf(txt_porta_server.getText().toString()));
-        comms.start();
+    public void onClickConnect()  {
+        try{
+            nome_giocatore1 = txt_nome.getText().toString();
+            serverName = txt_ip_server.getText().toString();
+            serverPort = Integer.valueOf(txt_porta_server.getText().toString());
+            if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
+                throw new Exception();
+            }
+            else {
+                comms = new ClientThread(nome_giocatore1, serverPort, serverName);
+                comms.SetActivity(this);
+                comms.start();
+            }
+        }catch (Exception e){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    CustomToast.showToast(context, "Inserisci tutti i valori", Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 
     public void ShowToast(String text)
@@ -104,7 +121,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         personaggi.putExtra("mod", modalita);
         personaggi.putExtra("nome1", nome_giocatore1);
         personaggi.putExtra("nome2", comms.getName());
-        personaggi.putExtra("comms", (Serializable) comms);
+        //personaggi.putExtra("comms", (Serializable) comms);
         startActivity(personaggi);
     }
 }

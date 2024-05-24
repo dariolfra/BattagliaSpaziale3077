@@ -58,7 +58,7 @@ public class PersonaggiActivity extends AppCompatActivity {
 
         Intent modalita = getIntent();
         this.modalita = modalita.getIntExtra("mod", 1);
-        comms = (ConnectionThread) modalita.getSerializableExtra("comms");
+        //comms = (ConnectionThread) modalita.getSerializableExtra("comms");
         if(this.modalita == 1){
             nome_g1 = modalita.getStringExtra("nome");
         }

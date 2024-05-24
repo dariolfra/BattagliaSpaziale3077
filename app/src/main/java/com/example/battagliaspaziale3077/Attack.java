@@ -35,6 +35,7 @@ public class Attack extends Activity {
     private int pos;
     private boolean multiplayer;
     private int[] casellaColpita;
+    ImageView background;
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,9 @@ public class Attack extends Activity {
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
+        background = (ImageView) findViewById(R.id.background);
+
+        background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         Intent gioco = getIntent();
         id_pers = gioco.getIntExtra("personaggio", 1);
@@ -82,7 +86,7 @@ public class Attack extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                view.setBackgroundColor(getResources().getColor(R.color.black));
+                //view.setBackgroundColor(getResources().getColor(R.color.black));
                 pos = position;
                 customToast.showToast(context, "hai schiacciato la casella in posizione " + position, Toast.LENGTH_SHORT);
             }
@@ -186,6 +190,7 @@ public class Attack extends Activity {
 
     public void genera_img_mossa_speciale(View view) throws InterruptedException {
         img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+
     }
 
     public void CambiaImmagini()
