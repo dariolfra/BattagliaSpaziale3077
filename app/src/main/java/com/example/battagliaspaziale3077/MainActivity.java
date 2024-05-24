@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     String nome_giocatore1, nome_giocatore2;
     int modalita;
     int personaggio;
+    Animation scale_down, scale_up;
     ImageView background;
     // HashMap per memorizzare le posizioni delle navi con l'ID dell'immagine come chiave
     HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
@@ -82,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnConferma.startAnimation(scale_down);
+                btnConferma.startAnimation(scale_up);
                 Intent attacco = new Intent(MainActivity.this, Attack.class);
                 attacco.putExtra("mod", modalita);
                 attacco.putExtra("nome1", nome_giocatore1);
@@ -98,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         initialY = new float[navi.length];
 
         context = this.getApplicationContext();
+
+        scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
 
         runOnUiThread(new Runnable() {
             @Override
