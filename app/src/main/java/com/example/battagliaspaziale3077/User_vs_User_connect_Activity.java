@@ -143,4 +143,44 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         }).start();
 
     }
+
+    public void ShowToast(String text)
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CustomToast.showToast(context, text, Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    public String GetName()
+    {
+        return txt_nome.getText().toString();
+    }
+
+    public String GetServerName()
+    {
+        return txt_ip_server.getText().toString();
+    }
+
+    public int GetServerPort()
+    {
+        return Integer.valueOf(txt_porta_server.getText().toString());
+    }
+
+    public void ResetTxb()
+    {
+        txt_nome.setText("");
+        txt_ip_server.setText("");
+        txt_porta_server.setText("");
+    }
+
+    public void ChangePage()
+    {
+        Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
+        personaggi.putExtra("mod", modalita);
+        personaggi.putExtra("nome", nome_giocatore);
+        startActivity(personaggi);
+    }
 }
