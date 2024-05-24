@@ -78,7 +78,6 @@ public class Attack extends Activity {
 
         popola_mosse_speciale();
         popola_personaggi();
-
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
         GridAdapterAttacco gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
@@ -90,6 +89,7 @@ public class Attack extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //view.setBackgroundColor(getResources().getColor(R.color.black));
                 Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
+                CellaColpita(position);
             }
         });
     }
