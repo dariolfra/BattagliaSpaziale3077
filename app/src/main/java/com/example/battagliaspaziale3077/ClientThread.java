@@ -70,7 +70,7 @@ class ClientThread extends ConnectionThread implements Serializable {
 
 
                     //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-                    ClientActivity.ShowToast(nome_giocatore1);
+                    //ClientActivity.ShowToast(nome_giocatore1);
                     //connessione_instaurata = true;
 
                     ClientActivity.ResetTxb();

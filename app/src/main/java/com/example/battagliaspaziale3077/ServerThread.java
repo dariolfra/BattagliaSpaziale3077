@@ -87,8 +87,9 @@ class ServerThread extends ConnectionThread implements Serializable {
 
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     nome_giocatore2 = br_input.readLine();
-                    Log.i("SERVER", "MESSAGGIO RICEVUTO");
                     br_input.close();
+
+                    //HostActivity.ShowToast("nome host " + nome_giocatore1 + " nome client " + nome_giocatore2);
 
                     client.close();
                     HostActivity.ChangePage();
