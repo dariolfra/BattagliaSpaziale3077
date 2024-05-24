@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
 
