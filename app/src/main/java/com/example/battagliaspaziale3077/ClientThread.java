@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ClientThread extends Thread implements Runnable {
+class ClientThread extends ConnectionThread implements Runnable {
     private String serverIp;
     private String nome_giocatore;
     private int serverPort;

@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ServerThread extends Thread implements Runnable {
+class ServerThread extends ConnectionThread implements Runnable {
     private boolean serverRunning;
     private ServerSocket serverSocket;
     private int count = 0;
@@ -92,46 +92,58 @@ class ServerThread extends Thread implements Runnable {
                 {
                     if(inviaMessaggio)
                     {
-                        Connect();
-                        try {
-                            if(!serverRunning){
-                                throw new Exception();
+                        if(Connect())
+                        {
+                            try {
+                                if(!serverRunning){
+                                    throw new Exception();
+                                }
+
+                                PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
+                                outputServer.write(mess);
+                                Log.i("SERVER", "MESSAGGIO INVIATO");
+                                client.close();
+                                count--;
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                //per ora ignoro il problema
                             }
-
-                            PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                            outputServer.write(mess);
-                            Log.i("SERVER", "MESSAGGIO INVIATO");
-                            client.close();
-                            count--;
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            //per ora ignoro il problema
+                        }
+                        else
+                        {
+                            //per ora ignoro l'errore
                         }
                         inviaMessaggio = false;
                     }
                     else if(riceviMessaggio)
                     {
-                        Connect();
-                        try {
-                            if(!serverRunning){
-                                throw new Exception();
+                        if(Connect())
+                        {
+                            try {
+                                if(!serverRunning){
+                                    throw new Exception();
+                                }
+                                while(serverRunning) {
+                                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                                    txt_from_client = sv_reader.readLine();
+                                    Thread.sleep(100);
+                                    client.close();
+                                    count--;
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                //per ora ignoro il problema
+                                //toast
                             }
-                            while(serverRunning) {
-                                BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                                txt_from_client = sv_reader.readLine();
-                                Thread.sleep(100);
-                                client.close();
-                                count--;
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            //per ora ignoro il problema
-                            //toast
+                            riceviMessaggio = false;
                         }
-                        riceviMessaggio = false;
+                        else
+                        {
+                            txt_from_client = "ERRORE DI CONNESSIONE";
+                        }
                     }
                 }
             }
@@ -204,5 +216,12 @@ class ServerThread extends Thread implements Runnable {
     public void RiceviRisposta()
     {
         riceviMessaggio = true;
+    }
+
+    public String GetMessage()
+    {
+        String temp = txt_from_client;
+        txt_from_client = "";
+        return temp;
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 
 public class Attack extends Activity {
 
+    private ConnectionThread comms;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attack);
@@ -23,7 +24,6 @@ public class Attack extends Activity {
 
     public void ClickedButton(View view)
     {
-
     }
 
     public boolean canAttack(int pos)
