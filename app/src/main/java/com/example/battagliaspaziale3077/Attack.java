@@ -6,18 +6,12 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.HashMap;
 
 public class Attack extends Activity {
-
-    Button btn_attacca, btn_attacco_speciale;
-    TextView nome_g1, nome_g2;
+    int id_pers, modalita;
     String nome_giocatore1, nome_giocatore2;
-    int modalita;
-    int id_pers;
     private ConnectionThread comms;
     Context context;
     HashMap<Integer, Drawable> indici_mossaspeciale;
@@ -67,7 +61,7 @@ public class Attack extends Activity {
             return true;
         }
     }
-
+    
     public boolean Attaco(int pos)
     {
         casellaColpita[pos] = 1;

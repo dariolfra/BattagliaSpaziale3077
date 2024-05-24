@@ -39,6 +39,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     public boolean server_ha_scritto;
     Animation scale_down, scale_up;
     Socket client;
+
+    //User_vs_User_host_Activity server = new User_vs_User_host_Activity();
     String txtFromServer;
 
     @Override
@@ -71,76 +73,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     }
 
     public void onClickConnect(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    nome_giocatore = txt_nome.getText().toString();
-                    serverName = txt_ip_server.getText().toString();
-                    serverPort = Integer.valueOf(txt_porta_server.getText().toString());
-
-                    if(nome_giocatore.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0 ){
-                        throw new Exception();
-                    }
-
-                    client = new Socket(serverName, serverPort);
-
-                    //lettura da server
-                    BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    txtFromServer = br_input.readLine();
-
-                    //scrittura su server
-                    PrintWriter outputServer = new PrintWriter(client.getOutputStream());
-                    outputServer.flush();
-                    outputServer.write("ciao da client");
-                    outputServer.flush();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-                            CustomToast.showToast(context, txtFromServer, Toast.LENGTH_SHORT);
-                            //connessione_instaurata = true;
-
-                            txt_nome.setText("");
-                            txt_ip_server.setText("");
-                            txt_porta_server.setText("");
-
-                            Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
-                            personaggi.putExtra("mod", modalita);
-                            personaggi.putExtra("nomeg1", nome_giocatore);
-                            personaggi.putExtra("nomeg2", txtFromServer);
-                            startActivity(personaggi);
-                            //server.connessione_instaurata = true;
-
-                        }
-                    });
-
-                }catch (IOException e){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CustomToast.showToast(context, "Connessione al server non riuscita", Toast.LENGTH_SHORT);
-                        }
-                    });
-
-                    System.out.println(e);
-                    txt_ip_server.setText("");
-                    txt_porta_server.setText("");
-                    //connessione_instaurata = false;
-                }catch (Exception e){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CustomToast.showToast(context, "Dati inseriti non validi", Toast.LENGTH_SHORT);
-                        }
-                    });
-
-                    System.out.println(e);
-                    //connessione_instaurata = false;
-                }
-            }
-        }).start();
 
     }
 

@@ -5,140 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="491dp"
-        android:layout_height="850dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/background" />
-
-    <Button
-        android:id="@+id/attacco"
-        android:layout_width="262dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="65dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/orbitron_bold"
-        android:foreground="@drawable/bordo_rettangolo"
-        android:onClick="ClickedButton"
-        android:text="ATTACCA"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridView"
-        app:layout_constraintVertical_bias="1.0" />
-
     <GridView
         android:id="@+id/gridView"
         android:layout_width="1000px"
         android:layout_height="1000px"
 
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="166dp"
         android:background="@drawable/immagine"
         android:numColumns="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/img_pers"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:foreground="@drawable/bordo_img_pers"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.626"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/txtNomeG1"
-        android:layout_width="125dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/orbitron_regular"
-        android:foreground="@drawable/bordo_rettangolo_label"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
-        app:layout_constraintEnd_toStartOf="@+id/button_attacco_speciale"
-        app:layout_constraintHorizontal_bias="0.425"
-        app:layout_constraintStart_toEndOf="@+id/img_pers"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.406" />
-
-    <TextView
-        android:id="@+id/txtNomeG2"
-        android:layout_width="125dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/orbitron_regular"
-        android:foreground="@drawable/bordo_rettangolo_label"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
-        app:layout_constraintEnd_toStartOf="@+id/button_attacco_speciale"
-        app:layout_constraintHorizontal_bias="0.425"
-        app:layout_constraintStart_toEndOf="@+id/img_pers"
-        app:layout_constraintTop_toBottomOf="@+id/txtNomeG1"
-        app:layout_constraintVertical_bias="0.517" />
-
     <Button
-        android:id="@+id/button_attacco_speciale"
-        android:layout_width="116dp"
-        android:layout_height="84dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/orbitron_bold"
-        android:foreground="@drawable/bordo_rettangolo"
-        android:text="ATTACCO SPECIALE"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toTopOf="@+id/gridView"
+        android:id="@+id/attacco"
+        android:layout_width="362dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="65dp"
+        android:onClick="ClickedButton"
+        android:text="Attacca"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.905"
-        app:layout_constraintStart_toEndOf="@+id/img_pers"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.648" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/orbitron_bold"
-        android:text="Giocatore 1"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtNomeG1"
-        app:layout_constraintEnd_toStartOf="@+id/button_attacco_speciale"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toEndOf="@+id/img_pers"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/orbitron_bold"
-        android:text="Giocatore 2"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtNomeG2"
-        app:layout_constraintEnd_toStartOf="@+id/button_attacco_speciale"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toEndOf="@+id/img_pers"
-        app:layout_constraintTop_toBottomOf="@+id/txtNomeG1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
