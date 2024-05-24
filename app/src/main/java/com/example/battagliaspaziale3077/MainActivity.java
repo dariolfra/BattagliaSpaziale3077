@@ -3,6 +3,7 @@ package com.example.battagliaspaziale3077;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -38,15 +39,23 @@ public class MainActivity extends AppCompatActivity {
     String nome_giocatore1, nome_giocatore2;
     int modalita;
     int personaggio;
+    ImageView background;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
+
         int[] immaginiCasella = new int[100];
+
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
+
+        background = (ImageView) findViewById(R.id.background);
+        background.setImageDrawable(getResources().getDrawable(R.drawable.background, getTheme()));
 
         //Inizializzazione delle navi
         navi = new ImageView[6];

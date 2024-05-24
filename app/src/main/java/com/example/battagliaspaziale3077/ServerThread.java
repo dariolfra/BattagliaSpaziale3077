@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ServerThread extends ConnectionThread implements Runnable {
+class ServerThread extends ConnectionThread implements Serializable {
     private boolean serverRunning;
     private ServerSocket serverSocket;
     private int count = 0;
@@ -32,7 +32,10 @@ class ServerThread extends ConnectionThread implements Runnable {
     {
         serverPort = sPort;
         nome_giocatore1 = nome;
-        try {
+        primaConnessione = true;
+        inviaMessaggio = false;
+        riceviMessaggio= false;
+        /*try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
                 List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
@@ -48,12 +51,13 @@ class ServerThread extends ConnectionThread implements Runnable {
                     }
                 }
             }
-        } catch (Exception ignored) { } // for now eat exceptions
+        } catch (Exception ignored) { } // for now eat exceptions*/
 
 
     }
 
     public void startServer() {
+        serverRunning = true;
         start();
     }
 
@@ -64,12 +68,10 @@ class ServerThread extends ConnectionThread implements Runnable {
                 if(primaConnessione)
                 {
                     if(nome_giocatore1.isEmpty()){
+                        Log.i("SERVER", "NOME GIOCATORE 1 VUOTO");
                         throw new Exception();
                     }
-                    else{
-                        serverRunning = true;
-                    }
-                    HostActivity.SetAddressPort(serverIP, serverPort);
+                    //HostActivity.SetAddressPort(serverIP, serverPort);
                     serverSocket = new ServerSocket(serverPort);
                     HostActivity.ChangeLabelText("Aspettando una connessione");
 
@@ -81,8 +83,12 @@ class ServerThread extends ConnectionThread implements Runnable {
                     PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
                     outputServer.write(nome_giocatore1);
                     Log.i("SERVER", "MESSAGGIO INVIATO");
-                    //client.server_ha_scritto = true;
+                    outputServer.close();
 
+                    BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    nome_giocatore2 = br_input.readLine();
+                    Log.i("SERVER", "MESSAGGIO RICEVUTO");
+                    br_input.close();
 
                     client.close();
                     HostActivity.ChangePage();

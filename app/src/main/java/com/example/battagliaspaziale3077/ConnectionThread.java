@@ -1,6 +1,8 @@
 package com.example.battagliaspaziale3077;
 
-public class ConnectionThread extends Thread{
+import java.io.Serializable;
+
+public class ConnectionThread extends Thread implements Serializable {
     public void InviaMessaggio(String messaggio)
     {
 
