@@ -90,7 +90,6 @@ class ClientThread extends ConnectionThread implements Serializable {
                             outputServer.write(mess);
                             outputServer.flush();
                             client.close();
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (Exception e) {
@@ -116,6 +115,7 @@ class ClientThread extends ConnectionThread implements Serializable {
                             //toast
                         }
                         mess = "";
+                        notifyAll();
                         riceviMessaggio = false;
                     }
                 }

@@ -108,6 +108,10 @@ public class Attack extends Activity {
     }
     public Attack()
     {
+        //0 = non ancora colpita
+        //1 = buco nell'acqua
+        //2 = nave colpita
+        //3 = nave colpita e affondata
         casellaColpita = new int[99];
     }
 
