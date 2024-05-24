@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -35,6 +37,7 @@ public class Attack extends Activity {
     private int pos;
     private boolean multiplayer;
     private int[] casellaColpita;
+    Animation scale_down, scale_up;
     ImageView background;
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,8 @@ public class Attack extends Activity {
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
         background = (ImageView) findViewById(R.id.background);
+
+
 
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
@@ -83,7 +88,11 @@ public class Attack extends Activity {
         GridAdapterAttacco gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
         GridView gridView = findViewById(R.id.gridView);
         gridView.setAdapter(gridAdapterAttacco);
+
         context = this.getApplicationContext();
+
+        scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,6 +112,8 @@ public class Attack extends Activity {
     }
 
     public void Attacca_G2(View view) throws InterruptedException {
+        btn_attacca.startAnimation(scale_down);
+        btn_attacca.startAnimation(scale_up);
         if(canAttack())
         {
             if(multiplayer)
@@ -192,8 +203,9 @@ public class Attack extends Activity {
     }
 
     public void genera_img_mossa_speciale(View view) throws InterruptedException {
+        btn_att_speciale.startAnimation(scale_down);
+        btn_att_speciale.startAnimation(scale_up);;
         img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
-
     }
 
     public void CambiaImmagini()

@@ -58,10 +58,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintVertical_bias="0.902" />
 
     <TextView
         android:id="@+id/txtNomeG1"
@@ -78,13 +78,13 @@
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.744" />
 
     <TextView
         android:id="@+id/txtNomeG2"
         android:layout_width="180dp"
         android:layout_height="35dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="208dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
         android:paddingTop="7dp"
@@ -115,7 +115,7 @@
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attacco"
-        app:layout_constraintVertical_bias="0.452" />
+        app:layout_constraintVertical_bias="0.328" />
 
     <ImageView
         android:id="@+id/img_pers"
@@ -124,9 +124,10 @@
         android:foreground="@drawable/bordo_img_pers"
         app:layout_constraintBottom_toTopOf="@+id/gridView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83" />
 
     <Button
         android:id="@+id/attacco"
@@ -138,13 +139,14 @@
         android:foreground="@drawable/bordo_rettangolo"
         android:onClick="Attacca_G2"
         android:text="ATTACCA"
+        android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridView"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/img_mossa_speciale"

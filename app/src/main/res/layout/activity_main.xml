@@ -129,7 +129,7 @@
         android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="90dp"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo_textbox"
         android:paddingStart="8dp"
