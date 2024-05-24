@@ -7,24 +7,31 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 
 public class Attack extends Activity {
-    int id_pers, modalita;
-    String nome_giocatore1, nome_giocatore2;
+    private int id_pers, modalita;
+    private String nome_giocatore1, nome_giocatore2;
     private ConnectionThread comms;
-    Context context;
-    HashMap<Integer, Drawable> indici_mossaspeciale;
-    HashMap<Integer, Drawable> indici_personaggi;
-    Button btn_attacca, btn_att_speciale;
-    TextView giocatore1, giocatore2;
-    ImageView immagine_pers, img_mossa_speciale;
+    private Context context;
+    private HashMap<Integer, Drawable> indici_mossaspeciale;
+    private HashMap<Integer, Drawable> indici_personaggi;
+    private Button btn_attacca, btn_att_speciale;
+    private TextView giocatore1, giocatore2;
+    private ImageView immagine_pers, img_mossa_speciale;
+    private CustomToast customToast;
+    private int pos;
+    private boolean multiplayer;
+    private int[] casellaColpita;
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +49,20 @@ public class Attack extends Activity {
         Intent gioco = getIntent();
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
-        if(modalita == 1){
+        comms = (ConnectionThread) gioco.getSerializableExtra("comms");
+
+        if (modalita == 1) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = "AI";
             giocatore2.setText(nome_giocatore2);
-        }
-        else{
+            multiplayer = false;
+        } else {
             nome_giocatore2 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore1 = gioco.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
+            multiplayer = true;
         }
 
         popola_mosse_speciale();
@@ -60,23 +70,47 @@ public class Attack extends Activity {
 
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
+        GridView gridView = findViewById(R.id.gridView);
+        context = this.getApplicationContext();
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                view.setBackgroundColor(getResources().getColor(R.color.black));
+                pos = position;
+                customToast.showToast(context, "hai schiacciato la casella in posizione " + position, Toast.LENGTH_SHORT);
+            }
+        });
+
     }
-    private int[] immaginiCasella;
-    private int[] casellaColpita;
-    private int[] countNavi;
 
     public Attack(int[] img)
     {
-        immaginiCasella = img;
-        countNavi = new int[99];
         casellaColpita = new int[99];
     }
 
-    public void Attacca_G2(View view)
-    {
+    public void Attacca_G2(View view) throws InterruptedException {
+        if(canAttack())
+        {
+            if(multiplayer)
+            {
+                comms.InviaMessaggio(String.valueOf(pos));
+                comms.RiceviRisposta();
+                comms.wait();
+                Attacco(comms.GetMessage());
+            }
+            else
+            {
+                //gestisco dopo
+            }
+        }
+        else
+        {
+            //deseleziono la casella
+            customToast.showToast(context, "non puoi attaccare questa casella", Toast.LENGTH_SHORT);
+        }
     }
 
-    public boolean canAttack(int pos)
+    public boolean canAttack()
     {
         if (casellaColpita[pos] != 0)
         {
@@ -88,21 +122,28 @@ public class Attack extends Activity {
         }
     }
 
-    public boolean Attaco(int pos)
+    public void Attacco(String result)
     {
-        casellaColpita[pos] = 1;
-        return false;
+        if(result == "colpito")
+        {
+            casellaColpita[pos] = 2;
+        }
+        else if(result == "acqua")
+        {
+            casellaColpita[pos] = 1;
+        }
+        else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
+        {
+            NaveColpitaEAffondata(result.split("|")[1]);
+        }
     }
 
-    public void NaveAffondata(int nave)
+    public void NaveColpitaEAffondata(String pos)
     {
-        for(int i = 0; i < immaginiCasella.length; i++)
+        String[] posizioni = pos.split("-");
+        for (String s: posizioni)
         {
-            if(immaginiCasella[i] == nave)
-            {
-                casellaColpita[i] = 3;
-                immaginiCasella[i] = -nave;
-            }
+            casellaColpita[Integer.valueOf(s)] = 3;
         }
     }
 
