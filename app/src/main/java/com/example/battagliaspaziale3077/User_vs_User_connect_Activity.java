@@ -39,8 +39,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
     public boolean server_ha_scritto;
     Animation scale_down, scale_up;
     Socket client;
-
-    //User_vs_User_host_Activity server = new User_vs_User_host_Activity();
     String txtFromServer;
 
     @Override
@@ -110,7 +108,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
 
                             Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
                             personaggi.putExtra("mod", modalita);
-                            personaggi.putExtra("nome", nome_giocatore);
+                            personaggi.putExtra("nomeg1", nome_giocatore);
+                            personaggi.putExtra("nomeg2", txtFromServer);
                             startActivity(personaggi);
                             //server.connessione_instaurata = true;
 

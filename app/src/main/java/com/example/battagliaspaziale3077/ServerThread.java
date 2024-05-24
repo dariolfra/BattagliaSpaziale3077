@@ -70,7 +70,7 @@ class ServerThread extends Thread implements Runnable {
                 HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
 
                 PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                outputServer.write("ciao da server");
+                outputServer.write(nome_giocatore);
                 Log.i("SERVER", "MESSAGGIO INVIATO");
                 //client.server_ha_scritto = true;
 

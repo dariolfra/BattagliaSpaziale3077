@@ -37,7 +37,7 @@ public class PersonaggiActivity extends AppCompatActivity {
     HashMap<Integer, String> indici_abilita;
     int indice;
     Context context;
-    String nome_personaggio;
+    String nome_g1, nome_g2;
     int modalita;
     MediaPlayer mp;
     Animation scale_down, scale_up;
@@ -54,7 +54,8 @@ public class PersonaggiActivity extends AppCompatActivity {
         context = this.getApplicationContext();
 
         Intent modalita = getIntent();
-        nome_personaggio = modalita.getStringExtra("nome");
+        nome_g1 = modalita.getStringExtra("nomeg1");
+        nome_g2 = modalita.getStringExtra("nomeg2");
         this.modalita = modalita.getIntExtra("mod", 1);
 
         btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
@@ -124,7 +125,8 @@ public class PersonaggiActivity extends AppCompatActivity {
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);
-                gioco.putExtra("nome", nome_personaggio);
+                gioco.putExtra("nomeg1", nome_g1);
+                gioco.putExtra("nomeg2", nome_g2);
                 suono_personaggio(indice);
                 startActivity(gioco);
             }

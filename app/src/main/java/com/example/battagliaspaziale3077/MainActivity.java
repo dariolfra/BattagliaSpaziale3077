@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 
+import java.util.zip.Inflater;
+
 public class MainActivity extends AppCompatActivity {
     //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     Boolean dati_arrivati_correttamente = false;
     Context context;
-    String nome_giocatore;
+    String nome_g1, nome_g2;
     int modalita;
     int personaggio;
 
@@ -63,7 +65,12 @@ public class MainActivity extends AppCompatActivity {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent attacco = new Intent(MainActivity.this, Attack.class);
+                attacco.putExtra("nomeg1", nome_g1);
+                attacco.putExtra("nomeg2", nome_g2);
+                attacco.putExtra("mod", modalita);
+                attacco.putExtra("personaggio", personaggio);
+                startActivity(attacco);
             }
         });
 
@@ -78,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try{
                     Intent personaggi = getIntent();
-                    nome_giocatore = personaggi.getStringExtra("nome");
+                    nome_g1 = personaggi.getStringExtra("nomeg1");
+                    nome_g2 = personaggi.getStringExtra("nomeg2");
                     modalita = personaggi.getIntExtra("mod", 1);
                     personaggio = personaggi.getIntExtra("personaggio", 1);
                     dati_arrivati_correttamente = true;
@@ -86,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
                 }
                 if(dati_arrivati_correttamente){
-                    CustomToast.showToast(context, "Giocatore: " + nome_giocatore + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "Giocatore: " + nome_g1 + " / Modalità: " + modalita + " / Personaggio: " +personaggio, Toast.LENGTH_SHORT);
                 }
             }
         });
