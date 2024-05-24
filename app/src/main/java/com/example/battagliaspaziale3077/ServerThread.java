@@ -80,10 +80,10 @@ class ServerThread extends ConnectionThread implements Serializable {
                     clientIP = String.valueOf(client.getInetAddress());
                     HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
 
-                    PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
+                    /*PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
                     outputServer.write(nome_giocatore1);
                     Log.i("SERVER", "MESSAGGIO INVIATO");
-                    outputServer.close();
+                    outputServer.close();*/
 
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     nome_giocatore2 = br_input.readLine();

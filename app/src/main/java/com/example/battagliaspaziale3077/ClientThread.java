@@ -56,10 +56,10 @@ class ClientThread extends ConnectionThread implements Serializable {
                     client = new Socket(serverName, serverPort);
 
                     //lettura da server
-                    BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    txtFromServer = br_input.readLine();
-                    nome_giocatore2 = txtFromServer;
-                    br_input.close();
+                    /*BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    nome_giocatore2 = br_input.readLine();
+                    br_input.close();*/
+
 
                     //scrittura su server
                     PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
@@ -70,7 +70,7 @@ class ClientThread extends ConnectionThread implements Serializable {
 
 
                     //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
-                    ClientActivity.ShowToast(txtFromServer);
+                    ClientActivity.ShowToast(nome_giocatore1);
                     //connessione_instaurata = true;
 
                     ClientActivity.ResetTxb();
