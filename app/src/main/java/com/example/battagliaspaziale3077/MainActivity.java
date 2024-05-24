@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         (rotation == 180 && position > 89) ||
                         (rotation == 270 && position < 10))) ||
                 (index == 3 && (rotation == 90 || rotation == 270) && position > 69) ||
-                (index == 3 && (rotation == 0 || rotation == 180) && column < 7) ||
+                (index == 3 && (rotation == 0 || rotation == 180) && column > 7) ||
                 (index == 4 && rotation == 0 && position < 10) ||
                 (index == 4 && rotation == 90 && position > 69) ||
                 (index == 4 && rotation == 270 && column == 0) ||
