@@ -57,11 +57,12 @@ class ClientThread extends ConnectionThread implements Runnable {
                     //lettura da server
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     txtFromServer = br_input.readLine();
+                    nome_giocatore2 = txtFromServer;
 
                     //scrittura su server
                     PrintWriter outputServer = new PrintWriter(client.getOutputStream());
                     outputServer.flush();
-                    outputServer.write("ciao da client");
+                    outputServer.write(nome_giocatore1);
                     outputServer.flush();
 
                     //Toast.makeText(context, txtFromServer, Toast.LENGTH_SHORT).show();
@@ -162,5 +163,9 @@ class ClientThread extends ConnectionThread implements Runnable {
     public void RiceviRisposta()
     {
         riceviMessaggio = true;
+    }
+
+    public String Nome_G2(){
+        return nome_giocatore2;
     }
 }

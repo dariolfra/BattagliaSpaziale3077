@@ -40,7 +40,6 @@ public class PersonaggiActivity extends AppCompatActivity {
     ConnectionThread comms;
     int indice;
     Context context;
-    String nome_personaggio1, nome_personaggio2;
     String nome_g1, nome_g2;
     int modalita;
     MediaPlayer mp;
@@ -60,7 +59,13 @@ public class PersonaggiActivity extends AppCompatActivity {
         Intent modalita = getIntent();
         this.modalita = modalita.getIntExtra("mod", 1);
         comms = (ConnectionThread) modalita.getSerializableExtra("comms");
-        nome_g1 = modalita.getStringExtra("nome_giocatore1");
+        if(this.modalita == 1){
+            nome_g1 = modalita.getStringExtra("nome");
+        }
+        else{
+            nome_g1 = modalita.getStringExtra("nome1");
+            nome_g2 = modalita.getStringExtra("nome2");
+        }
 
         btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
         btn_pers_succ = (ImageButton) findViewById(R.id.btn_pers_succ);
@@ -129,10 +134,8 @@ public class PersonaggiActivity extends AppCompatActivity {
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
                 gioco.putExtra("personaggio", indice);
                 gioco.putExtra("mod", modalita);
-                gioco.putExtra("nome1", nome_personaggio1);
-                gioco.putExtra("nome2", nome_personaggio2);
-                gioco.putExtra("nomeg1", nome_g1);
-                gioco.putExtra("nomeg2", nome_g2);
+                gioco.putExtra("nome1", nome_g1);
+                gioco.putExtra("nome2", nome_g2);
                 gioco.putExtra("comms", (Serializable) comms);
                 suono_personaggio(indice);
                 startActivity(gioco);

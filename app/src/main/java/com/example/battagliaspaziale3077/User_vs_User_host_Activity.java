@@ -38,7 +38,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
     int serverPort = 42069; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;
-    String nome_giocatore;
+    String nome_giocatore1, nome_giocatore2;;
     String txt_from_client;
     Context context;
     Socket client;
@@ -76,8 +76,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         btn_start_sv.startAnimation(scale_down);
         btn_start_sv.startAnimation(scale_up);
 
-        nome_giocatore = String.valueOf(txt_nome_giocatore.getText());
-        serverThread = new ServerThread(nome_giocatore, serverPort);
+        nome_giocatore1 = String.valueOf(txt_nome_giocatore.getText());
+        serverThread = new ServerThread(nome_giocatore1, serverPort);
         serverThread.SetActivity(this);
         serverThread.startServer();
 
@@ -123,10 +123,11 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ShowToast("Nome Giocatore : " + nome_giocatore + " /Mod : " + modalita);
+                ShowToast("Nome Giocatore : " + nome_giocatore1 + " /Mod : " + modalita);
                 Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                 personaggi.putExtra("mod", modalita);
-                personaggi.putExtra("nome",nome_giocatore);
+                personaggi.putExtra("nome1",nome_giocatore1);
+                personaggi.putExtra("nome2",serverThread.Nome_G2());
                 personaggi.putExtra("comms", (Serializable) serverThread);
                 startActivity(personaggi);
             }

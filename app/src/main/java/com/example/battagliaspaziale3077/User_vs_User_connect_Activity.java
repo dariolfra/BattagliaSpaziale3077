@@ -103,7 +103,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
         personaggi.putExtra("mod", modalita);
         personaggi.putExtra("nome1", nome_giocatore1);
-        personaggi.putExtra("nome2", nome_giocatore2);
+        personaggi.putExtra("nome2", comms.getName());
         personaggi.putExtra("comms", (Serializable) comms);
         startActivity(personaggi);
     }

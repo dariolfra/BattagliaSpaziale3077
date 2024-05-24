@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 
@@ -38,6 +41,10 @@ public class Attack extends Activity {
         setContentView(R.layout.attack);
 
         context = this.getApplicationContext();
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
         btn_attacca = (Button) findViewById(R.id.attacco);
         btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
@@ -177,8 +184,7 @@ public class Attack extends Activity {
         indici_personaggi.put(10, getResources().getDrawable(R.drawable.panda, context.getTheme()));
     }
 
-    public void genera_img_mossa_speciale()
-    {
+    public void genera_img_mossa_speciale(View view) throws InterruptedException {
         img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
     }
 

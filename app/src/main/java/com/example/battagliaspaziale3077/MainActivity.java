@@ -8,15 +8,16 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
-
 import java.io.Serializable;
 import java.util.zip.Inflater;
 public class MainActivity extends AppCompatActivity {
@@ -59,14 +60,18 @@ public class MainActivity extends AppCompatActivity {
         btnConferma = findViewById(R.id.btnConferma);
         btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
 
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
         //Metodo per confermare e per far partire il gioco
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent attacco = new Intent(MainActivity.this, Attack.class);
+                attacco.putExtra("mod", modalita);
                 attacco.putExtra("nome1", nome_giocatore1);
                 attacco.putExtra("nome2", nome_giocatore2);
-                attacco.putExtra("mod", modalita);
                 attacco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
                 attacco.putExtra("comms", (Serializable) comms);
@@ -85,9 +90,14 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try{
                     Intent personaggi = getIntent();
-                    nome_giocatore1 = personaggi.getStringExtra("nome1");
-                    nome_giocatore2 = personaggi.getStringExtra("nome2");
                     modalita = personaggi.getIntExtra("mod", 1);
+                    if(modalita == 1){
+                        nome_giocatore1 = personaggi.getStringExtra("nome1");
+                    }
+                    else{
+                        nome_giocatore1 = personaggi.getStringExtra("nome1");
+                        nome_giocatore2 = personaggi.getStringExtra("nome2");
+                    }
                     personaggio = personaggi.getIntExtra("personaggio", 1);
                     comms = (ConnectionThread) personaggi.getSerializableExtra("comms");
                     dati_arrivati_correttamente = true;

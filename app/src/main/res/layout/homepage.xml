@@ -73,16 +73,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.578" />
 
-    <Button
-        android:id="@+id/bnt_vai_a_gioco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VAI A GIOCO"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Gioca"
-        app:layout_constraintVertical_bias="0.51" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

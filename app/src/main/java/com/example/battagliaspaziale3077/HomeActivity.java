@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
-    Button btn_gioca, btn_vai_a_gioco;
+    Button btn_gioca;
     Context context;
     Animation scale_down, scale_up;
     @Override
@@ -37,8 +37,6 @@ public class HomeActivity extends AppCompatActivity {
 
         btn_gioca = findViewById(id.btn_Gioca);
 
-        btn_vai_a_gioco = findViewById(id.bnt_vai_a_gioco);
-
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
 
@@ -49,15 +47,6 @@ public class HomeActivity extends AppCompatActivity {
                 btn_gioca.startAnimation(scale_up);
                 Intent selezione_modalita = new Intent(HomeActivity.this, ModalitaActivity.class);
                 startActivity(selezione_modalita);
-            }
-        });
-
-        //elimina questo bottone
-        btn_vai_a_gioco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent gioco = new Intent(HomeActivity.this, MainActivity.class);
-                startActivity(gioco);
             }
         });
     }

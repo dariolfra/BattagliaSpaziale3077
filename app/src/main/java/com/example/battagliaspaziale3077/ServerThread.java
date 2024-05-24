@@ -16,7 +16,7 @@ class ServerThread extends ConnectionThread implements Runnable {
     private boolean serverRunning;
     private ServerSocket serverSocket;
     private int count = 0;
-    private String nome_giocatore;
+    private String nome_giocatore1,nome_giocatore2;
     private int serverPort;
     private String serverIP;
     private Socket client;
@@ -31,7 +31,7 @@ class ServerThread extends ConnectionThread implements Runnable {
     public ServerThread(String nome, int sPort)
     {
         serverPort = sPort;
-        nome_giocatore = nome;
+        nome_giocatore1 = nome;
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
@@ -63,7 +63,7 @@ class ServerThread extends ConnectionThread implements Runnable {
             while(serverRunning) {
                 if(primaConnessione)
                 {
-                    if(nome_giocatore.isEmpty()){
+                    if(nome_giocatore1.isEmpty()){
                         throw new Exception();
                     }
                     else{
@@ -79,7 +79,7 @@ class ServerThread extends ConnectionThread implements Runnable {
                     HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
 
                     PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                    outputServer.write(nome_giocatore);
+                    outputServer.write(nome_giocatore1);
                     Log.i("SERVER", "MESSAGGIO INVIATO");
                     //client.server_ha_scritto = true;
 
@@ -128,6 +128,7 @@ class ServerThread extends ConnectionThread implements Runnable {
                                 while(serverRunning) {
                                     BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                                     txt_from_client = sv_reader.readLine();
+                                    nome_giocatore2 = txt_from_client;
                                     Thread.sleep(100);
                                     client.close();
                                     count--;
@@ -223,5 +224,10 @@ class ServerThread extends ConnectionThread implements Runnable {
         String temp = txt_from_client;
         txt_from_client = "";
         return temp;
+    }
+
+    public String Nome_G2()
+    {
+        return nome_giocatore2;
     }
 }
