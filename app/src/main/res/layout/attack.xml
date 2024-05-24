@@ -16,7 +16,7 @@
         app:srcCompat="@drawable/background" />
 
     <GridView
-        android:id="@+id/gridViewAttacco"
+        android:id="@+id/gridView"
         android:layout_width="1000px"
         android:layout_height="1000px"
 

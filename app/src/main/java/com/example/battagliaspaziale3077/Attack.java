@@ -81,19 +81,22 @@ public class Attack extends Activity {
 
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
+        GridAdapterAttacco gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
         GridView gridView = findViewById(R.id.gridView);
+        gridView.setAdapter(gridAdapterAttacco);
         context = this.getApplicationContext();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //view.setBackgroundColor(getResources().getColor(R.color.black));
-                pos = position;
-                customToast.showToast(context, "hai schiacciato la casella in posizione " + position, Toast.LENGTH_SHORT);
+                Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
+    public void CellaColpita(int pos){
+        casellaColpita[pos] = R.drawable.naveda1;
+    }
     public Attack()
     {
         casellaColpita = new int[99];
