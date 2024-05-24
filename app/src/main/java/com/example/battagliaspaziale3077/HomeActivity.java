@@ -52,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        //elimina questo bottone
         btn_vai_a_gioco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
