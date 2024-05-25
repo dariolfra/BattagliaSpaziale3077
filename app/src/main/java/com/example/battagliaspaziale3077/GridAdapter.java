@@ -73,38 +73,38 @@ public class GridAdapter extends BaseAdapter {
 
         //Verifica se le celle dove la nave deve essere inserita sono libere
         for (int i = 0; i < size; i++) {
-            if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 4) && rotation == 0 || (index == 1 || index == 3) && rotation == 180 || index == 2 && rotation == 270)  {
+            if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5) && rotation == 0 || (index == 1 || index == 3) && rotation == 180 || index == 2 && rotation == 270)  {
                 if (CellaOccupata(position + i, immaginiCasella)) {
                     return false;
                 }
-                if (index == 0 && i == 1 || index == 2 && i == 0 && rotation == 0 || index == 2 && i == 1 && rotation == 270 || index == 4 && i == 2) {
+                if (index == 0 && i == 1 || index == 2 && i == 0 && rotation == 0 || index == 2 && i == 1 && rotation == 270 || index == 4 && i == 2 || index == 5 && i == 2) {
                     if (CellaOccupata(position + i - 10, immaginiCasella)) {
                         return false;
                     }
                 }
-            } else if ((index == 0 || index == 1 || index == 3 || index == 4) && rotation == 90 || (index == 1 || index == 3) && rotation == 270) {
+            } else if ((index == 0 || index == 1 || index == 3 || index == 4 || index == 5) && rotation == 90 || (index == 1 || index == 3) && rotation == 270) {
                 if (CellaOccupata(position + i * 10, immaginiCasella)) {
                     return false;
                 }
-                if (index == 0 && i == 1 || index == 4 && i == 2) {
+                if (index == 0 && i == 1 || index == 4 && i == 2 || index == 5 && i == 2) {
                     if (CellaOccupata(position + 1 + i * 10, immaginiCasella)) {
                         return false;
                     }
                 }
-            } else if ((index == 0 || index == 4) && rotation == 180 || index == 2 && (rotation == 90 || rotation == 180)) {
+            } else if ((index == 0 || index == 4 || index == 5) && rotation == 180 || index == 2 && (rotation == 90 || rotation == 180)) {
                 if (CellaOccupata(position + i, immaginiCasella)) {
                     return false;
                 }
-                if (index == 0 && i == 1 || index == 2 && i == 0 && rotation == 90 || index == 2 && i == 1 && rotation == 180 || index == 4 && i == 2) {
+                if (index == 0 && i == 1 || index == 2 && i == 0 && rotation == 90 || index == 2 && i == 1 && rotation == 180 || index == 4 && i == 2 || index == 5 && i == 0) {
                     if (CellaOccupata(position + i + 10, immaginiCasella)) {
                         return false;
                     }
                 }
-            } else if ((index == 0 || index == 4) && rotation == 270) {
+            } else if ((index == 0 || index == 4 || index == 5) && rotation == 270) {
                 if (CellaOccupata(position + i * 10, immaginiCasella)) {
                     return false;
                 }
-                if (index == 0 && i == 1 || index == 4 && i == 2) {
+                if (index == 0 && i == 1 || index == 4 && i == 2 || index == 5 && i == 0) {
                     if (CellaOccupata(position - 1 + i * 10, immaginiCasella)) {
                         return false;
                     }
