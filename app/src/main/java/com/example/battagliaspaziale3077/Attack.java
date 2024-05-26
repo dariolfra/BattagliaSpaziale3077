@@ -39,6 +39,7 @@ public class Attack extends Activity {
     private int[] casellaColpita;
     Animation scale_down, scale_up;
     ImageView background;
+    private int counterAttacchi;
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,8 +179,8 @@ public class Attack extends Activity {
     {
         indici_mossaspeciale = new HashMap<>();
         indici_mossaspeciale.put(1, getResources().getDrawable(R.drawable.attaccoserpente, context.getTheme()));
-        indici_mossaspeciale.put(2, getResources().getDrawable(R.drawable.attaccot, context.getTheme()));
-        indici_mossaspeciale.put(3, getResources().getDrawable(R.drawable.attaccos, context.getTheme()));
+        indici_mossaspeciale.put(2, getResources().getDrawable(R.drawable.attaccot, context.getTheme())); //ha attacco random
+        indici_mossaspeciale.put(3, getResources().getDrawable(R.drawable.attaccocroce, context.getTheme()));
         indici_mossaspeciale.put(4, getResources().getDrawable(R.drawable.attaccotratteggio, context.getTheme()));
         indici_mossaspeciale.put(5, getResources().getDrawable(R.drawable.attaccoscala, context.getTheme()));
         indici_mossaspeciale.put(6, getResources().getDrawable(R.drawable.attaccospada, context.getTheme()));

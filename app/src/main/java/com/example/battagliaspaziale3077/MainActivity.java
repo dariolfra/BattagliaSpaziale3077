@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.zip.Inflater;
 public class MainActivity extends AppCompatActivity {
     //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView background;
     // HashMap per memorizzare le posizioni delle navi con l'ID dell'immagine come chiave
     HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
+    HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -187,9 +190,9 @@ public class MainActivity extends AppCompatActivity {
                         int position = row * 10 + column;
                         int size = shipSizes[index];
                         int posizione = gridAdapter.AggiustaPosizioni(index, rotationDegrees[index], position); //per sistemare le posizioni
-                        if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(posizione), size, index, rotationDegrees[index], posizione) && gridAdapter.ControllaSeLiberi(posizione, size, index, rotationDegrees[index])) {
+                        if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(posizione), size, index, rotationDegrees[index], posizione) && gridAdapter.ControllaSeLiberi(posizione, size, index, rotationDegrees[index],immaginiCasella)) {
                             //inserimento delle navi
-                            posizionaNave(index, size, rotationDegrees[index], posizione, immaginiCasella);
+                            posizionaNave(index, size, rotationDegrees[index], posizione, immaginiCasella,false);
                         }
                         // Resetta la posizione x e y alle posizioni iniziali
                         navi[index].setX(initialX[index]);
@@ -244,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         return column + size <= 10;
     }
 
-    private void posizionaNave(int index, int size, int rotationDegrees, int posizione, int[] immaginiCasella) {
+    private void posizionaNave(int index, int size, int rotationDegrees, int posizione, int[] immaginiCasella, boolean AI) {
         List<Integer> positions = new ArrayList<>();
         for (int j = 0; j < size; j++) {
             int currentPos = posizione + j;
@@ -316,7 +319,12 @@ public class MainActivity extends AppCompatActivity {
         }
         navi[index].setVisibility(View.INVISIBLE);
         shipPlaced[index] = true; // Segna la nave inserita
-        shipPositions.put(getShipName(index),positions);
+        if(!AI){ //se posizione le navi per l'utente o per l'AI
+            shipPositions.put(getShipName(index),positions);
+        }
+        else {
+            shipPositionsAI.put(getShipName(index),positions);
+        }
     }
 
     public void ImmaginiNavi(int position, int index, int[] immaginiCasella) {
@@ -361,5 +369,29 @@ public class MainActivity extends AppCompatActivity {
                 return 2131165440;
         }
         return -1;
+    }
+    private HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter) {
+        Random random = new Random();
+        int[] arrayGridView = new int[100]; //array de gridview vuoto
+
+
+        for (int i = 0; i < shipSizes.length; i++) { //finchè non ha inserito tutte le navi
+            boolean placed = false;
+
+            //finchè la nave non è posizionata
+            while (!placed) {
+                int position = random.nextInt(100); //da 0 a 99
+                int rotation = random.nextInt(4) * 90; //da 0° a 270°
+
+                //Controlla se è correttamente dentro al gridview e se le celle sono libere
+                if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridView)) {
+                    //inserisce la navi
+                    posizionaNave(i,shipSizes[i],rotation,position,arrayGridView,true);
+
+                    placed = true;
+                }
+            }
+        }
+        return shipPositionsAI; //hashmap con posizioni delle navi dell'ai
     }
 }
