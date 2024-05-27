@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -22,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class Attack extends Activity {
     private int id_pers, modalita;
@@ -39,8 +43,17 @@ public class Attack extends Activity {
     private int[] casellaColpita;
     Animation scale_down, scale_up;
     ImageView background;
+
+    //variabili per mossa speciale
     private int counterAttacchi;
-    @SuppressLint("MissingInflatedId")
+    private boolean attaccoSpeciale;
+    float startX, startY;
+
+    float[] initialX, initialY;
+    int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3}; // Dimensioni delle navi
+    int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0}; // Gradi di rotazione delle navi
+
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attack);
@@ -52,12 +65,18 @@ public class Attack extends Activity {
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
         btn_attacca = (Button) findViewById(R.id.attacco);
-        btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
         giocatore1 = (TextView) findViewById(R.id.txtNomeG1);
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
-        img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
         background = (ImageView) findViewById(R.id.background);
+
+        //per mossa speciale
+        counterAttacchi = 0;
+        attaccoSpeciale = false;
+        btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
+        img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
+
+
 
 
 
@@ -88,7 +107,28 @@ public class Attack extends Activity {
 
         GridAdapterAttacco gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
         GridView gridView = findViewById(R.id.gridView);
+
+        // Inizializza gli array per le posizioni iniziali
+        initialX = new float[indici_mossaspeciale.size()];
+        initialY = new float[indici_mossaspeciale.size()];
+
         gridView.setAdapter(gridAdapterAttacco);
+
+        // Utilizza un ViewTreeObserver per memorizzare le posizioni iniziali dopo il layout
+        ViewTreeObserver viewTreeObserver = img_mossa_speciale.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() { //salva la posizione iniziale dell'immagine
+                // Memorizza le posizioni iniziali delle navi
+                for (int i = 0; i < indici_mossaspeciale.size(); i++) {
+                    initialX[i] = img_mossa_speciale.getX();
+                    initialY[i] = img_mossa_speciale.getY();
+                }
+                // Rimuovi il listener per evitare che venga chiamato più volte
+                img_mossa_speciale.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
 
         context = this.getApplicationContext();
 
@@ -100,10 +140,64 @@ public class Attack extends Activity {
                 //restituisce la posizione della cella cliccata
                 //Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
                 pos = position;
-                canAttack();
+
             }
         });
-    }
+
+
+        //bisogna far funzionare l'attacco di giorgia meloni
+            GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    // Ruota l'immagine di 90 gradi
+                    rotationDegrees[id_pers] = (rotationDegrees[id_pers] + 90) % 360;
+                    img_mossa_speciale.setRotation(rotationDegrees[id_pers]);
+                    return true;
+                }
+            });
+            img_mossa_speciale.setOnTouchListener((v, event) -> {
+                gestureDetector.onTouchEvent(event);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float dx = event.getRawX() - startX;
+                        float dy = event.getRawY() - startY;
+
+                        img_mossa_speciale.setX(img_mossa_speciale.getX() + dx);
+                        img_mossa_speciale.setY(img_mossa_speciale.getY() + dy);
+
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        int[] gridLocation = new int[2];
+                        gridView.getLocationInWindow(gridLocation);
+                        float x = img_mossa_speciale.getX() +img_mossa_speciale.getWidth() / 2;
+                        float y = img_mossa_speciale.getY() + img_mossa_speciale.getHeight() / 2;
+                        int column = (int) ((x - gridLocation[0]) / (gridView.getWidth() / 10) - 1);
+                        int row = (int) ((y - gridLocation[1]) / (gridView.getHeight() / 10) + 1);
+                        int position = row * 10 + column;
+                        int size = shipSizes[id_pers];
+                        int posizione = gridAdapterAttacco.AggiustaPosizioni(id_pers,rotationDegrees[id_pers],position); //per sistemare le posizioni
+                        if (ControllaSeOutBound(gridAdapterAttacco.getColumnFromPosition(posizione),size,id_pers,rotationDegrees[id_pers],posizione)){
+                            //inserimento delle navi
+                            posizionaAttacco(id_pers,size,rotationDegrees[id_pers],posizione,casellaColpita);
+                        }
+                        // Resetta la posizione x e y alle posizioni iniziali
+                        img_mossa_speciale.setX(initialX[id_pers]);
+                        img_mossa_speciale.setY(initialY[id_pers]);
+                        gridAdapterAttacco.notifyDataSetChanged();
+                        break;
+                }
+                return true;
+            });
+            attaccoSpeciale = false;
+        }
+
+    //}
 
     public Attack()
     {
@@ -129,6 +223,19 @@ public class Attack extends Activity {
             else
             {
                 //gestisco dopo
+            }
+            if (attaccoSpeciale) { //se posso fare la mossa speciale
+                if (id_pers == 2) { //controllo se sono Giorgia Meloni
+                    AttaccoRandom(casellaColpita);
+                    attaccoSpeciale = false;
+                }
+            }
+            counterAttacchi++;
+            if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
+                //codice per visualizzare l'attacco speciale
+                img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+                counterAttacchi = 0;
+                attaccoSpeciale = true;
             }
         }
         else
@@ -214,5 +321,194 @@ public class Attack extends Activity {
     public void CambiaImmagini()
     {
 
+    }
+    private void AttaccoRandom(int[] immaginiCaselle) {
+        for (int i = 0; i < 7; i ++){
+            Random random = new Random();
+            int p = random.nextInt(100); //numero da 0 a 99
+            ImmaginiNavi(p,immaginiCaselle);
+        }
+    }
+    public void ImmaginiNavi(int position,int[] immaginiCasella) {
+        immaginiCasella[position] = R.drawable.cellaattaccata;
+    }
+    public boolean ControllaSeOutBound(int column, int size, int index, int rotation, int position) {
+        //verifica che l'attacco sia correttamente dentro il gridview
+        if(position < 0 || position > 99){ //99 == immaginiCasella.lenght
+            return false;
+        }
+        else if(index == 3 && (position > 9 && position < 90) && (column != 0 && column < 9) ||
+                index == 7 && (rotation == 0 || rotation == 180) && column < 6 ||
+                index == 7 && (rotation == 90 || rotation == 270) && position < 60 ||
+                index == 9 && (rotation == 0 || rotation == 180) && position < 80 && (column != 0 && column != 9) ||
+                index == 9 && (rotation == 90 || rotation == 270) && column < 8 && (position > 9 && position < 90 ) ||
+                index == 5 && (rotation == 0 || rotation == 180) && column < 6 && position < 69 ||
+                index == 5 && (rotation == 90 || rotation == 270) && column < 7 && position > 39 ||
+                index == 1 && rotation == 0 && position > 9 && column < 6  ||
+                index == 1 && rotation == 90 && column < 9 && position < 60 ||
+                index == 1 && rotation == 180 && position < 90 && column < 6 ||
+                index == 1 && rotation == 270 && column > 0 && position < 60 ||
+                index == 6 && (rotation == 0 || rotation == 180) && column < 8 && (position > 9 && position < 90) ||
+                index == 6 && (rotation == 90 || rotation == 270 ) && (column < 9 && column > 0) && position < 80 ||
+                index == 10 && (rotation == 0 || rotation == 180) && column < 8 &&(position > 9 && position < 90) ||
+                index == 10 && rotation == 90 && (column > 0 && column < 9) && (position < 80 && position > 9) ||
+                index == 10 && rotation == 270 && (column > 0 && column < 9) && position > 19 ||
+                index == 4 && (rotation == 0 || rotation == 180) && (column < 3) ||
+                index == 4 && ((rotation == 90 || rotation == 270) && position < 19) ||
+                index == 8 && position < 80 && column < 8){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    private void posizionaAttacco(int index, int size, int rotationDegrees, int posizione,int[] immaginiCasella) {
+        //insercisce l'attacco all'interno della griglia
+        for (int j = 0; j < size; j++) {
+            int currentPos = posizione + j;
+            int p;
+
+            switch (index) {
+                case 3:
+                case 7:
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        ImmaginiNavi(currentPos,immaginiCasella);
+                        if (index == 3 && j == 1){
+                            p = posizione - 10 + j;
+                            ImmaginiNavi(p,immaginiCasella);
+                        }
+                    } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                        ImmaginiNavi(posizione + j * 10,immaginiCasella);
+                        if (index == 3 && j == 1) {
+                            p = posizione + j * 10 + 1;
+                            ImmaginiNavi(p,immaginiCasella);
+                        }
+                    }
+                    break;
+
+                case 9:
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        ImmaginiNavi(posizione + j * 10 ,immaginiCasella);
+                        if(j == 0){
+                            ImmaginiNavi(posizione + 1,immaginiCasella);
+                        }
+                        if(j == 2){
+                            ImmaginiNavi(posizione + j * 10 - 1,immaginiCasella);
+                        }
+                    } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                        ImmaginiNavi(currentPos,immaginiCasella);
+                        if(j == 0){
+                            ImmaginiNavi(posizione - 10 ,immaginiCasella);
+                        }
+                        if(j == 2){
+                            ImmaginiNavi(posizione + j + 10,immaginiCasella);
+                        }
+                    }
+                    break;
+                case 5:
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        ImmaginiNavi(posizione + 10 * j + j,immaginiCasella);
+                    } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                        ImmaginiNavi(posizione - j * 10 + j,immaginiCasella);
+                    }
+                    break;
+                case 1:
+                    if(rotationDegrees == 0){
+                        if(j == 0 || j == 2 || j == 4)
+                        {
+                            ImmaginiNavi(posizione + j,immaginiCasella);
+                        }
+                        else{
+                            ImmaginiNavi(posizione + j - 10 ,immaginiCasella);
+                        }
+                    }
+                    else if (rotationDegrees == 90){
+                        if(j == 0 || j == 2 || j == 4){
+                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
+                        }else {
+                            ImmaginiNavi(posizione + 10 * j + 1,immaginiCasella);
+                        }
+                    }
+                    else if(rotationDegrees == 180){
+                        if(j == 0 || j == 2 || j == 4){
+                            ImmaginiNavi(posizione + j,immaginiCasella);
+                        }
+                        else {
+                            ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                        }
+                    } else if (rotationDegrees == 270) {
+                        if(j == 0 || j == 2 || j == 4){
+                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
+                        }
+                        else {
+                            ImmaginiNavi(posizione + 10 * j - 1,immaginiCasella);
+                        }
+                    }
+                    break;
+                case 6:
+                    if(rotationDegrees == 0 || rotationDegrees == 180){
+                        if(j != 1 && rotationDegrees == 0 || j != 2 && rotationDegrees == 180){
+                            ImmaginiNavi(posizione + j,immaginiCasella);
+                        }else {
+                            ImmaginiNavi(posizione + j - 10,immaginiCasella);
+                            ImmaginiNavi(posizione + j + 10,immaginiCasella);
+                        }
+                    } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                        if(j != 1 && rotationDegrees == 90 || j != 2 && rotationDegrees == 270){
+                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
+                        }else {
+                            ImmaginiNavi(posizione + j * 10 + 1,immaginiCasella);
+                            ImmaginiNavi(posizione + j * 10 - 1,immaginiCasella);
+                        }
+                    }
+                    break;
+                case 10:
+                    ImmaginiNavi(currentPos,immaginiCasella);
+                    if(j == 1 && rotationDegrees == 90 ){
+                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                        ImmaginiNavi(posizione + 20 + j,immaginiCasella);
+                    }
+                    else if(j == 2 && rotationDegrees == 180 || j == 0 && rotationDegrees == 0){
+                        ImmaginiNavi(posizione - 10 + j,immaginiCasella);
+                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                    } else if (j == 1 && rotationDegrees == 270) {
+                        ImmaginiNavi(posizione - 10 + j,immaginiCasella);
+                        ImmaginiNavi(posizione - 20 + j,immaginiCasella);
+                    }
+                    break;
+                case 4:
+                    if(rotationDegrees == 0 || rotationDegrees == 180){
+                        ImmaginiNavi(posizione + 2 * j,immaginiCasella);
+                    } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                        ImmaginiNavi(posizione + 10 * 2 * j,immaginiCasella);
+                    }
+                    break;
+                case 8:
+                    if(j == 0 || j == 2){
+                        ImmaginiNavi(posizione + j,immaginiCasella);
+                        ImmaginiNavi(posizione + j + 20,immaginiCasella);
+                    }
+                    else if(j == 1){
+                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            // Additional checks for specific rotations
+            if (rotationDegrees == 180 || rotationDegrees == 0) {
+                if (index == 3 && j == 1){
+                    p = posizione + 10 + j;
+                    ImmaginiNavi(p,immaginiCasella);
+                }
+            } else if (rotationDegrees == 90 || rotationDegrees == 270) {
+                if (index == 3 && j == 1) {
+                    p = posizione + j * 10 - 1;
+                    ImmaginiNavi(p,immaginiCasella);
+                }
+            }
+        }
+        img_mossa_speciale.setVisibility(View.INVISIBLE);
     }
 }
