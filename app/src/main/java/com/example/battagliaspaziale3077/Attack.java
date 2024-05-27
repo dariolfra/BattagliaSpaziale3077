@@ -1,5 +1,7 @@
 package com.example.battagliaspaziale3077;
 
+import static java.lang.Thread.sleep;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +29,7 @@ import androidx.core.content.ContextCompat;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Attack extends Activity {
+public class Attack extends Game {
     private int id_pers, modalita;
     private String nome_giocatore1, nome_giocatore2;
     private ConnectionThread comms;
@@ -98,7 +100,12 @@ public class Attack extends Activity {
             giocatore1.setText(nome_giocatore1);
             nome_giocatore1 = gioco.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
-            multiplayer = true;
+            multiplayer = true;         
+        }
+        boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
+        if(defence)
+        {
+            casellaColpita = gioco.getIntArrayExtra("casellaColpita");
         }
 
         popola_mosse_speciale();
@@ -137,10 +144,11 @@ public class Attack extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //restituisce la posizione della cella cliccata
-                //Toast.makeText(Attack.this, position, Toast.LENGTH_SHORT).show();
+                //da finire
                 pos = position;
-
+                casellaColpita[pos] = R.drawable.blur;
+                gridAdapterAttacco.notifyDataSetChanged();
+                canAttack();
             }
         });
 
@@ -198,6 +206,12 @@ public class Attack extends Activity {
         }
 
     //}
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+    }
 
     public Attack()
     {
