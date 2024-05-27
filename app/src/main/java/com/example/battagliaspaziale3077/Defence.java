@@ -1,27 +1,112 @@
 package com.example.battagliaspaziale3077;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
 import java.util.List;
 
-public class Defence extends Activity {
+public class Defence extends Game {
     private Integer[] NaveIDs = new Integer[]{2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
     private ConnectionThread comms;
+    private int id_pers;
+    private int modalita;
+    private String nome_giocatore1, nome_giocatore2;
+    private boolean multiplayer;
+    private ImageView background ,immagine_pers;
+    private TextView giocatore1,giocatore2;
+    private Context context;
+    private int[] casellaColpita;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        giocatore1 = (TextView) findViewById(R.id.txtNomeG1);
+        giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
+        immagine_pers = (ImageView) findViewById(R.id.img_pers);
+        background = (ImageView) findViewById(R.id.background);
+
+        context = this.getApplicationContext();
+
+        background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
+
+        Intent attack = getIntent();
+        comms = (ConnectionThread) attack.getSerializableExtra("comms");
+        Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
+        id_pers = attack.getIntExtra("personaggio", 1);
+        modalita = attack.getIntExtra("mod", 1);
+        casellaColpita = attack.getIntArrayExtra("casellaColpita");
+        if (modalita == 1) {
+            nome_giocatore1 = attack.getStringExtra("nome1");
+            giocatore1.setText(nome_giocatore1);
+            nome_giocatore2 = "AI";
+            giocatore2.setText(nome_giocatore2);
+            multiplayer = false;
+        } else {
+            nome_giocatore2 = attack.getStringExtra("nome1");
+            giocatore1.setText(nome_giocatore1);
+            nome_giocatore1 = attack.getStringExtra("nome2");
+            giocatore2.setText(nome_giocatore2);
+            multiplayer = true;
+        }
+        try
+        {
+            Gioca();
+        }
+        catch(Exception e)
+        {
+            CustomToast.showToast(context, e.toString(), Toast.LENGTH_SHORT);
+        }
     }
 
-    public void AspettaMessaggio() throws InterruptedException {
+    @Override
+    public void onBackPressed()
+    {
+        //super.onBackPressed();
+    }
+
+    public void Gioca() throws InterruptedException {
+        if(multiplayer)
+        {
+            String mess = AspettaMessaggio();
+            Rispondi(mess);
+            String done = "";
+            while(done != "done")
+            {
+                done = AspettaMessaggio();
+            }
+        }
+        else
+        {
+            //gestico più tardi
+        }
+        Intent defence = new Intent();
+        defence.putExtra("comms", comms);
+        defence.putExtra("Navi", Navi);
+        defence.putExtra("defenceOrNot", true);
+        defence.putExtra("casellaColpita", casellaColpita);
+        defence.putExtra("mod", modalita);
+        defence.putExtra("personaggio", id_pers);
+        defence.putExtra("nome1", nome_giocatore1);
+        if(multiplayer)
+        {
+            defence.putExtra("nome2", nome_giocatore2);
+        }
+    }
+
+    public String AspettaMessaggio() throws InterruptedException {
         comms.RiceviRisposta();
         comms.wait();
-        String mess = comms.GetMessage();
-        Rispondi(mess);
+        return comms.GetMessage();
     }
 
     public void Rispondi(String mess)
