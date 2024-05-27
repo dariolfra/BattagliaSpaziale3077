@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,14 @@ public class Defence extends Game {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.defence);
+
+
+
+        casellaColpita = new int[100];
+        GridAdapterDifesa gridAdapterDifesa = new GridAdapterDifesa(this,casellaColpita);
+        GridView gridView = findViewById(R.id.gridView);
+        gridView.setAdapter(gridAdapterDifesa);
 
         giocatore1 = (TextView) findViewById(R.id.txtNomeG1);
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
