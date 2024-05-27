@@ -48,7 +48,7 @@ public class Attack extends Activity {
     private int counterAttacchi;
     private boolean attaccoSpeciale;
     float startX, startY;
-
+    GridAdapterAttacco gridAdapterAttacco;
     float[] initialX, initialY;
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0}; // Gradi di rotazione delle navi
@@ -105,7 +105,7 @@ public class Attack extends Activity {
         popola_personaggi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
-        GridAdapterAttacco gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
+        gridAdapterAttacco = new GridAdapterAttacco(this, casellaColpita);
         GridView gridView = findViewById(R.id.gridView);
 
         // Inizializza gli array per le posizioni iniziali
@@ -224,16 +224,13 @@ public class Attack extends Activity {
             {
                 //gestisco dopo
             }
-            if (attaccoSpeciale) { //se posso fare la mossa speciale
-                if (id_pers == 2) { //controllo se sono Giorgia Meloni
-                    AttaccoRandom(casellaColpita);
-                    attaccoSpeciale = false;
-                }
-            }
+
             counterAttacchi++;
             if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
                 //codice per visualizzare l'attacco speciale
-                img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+                if(id_pers != 2){
+                    img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+                }
                 counterAttacchi = 0;
                 attaccoSpeciale = true;
             }
@@ -315,7 +312,17 @@ public class Attack extends Activity {
     public void genera_img_mossa_speciale(View view) throws InterruptedException {
         btn_att_speciale.startAnimation(scale_down);
         btn_att_speciale.startAnimation(scale_up);;
-        img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+        //img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+        if (attaccoSpeciale) { //se posso fare la mossa speciale
+            if (id_pers == 2) { //controllo se sono Giorgia Meloni
+                AttaccoRandom(casellaColpita);
+                attaccoSpeciale = false;
+            }
+        }
+        else {
+            int i = 5 - counterAttacchi;
+            CustomToast.showToast(this,"Attacco speciale non disponibile",5);
+        }
     }
 
     public void CambiaImmagini()
@@ -328,6 +335,7 @@ public class Attack extends Activity {
             int p = random.nextInt(100); //numero da 0 a 99
             ImmaginiNavi(p,immaginiCaselle);
         }
+        gridAdapterAttacco.notifyDataSetChanged();
     }
     public void ImmaginiNavi(int position,int[] immaginiCasella) {
         immaginiCasella[position] = R.drawable.cellaattaccata;
