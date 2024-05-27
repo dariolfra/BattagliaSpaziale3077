@@ -319,7 +319,7 @@ public class Attack extends Activity {
                 attaccoSpeciale = false;
             }
         }
-        else {
+        else { //se non è ancora tempo della mossa speciale
             int i = 5 - counterAttacchi;
             CustomToast.showToast(this,"Attacco speciale non disponibile",5);
         }
@@ -329,7 +329,7 @@ public class Attack extends Activity {
     {
 
     }
-    private void AttaccoRandom(int[] immaginiCaselle) {
+    private void AttaccoRandom(int[] immaginiCaselle) { //attacco della meloni
         for (int i = 0; i < 7; i ++){
             Random random = new Random();
             int p = random.nextInt(100); //numero da 0 a 99
@@ -337,6 +337,8 @@ public class Attack extends Activity {
         }
         gridAdapterAttacco.notifyDataSetChanged();
     }
+
+    //inserisce l'immagine nella casella indicata nel gridview
     public void ImmaginiNavi(int position,int[] immaginiCasella) {
         immaginiCasella[position] = R.drawable.cellaattaccata;
     }
