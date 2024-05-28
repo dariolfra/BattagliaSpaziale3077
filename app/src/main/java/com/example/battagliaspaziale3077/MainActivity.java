@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         int[] immaginiCasella = new int[100];
 
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
-
         background = (ImageView) findViewById(R.id.imageView8);
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, getTheme()));
 
@@ -259,25 +258,25 @@ public class MainActivity extends AppCompatActivity {
                 case 4:
                 case 5:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(currentPos, index, immaginiCasella);
+                        ImmaginiNavi(currentPos, index, immaginiCasella,false);
                         positions.add(currentPos);
                         if ((index == 2 && j == 0 && rotationDegrees == 0) || (index == 0 && j == 1 && rotationDegrees == 0) || (index == 4 && j == 2 && rotationDegrees == 0) || (index == 5 && j == 2 && rotationDegrees == 0)) {
                             p = posizione - 10 + j;
-                            ImmaginiNavi(p, index, immaginiCasella);
+                            ImmaginiNavi(p, index, immaginiCasella,false);
                             positions.add(p);
                         }
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
                         if (index == 2 && rotationDegrees == 270) {
-                            ImmaginiNavi(currentPos, index, immaginiCasella);
+                            ImmaginiNavi(currentPos, index, immaginiCasella,false);
                             positions.add(currentPos);
                         } else {
-                            ImmaginiNavi(posizione + j * 10, index, immaginiCasella);
+                            ImmaginiNavi(posizione + j * 10, index, immaginiCasella,false);
                             positions.add(posizione + j * 10);
 
                         }
                         if ((index == 0 && j == 1 && rotationDegrees == 90) || (index == 2 && j == 0 && rotationDegrees == 90) || (index == 5 && j == 2 && rotationDegrees == 90) || (index == 4 && j == 2 && rotationDegrees == 90)) {
                             p = posizione + j * 10 + 1;
-                            ImmaginiNavi(p, index, immaginiCasella);
+                            ImmaginiNavi(p, index, immaginiCasella,false);
                             positions.add(p);
                         }
                     }
@@ -285,10 +284,10 @@ public class MainActivity extends AppCompatActivity {
 
                 case 3:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(currentPos, index, immaginiCasella);
+                        ImmaginiNavi(currentPos, index, immaginiCasella,false);
                         positions.add(currentPos);
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(posizione + j * 10, index, immaginiCasella);
+                        ImmaginiNavi(posizione + j * 10, index, immaginiCasella,false);
                         positions.add(posizione + j * 10);
                     }
                     break;
@@ -301,45 +300,47 @@ public class MainActivity extends AppCompatActivity {
             if (rotationDegrees == 180) {
                 if ((index == 2 && j == 1) || (index == 0 && j == 1) || (index == 5 && j == 0) || (index == 4 && j == 1)) {
                     p = posizione + 10 + j;
-                    ImmaginiNavi(p, index, immaginiCasella);
+                    ImmaginiNavi(p, index, immaginiCasella,false);
                     positions.add(p);
                 }
             } else if (rotationDegrees == 270) {
                 if ((index == 4 && j == 1) || (index == 0 && j == 1) || (index == 5 && j == 0)) {
                     p = posizione + j * 10 - 1;
-                    ImmaginiNavi(p, index, immaginiCasella);
+                    ImmaginiNavi(p, index, immaginiCasella,false);
                     positions.add(p);
                 } else if (index == 2 && j == 1) {
                     p = posizione - 10 + 1;
-                    ImmaginiNavi(p, index, immaginiCasella);
+                    ImmaginiNavi(p, index, immaginiCasella,false);
                     positions.add(p);
                 }
             }
         }
-        navi[index].setVisibility(View.INVISIBLE);
         shipPlaced[index] = true; // Segna la nave inserita
         if(!AI){ //se posizione le navi per l'utente o per l'AI
             shipPositions.put(getShipName(index),positions);
+            navi[index].setVisibility(View.INVISIBLE);
         }
         else {
             shipPositionsAI.put(getShipName(index),positions);
         }
     }
 
-    public void ImmaginiNavi(int position, int index, int[] immaginiCasella) {
+    public void ImmaginiNavi(int position, int index, int[] immaginiCasella,boolean AI) {
         //Ogni nave ha la sua immagine
-        if (index == 0) {
-            immaginiCasella[position] = R.drawable.navexcap;
-        } else if (index == 1) {
-            immaginiCasella[position] = R.drawable.navexnave2;
-        } else if (index == 2) {
-            immaginiCasella[position] = R.drawable.navexangolo;
-        } else if (index == 3) {
-            immaginiCasella[position] = R.drawable.navexnave4;
-        } else if (index == 4) {
-            immaginiCasella[position] = R.drawable.navexottorino;
-        } else if (index == 5) {
-            immaginiCasella[position] = R.drawable.navexelle;
+        if(!AI){
+            if (index == 0) {
+                immaginiCasella[position] = R.drawable.navexcap;
+            } else if (index == 1) {
+                immaginiCasella[position] = R.drawable.navexnave2;
+            } else if (index == 2) {
+                immaginiCasella[position] = R.drawable.navexangolo;
+            } else if (index == 3) {
+                immaginiCasella[position] = R.drawable.navexnave4;
+            } else if (index == 4) {
+                immaginiCasella[position] = R.drawable.navexottorino;
+            } else if (index == 5) {
+                immaginiCasella[position] = R.drawable.navexelle;
+            }
         }
     }
 
@@ -369,11 +370,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return -1;
     }
-    private HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter) {
+    public HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter,int[] arrayGridViewIA) {
         Random random = new Random();
-        int[] arrayGridView = new int[100]; //array de gridview vuoto
-
-
+        gridAdapter = new GridAdapter(this,arrayGridViewIA);
         for (int i = 0; i < shipSizes.length; i++) { //finchè non ha inserito tutte le navi
             boolean placed = false;
 
@@ -383,10 +382,9 @@ public class MainActivity extends AppCompatActivity {
                 int rotation = random.nextInt(4) * 90; //da 0° a 270°
 
                 //Controlla se è correttamente dentro al gridview e se le celle sono libere
-                if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridView)) {
+                if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridViewIA)) {
                     //inserisce la navi
-                    posizionaNave(i,shipSizes[i],rotation,position,arrayGridView,true);
-
+                    posizionaNave(i,shipSizes[i],rotation,position,arrayGridViewIA,true);
                     placed = true;
                 }
             }

@@ -45,6 +45,8 @@ public class Attack extends Game {
     private int selectedPos;
     private boolean multiplayer;
     private int[] casellaColpita;
+    //array del gridview
+    private int[] arrayFormazioneIA;
     Animation scale_down, scale_up;
     ImageView background;
 
@@ -53,6 +55,10 @@ public class Attack extends Game {
     private boolean attaccoSpeciale;
     float startX, startY;
     GridAdapterAttacco gridAdapterAttacco;
+    GridAdapter gridAdapter;
+    //HashMap per controllare se le navi sono state colpite
+    HashMap<Integer, List<Integer>> formazioneIA;
+    MainActivity mainActivity;
     float[] initialX, initialY;
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0}; // Gradi di rotazione delle navi
@@ -98,6 +104,12 @@ public class Attack extends Game {
             nome_giocatore2 = "AI";
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
+            //bisogna scegliere random personaggi IA
+            mainActivity = new MainActivity();
+            arrayFormazioneIA = new int[100];
+            formazioneIA = new HashMap<>();
+            formazioneIA = mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA); //l'IA posiziona le navi
+
         } else {
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
@@ -259,7 +271,7 @@ public class Attack extends Game {
         }
         else
         {
-            //gestisco dopo
+            contrallaSeColpita();
         }
         counterAttacchi++;
         if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
@@ -284,6 +296,12 @@ public class Attack extends Game {
         defence.putExtra("NaviColpite", (Serializable) NaviColpite);
         defence.putExtra("comms", (Serializable) comms);
         startActivity(defence);
+    }
+
+    private void contrallaSeColpita() {
+        if(arrayFormazioneIA[selectedPos] != 0){
+            casellaColpita[selectedPos] = R.drawable.naveda1;
+        }
     }
 
     public boolean canAttack()
