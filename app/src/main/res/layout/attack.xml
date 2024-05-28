@@ -28,9 +28,10 @@
         android:numColumns="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.681" />
 
     <TextView
         android:id="@+id/textView6"
@@ -43,10 +44,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeG1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.906" />
 
     <TextView
         android:layout_width="85dp"
@@ -61,7 +62,7 @@
         app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.902" />
+        app:layout_constraintVertical_bias="0.951" />
 
     <TextView
         android:id="@+id/txtNomeG1"
@@ -78,13 +79,13 @@
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintVertical_bias="0.769" />
 
     <TextView
         android:id="@+id/txtNomeG2"
         android:layout_width="180dp"
         android:layout_height="35dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="232dp"
         android:fontFamily="@font/orbitron_regular"
         android:foreground="@drawable/bordo_rettangolo_label"
         android:paddingTop="7dp"
@@ -115,7 +116,7 @@
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attacco"
-        app:layout_constraintVertical_bias="0.328" />
+        app:layout_constraintVertical_bias="0.469" />
 
     <ImageView
         android:id="@+id/img_pers"
@@ -133,7 +134,6 @@
         android:id="@+id/attacco"
         android:layout_width="187dp"
         android:layout_height="63dp"
-        android:layout_marginBottom="136dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
@@ -146,21 +146,19 @@
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.272" />
 
     <ImageView
         android:id="@+id/img_mossa_speciale"
         android:layout_width="131dp"
         android:layout_height="138dp"
-        android:layout_marginBottom="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.442"
-        app:layout_constraintStart_toEndOf="@+id/attacco"
-        app:layout_constraintTop_toBottomOf="@+id/gridView"
-        app:layout_constraintVertical_bias="0.85"
         android:elevation="10dp"
         android:rotation="0"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.573"
+        app:layout_constraintStart_toEndOf="@+id/attacco"
+        app:layout_constraintTop_toBottomOf="@+id/gridView"
+        app:layout_constraintVertical_bias="0.531" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

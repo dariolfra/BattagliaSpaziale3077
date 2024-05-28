@@ -129,9 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
                 }
-                if (dati_arrivati_correttamente) {
-                    CustomToast.showToast(context, "Giocatore: " + nome_giocatore1 + " / Modalità: " + modalita + " / Personaggio: " + personaggio, Toast.LENGTH_SHORT);
-                }
             }
         });
 
