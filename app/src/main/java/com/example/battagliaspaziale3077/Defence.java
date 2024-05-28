@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
+
+import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -49,10 +53,14 @@ public class Defence extends Game implements Serializable {
 
         context = this.getApplicationContext();
 
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         Intent attack = getIntent();
-        //comms = (ConnectionThread) attack.getSerializableExtra("comms");
+        comms = (ConnectionThread) attack.getParcelableExtra("comms");
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
         NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondata");
@@ -76,7 +84,6 @@ public class Defence extends Game implements Serializable {
         popola_personaggi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
-        CustomToast.showToast(context, "G1: " + nome_giocatore1 + " G2: " + nome_giocatore2, Toast.LENGTH_SHORT);
 
         if (NaviColpite == null) {
             NaviColpite = new HashMap<Integer, List<Integer>>();
@@ -124,7 +131,7 @@ public class Defence extends Game implements Serializable {
             //gestico più tardi
         }
         Intent attack = new Intent(Defence.this, Attack.class);
-        //attack.putExtra("comms", (Serializable) comms);
+        attack.putExtra("comms",comms);
         attack.putExtra("Navi", (Serializable) Navi);
         attack.putExtra("defenceOrNot", true);
         attack.putExtra("casellaColpita", casellaColpita);
@@ -142,7 +149,9 @@ public class Defence extends Game implements Serializable {
 
     public String AspettaMessaggio() throws InterruptedException {
         comms.RiceviRisposta();
-        comms.wait();
+        synchronized (comms){
+            comms.wait(3000);
+        }
         return comms.GetMessage();
     }
 

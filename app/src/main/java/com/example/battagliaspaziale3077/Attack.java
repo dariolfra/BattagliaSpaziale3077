@@ -96,7 +96,7 @@ public class Attack extends Game implements Serializable{
         Navi = (HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("Navi");
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
-        //comms = (ConnectionThread) gioco.getSerializableExtra("comms");
+        comms = (ConnectionThread) gioco.getParcelableExtra("comms");
 
         if (modalita == 1) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
@@ -117,7 +117,6 @@ public class Attack extends Game implements Serializable{
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;         
         }
-        CustomToast.showToast(context, "G1: " + nome_giocatore1 + " G2: " + nome_giocatore2, Toast.LENGTH_SHORT);
         boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
         if(defence)
         {
@@ -137,6 +136,55 @@ public class Attack extends Game implements Serializable{
         initialY = new float[indici_mossaspeciale.size()];
 
         gridView.setAdapter(gridAdapterAttacco);
+
+        btn_attacca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    btn_attacca.startAnimation(scale_down);
+                    btn_attacca.startAnimation(scale_up);
+                    if(multiplayer)
+                    {
+                        comms.InviaMessaggio(String.valueOf(selectedPos));
+                        comms.RiceviRisposta();
+                        synchronized (comms){
+                            comms.wait(3000);
+                        }
+
+                        Attacco(comms.GetMessage());
+                    }
+                    else
+                    {
+                        contrallaSeColpita();
+                    }
+                    counterAttacchi++;
+                    if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
+                        //codice per visualizzare l'attacco speciale
+                        if(id_pers != 2){
+                            img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+                        }
+                        counterAttacchi = 0;
+                        attaccoSpeciale = true;
+                    }
+
+                    Intent defence = new Intent(Attack.this, Defence.class);
+                    defence.putExtra("mod", modalita);
+                    defence.putExtra("nome1", nome_giocatore1);
+                    if(multiplayer)
+                    {
+                        defence.putExtra("nome2", comms.getName());
+                    }
+                    defence.putExtra("personaggio", id_pers);
+                    defence.putExtra("casellaColpita", casellaColpita);
+                    defence.putExtra("Navi", (Serializable) Navi);
+                    defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+                    defence.putExtra("comms", comms);
+                    startActivity(defence);
+                }catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         // Utilizza un ViewTreeObserver per memorizzare le posizioni iniziali dopo il layout
         ViewTreeObserver viewTreeObserver = img_mossa_speciale.getViewTreeObserver();
@@ -295,7 +343,7 @@ public class Attack extends Game implements Serializable{
         defence.putExtra("casellaColpita", casellaColpita);
         defence.putExtra("Navi", (Serializable) Navi);
         defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-        //defence.putExtra("comms", (Serializable) comms);
+        defence.putExtra("comms", comms);
         startActivity(defence);
     }
 

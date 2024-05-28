@@ -1,8 +1,12 @@
 package com.example.battagliaspaziale3077;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +16,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ClientThread extends ConnectionThread implements Serializable {
+class ClientThread extends ConnectionThread implements Parcelable {
     private String serverIp;
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
@@ -34,6 +38,32 @@ class ClientThread extends ConnectionThread implements Serializable {
         primaConnessione = true;
         gameEnded = false;
     }
+
+    protected ClientThread(Parcel in) {
+        serverIp = in.readString();
+        nome_giocatore1 = in.readString();
+        nome_giocatore2 = in.readString();
+        serverPort = in.readInt();
+        txtFromServer = in.readString();
+        serverName = in.readString();
+        primaConnessione = in.readByte() != 0;
+        inviaMessaggio = in.readByte() != 0;
+        riceviMessaggio = in.readByte() != 0;
+        mess = in.readString();
+        gameEnded = in.readByte() != 0;
+    }
+
+    public static final Creator<ClientThread> CREATOR = new Creator<ClientThread>() {
+        @Override
+        public ClientThread createFromParcel(Parcel in) {
+            return new ClientThread(in);
+        }
+
+        @Override
+        public ClientThread[] newArray(int size) {
+            return new ClientThread[size];
+        }
+    };
 
     public void startServer() {
         start();
@@ -175,5 +205,25 @@ class ClientThread extends ConnectionThread implements Serializable {
 
     public String Nome_G2(){
         return nome_giocatore2;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(serverIp);
+        dest.writeString(nome_giocatore1);
+        dest.writeString(nome_giocatore2);
+        dest.writeInt(serverPort);
+        dest.writeString(txtFromServer);
+        dest.writeString(serverName);
+        dest.writeByte((byte) (primaConnessione ? 1 : 0));
+        dest.writeByte((byte) (inviaMessaggio ? 1 : 0));
+        dest.writeByte((byte) (riceviMessaggio ? 1 : 0));
+        dest.writeString(mess);
+        dest.writeByte((byte) (gameEnded ? 1 : 0));
     }
 }
