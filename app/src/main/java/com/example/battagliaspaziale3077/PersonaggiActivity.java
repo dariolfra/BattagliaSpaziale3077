@@ -56,15 +56,15 @@ public class PersonaggiActivity extends AppCompatActivity {
 
         context = this.getApplicationContext();
 
-        Intent modalita = getIntent();
-        this.modalita = modalita.getIntExtra("mod", 1);
-        //comms = (ConnectionThread) modalita.getSerializableExtra("comms");
-        if(this.modalita == 1){
-            nome_g1 = modalita.getStringExtra("nome");
+        Intent mod = getIntent();
+        modalita = mod.getIntExtra("mod", 1);
+        comms = (ConnectionThread) mod.getSerializableExtra("comms");
+        if(modalita == 1){
+            nome_g1 = mod.getStringExtra("nome");
         }
         else{
-            nome_g1 = modalita.getStringExtra("nome1");
-            nome_g2 = modalita.getStringExtra("nome2");
+            nome_g1 = mod.getStringExtra("nome1");
+            nome_g2 = mod.getStringExtra("nome2");
         }
 
         btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
