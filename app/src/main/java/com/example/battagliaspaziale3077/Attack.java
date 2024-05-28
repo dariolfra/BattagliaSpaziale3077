@@ -99,9 +99,9 @@ public class Attack extends Game {
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
         } else {
-            nome_giocatore2 = gioco.getStringExtra("nome1");
+            nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
-            nome_giocatore1 = gioco.getStringExtra("nome2");
+            nome_giocatore2 = gioco.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;         
         }

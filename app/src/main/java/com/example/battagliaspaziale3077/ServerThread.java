@@ -16,7 +16,7 @@ class ServerThread extends ConnectionThread implements Serializable {
     private boolean serverRunning;
     private ServerSocket serverSocket;
     private int count = 0;
-    private String nome_giocatore1,nome_giocatore2;
+    private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String serverIP;
     private Socket client;
