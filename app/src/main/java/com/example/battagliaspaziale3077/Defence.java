@@ -35,7 +35,6 @@ public class Defence extends Game {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.defence);
 
-
         tabella = new int[100];
         gridAdapterDifesa = new GridAdapterDifesa(this, tabella);
         GridView gridView = findViewById(R.id.gridView);
@@ -131,7 +130,6 @@ public class Defence extends Game {
             attack.putExtra("nome2", nome_giocatore2);
         }
         AggiornaTabella();
-        wait(1000);
         startActivity(attack);
     }
 
