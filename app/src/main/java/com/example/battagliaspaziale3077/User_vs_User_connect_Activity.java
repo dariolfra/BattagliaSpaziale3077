@@ -103,11 +103,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         });
     }
 
-    public String GetServerName()
-    {
-        return txt_ip_server.getText().toString();
-    }
-
     public void ResetTxb()
     {
         txt_nome.setText("");
@@ -121,7 +116,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         personaggi.putExtra("mod", modalita);
         personaggi.putExtra("nome1", nome_giocatore1);
         personaggi.putExtra("nome2", comms.Nome_G2());
-        //personaggi.putExtra("comms", (Serializable) comms);
+        personaggi.putExtra("attacco", false);
+        personaggi.putExtra("comms", (Serializable) comms);
         startActivity(personaggi);
     }
 }
