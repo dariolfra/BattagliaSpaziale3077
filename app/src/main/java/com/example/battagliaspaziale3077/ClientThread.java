@@ -17,7 +17,7 @@ class ClientThread extends ConnectionThread implements Serializable {
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String txtFromServer;
-    private Socket client;
+    private Socket client, client2;
     private User_vs_User_connect_Activity ClientActivity;
     private String serverName;
     private boolean primaConnessione;
@@ -55,12 +55,6 @@ class ClientThread extends ConnectionThread implements Serializable {
 
                     client = new Socket(serverName, serverPort);
 
-                    //lettura da server
-                    /*BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    nome_giocatore2 = br_input.readLine();
-                    br_input.close();*/
-
-
                     //scrittura su server
                     PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
                     outputServer.flush();
@@ -78,6 +72,12 @@ class ClientThread extends ConnectionThread implements Serializable {
                     //server.connessione_instaurata = true;
                     txtFromServer = "";
                     primaConnessione = false;
+
+                    client2 = new Socket(serverName, serverPort);
+
+                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client2.getInputStream()));
+                    nome_giocatore2 = sv_reader.readLine();
+                    Thread.sleep(100);
                 }
                 else
                 {

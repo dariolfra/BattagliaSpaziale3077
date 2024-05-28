@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     modalita = personaggi.getIntExtra("mod", 1);
                     if (modalita == 1) {
                         nome_giocatore1 = personaggi.getStringExtra("nome1");
-                        nome_giocatore2 = "";
+                        nome_giocatore2 = personaggi.getStringExtra("nome2");
                     } else {
                         nome_giocatore1 = personaggi.getStringExtra("nome1");
                         nome_giocatore2 = personaggi.getStringExtra("nome2");

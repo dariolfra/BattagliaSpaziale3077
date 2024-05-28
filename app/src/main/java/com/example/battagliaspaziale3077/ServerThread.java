@@ -19,7 +19,7 @@ class ServerThread extends ConnectionThread implements Serializable {
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String serverIP;
-    private Socket client;
+    private Socket client, client2;
     private User_vs_User_host_Activity HostActivity;
     private String clientIP;
     private String mess;
@@ -80,10 +80,7 @@ class ServerThread extends ConnectionThread implements Serializable {
                     clientIP = String.valueOf(client.getInetAddress());
                     HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
 
-                    /*PrintWriter outputServer = new PrintWriter(client.getOutputStream(), true);
-                    outputServer.write(nome_giocatore1);
-                    Log.i("SERVER", "MESSAGGIO INVIATO");
-                    outputServer.close();*/
+
 
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     nome_giocatore2 = br_input.readLine();
@@ -92,6 +89,15 @@ class ServerThread extends ConnectionThread implements Serializable {
                     //HostActivity.ShowToast("nome host " + nome_giocatore1 + " nome client " + nome_giocatore2);
 
                     client.close();
+
+                    client2 = serverSocket.accept();
+
+                    PrintWriter outputServer = new PrintWriter(client2.getOutputStream(), true);
+                    outputServer.write(nome_giocatore1);
+                    Log.i("SERVER", "MESSAGGIO INVIATO");
+                    outputServer.close();
+                    client2.close();
+
                     HostActivity.ChangePage();
                     primaConnessione = false;
                 }

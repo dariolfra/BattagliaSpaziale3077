@@ -61,6 +61,7 @@ public class PersonaggiActivity extends AppCompatActivity {
         comms = (ConnectionThread) mod.getSerializableExtra("comms");
         if(modalita == 1){
             nome_g1 = mod.getStringExtra("nome");
+            nome_g2 = "AI";
         }
         else{
             nome_g1 = mod.getStringExtra("nome1");
