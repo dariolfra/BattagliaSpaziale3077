@@ -106,6 +106,14 @@ public class Defence extends Game {
     public void onBackPressed()
     {
         //super.onBackPressed();
+        customDialog.showDialog(this);
+    }
+
+    public void Abbandona()
+    {
+        comms.Abbandona();
+        Intent HA = new Intent(Defence.this, HomeActivity.class);
+        startActivity(HA);
     }
 
     public void Gioca() throws InterruptedException {

@@ -233,13 +233,9 @@ public class Attack extends Game {
     @Override
     public void Abbandona()
     {
-        //comms.Abbandona();
-    }
-
-    @Override
-    public Context GetContext()
-    {
-        return context;
+        comms.Abbandona();
+        Intent HA = new Intent(Attack.this, HomeActivity.class);
+        startActivity(HA);
     }
 
     public Attack()
