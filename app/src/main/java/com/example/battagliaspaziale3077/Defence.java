@@ -7,6 +7,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class Defence extends Game {
     private boolean multiplayer;
     private ImageView background ,immagine_pers;
     private TextView giocatore1,giocatore2;
+    private Button btn_vai_a_attacco;
     private Context context;
     private int[] casellaColpita;
     private int[] tabella;
@@ -43,6 +45,7 @@ public class Defence extends Game {
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         background = (ImageView) findViewById(R.id.background);
+        btn_vai_a_attacco = (Button) findViewById(R.id.btn_vai_a_attacco);
 
         context = this.getApplicationContext();
 
