@@ -1,6 +1,5 @@
 package com.example.battagliaspaziale3077;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import java.util.List;
@@ -18,6 +18,7 @@ public class Defence extends Game {
     private Integer[] NaveIDs = new Integer[]{2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
+    private HashMap<Integer, List<Integer>> NaviAffondate;
     private ConnectionThread comms;
     private int id_pers;
     private int modalita;
@@ -27,16 +28,15 @@ public class Defence extends Game {
     private TextView giocatore1,giocatore2;
     private Context context;
     private int[] casellaColpita;
+    private int[] tabella;
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.defence);
 
 
-
-        casellaColpita = new int[100];
-        GridAdapterDifesa gridAdapterDifesa = new GridAdapterDifesa(this,casellaColpita);
+        tabella = new int[100];
+        GridAdapterDifesa gridAdapterDifesa = new GridAdapterDifesa(this, tabella);
         GridView gridView = findViewById(R.id.gridView);
         gridView.setAdapter(gridAdapterDifesa);
 
@@ -52,6 +52,8 @@ public class Defence extends Game {
         Intent attack = getIntent();
         comms = (ConnectionThread) attack.getSerializableExtra("comms");
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
+        NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
+        NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondata");
         id_pers = attack.getIntExtra("personaggio", 1);
         modalita = attack.getIntExtra("mod", 1);
         casellaColpita = attack.getIntArrayExtra("casellaColpita");
@@ -68,12 +70,35 @@ public class Defence extends Game {
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;
         }
-        try
-        {
-            Gioca();
+
+        if (NaviColpite == null) {
+            NaviColpite = new HashMap<Integer, List<Integer>>();
         }
-        catch(Exception e)
-        {
+        if (NaviAffondate == null) {
+            NaviAffondate = new HashMap<Integer, List<Integer>>();
+        }
+
+        for (int i = 0; i < NaveIDs.length; i++) {
+            for (Integer pos : Navi.get(NaveIDs[i])) {
+                tabella[pos] = R.drawable.naveda1;
+                gridAdapterDifesa.notifyDataSetChanged();
+            }
+        }
+        for (int i = 0; i < NaviColpite.size(); i++) {
+            for (Integer pos : NaviColpite.get(i)) {
+                tabella[pos] = R.drawable.nave_colpita;
+                gridAdapterDifesa.notifyDataSetChanged();
+            }
+        }
+        for (int i = 0; i < NaviAffondate.size(); i++) {
+            for (Integer pos : NaviAffondate.get(i)) {
+                tabella[pos] = R.drawable.x;
+                gridAdapterDifesa.notifyDataSetChanged();
+            }
+        }
+        try {
+            Gioca();
+        } catch (Exception e) {
             CustomToast.showToast(context, e.toString(), Toast.LENGTH_SHORT);
         }
     }
@@ -82,6 +107,14 @@ public class Defence extends Game {
     public void onBackPressed()
     {
         //super.onBackPressed();
+        customDialog.showDialog(this);
+    }
+
+    public void Abbandona()
+    {
+        comms.Abbandona();
+        Intent HA = new Intent(Defence.this, HomeActivity.class);
+        startActivity(HA);
     }
 
     public void Gioca() throws InterruptedException {
@@ -99,18 +132,20 @@ public class Defence extends Game {
         {
             //gestico più tardi
         }
-        Intent defence = new Intent();
-        defence.putExtra("comms", comms);
-        defence.putExtra("Navi", Navi);
-        defence.putExtra("defenceOrNot", true);
-        defence.putExtra("casellaColpita", casellaColpita);
-        defence.putExtra("mod", modalita);
-        defence.putExtra("personaggio", id_pers);
-        defence.putExtra("nome1", nome_giocatore1);
+        Intent attack = new Intent(Defence.this, Attack.class);
+        attack.putExtra("comms", (Serializable) comms);
+        attack.putExtra("Navi", (Serializable) Navi);
+        attack.putExtra("defenceOrNot", true);
+        attack.putExtra("casellaColpita", casellaColpita);
+        attack.putExtra("mod", modalita);
+        attack.putExtra("personaggio", id_pers);
+        attack.putExtra("nome1", nome_giocatore1);
+        attack.putExtra("NaviColpite", (Serializable) NaviColpite);
         if(multiplayer)
         {
-            defence.putExtra("nome2", nome_giocatore2);
+            attack.putExtra("nome2", nome_giocatore2);
         }
+        startActivity(attack);
     }
 
     public String AspettaMessaggio() throws InterruptedException {

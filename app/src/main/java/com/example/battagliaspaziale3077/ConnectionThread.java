@@ -17,4 +17,8 @@ public class ConnectionThread extends Thread implements Serializable {
     {
         return "";
     }
+    public void Abbandona()
+    {
+
+    }
 }

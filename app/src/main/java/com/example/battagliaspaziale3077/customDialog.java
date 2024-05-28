@@ -2,6 +2,7 @@ package com.example.battagliaspaziale3077;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -9,14 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class customDialog {
-    public void showDialog(Game g, String msg, String title){
-        final Dialog dialog = new Dialog(g.GetContext());
+    public static void showDialog(Game g){
+        Dialog dialog = new Dialog(g);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_dialog);
-
-        TextView text = (TextView) dialog.findViewById(R.id.text);
-        text.setText(msg);
 
         Button annulla = (Button) dialog.findViewById(R.id.annulla);
         annulla.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +35,5 @@ public class customDialog {
         });
 
         dialog.show();
-
     }
 }

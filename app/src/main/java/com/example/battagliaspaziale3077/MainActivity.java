@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 attacco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
                 attacco.putExtra("comms", (Serializable) comms);
+                attacco.putExtra("Navi", (Serializable) shipPositions);
                 startActivity(attacco);
             }
         });
