@@ -34,7 +34,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
     TextInputEditText txt_nome_giocatore;
     Button btn_start_sv, btn_stop_sv;
-    String serverIP = "192.168.1.102"; //mettere quello del proprio telefono
+    String serverIP = "192.168.1.73"; //mettere quello del proprio telefono
     int serverPort = 42069; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;

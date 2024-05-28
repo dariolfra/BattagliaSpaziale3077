@@ -84,24 +84,6 @@ public class MainActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
-        //Metodo per confermare e per far partire il gioco
-        btnConferma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnConferma.startAnimation(scale_down);
-                btnConferma.startAnimation(scale_up);
-                Intent attacco = new Intent(MainActivity.this, Attack.class);
-                attacco.putExtra("mod", modalita);
-                attacco.putExtra("nome1", nome_giocatore1);
-                attacco.putExtra("nome2", nome_giocatore2);
-                attacco.putExtra("personaggio", personaggio);
-                //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
-                attacco.putExtra("comms", (Serializable) comms);
-                attacco.putExtra("Navi", (Serializable) shipPositions);
-                startActivity(attacco);
-            }
-        });
-
         // Inizializza gli array per le posizioni iniziali
         initialX = new float[navi.length];
         initialY = new float[navi.length];
@@ -132,6 +114,24 @@ public class MainActivity extends AppCompatActivity {
                 if (dati_arrivati_correttamente) {
                     CustomToast.showToast(context, "Giocatore: " + nome_giocatore1 + " / Modalità: " + modalita + " / Personaggio: " + personaggio, Toast.LENGTH_SHORT);
                 }
+            }
+        });
+
+        //Metodo per confermare e per far partire il gioco
+        btnConferma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnConferma.startAnimation(scale_down);
+                btnConferma.startAnimation(scale_up);
+                Intent attacco = new Intent(MainActivity.this, Attack.class);
+                attacco.putExtra("mod", modalita);
+                attacco.putExtra("nome1", nome_giocatore1);
+                attacco.putExtra("nome2", nome_giocatore2);
+                attacco.putExtra("personaggio", personaggio);
+                //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
+                attacco.putExtra("comms", (Serializable) comms);
+                attacco.putExtra("Navi", (Serializable) shipPositions);
+                startActivity(attacco);
             }
         });
 
