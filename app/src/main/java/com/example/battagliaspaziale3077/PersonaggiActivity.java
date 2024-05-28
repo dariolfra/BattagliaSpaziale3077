@@ -59,8 +59,10 @@ public class PersonaggiActivity extends AppCompatActivity {
         Intent mod = getIntent();
         modalita = mod.getIntExtra("mod", 1);
         comms = (ConnectionThread) mod.getSerializableExtra("comms");
+        boolean attacco = mod.getBooleanExtra("attacco", true);
         if(modalita == 1){
             nome_g1 = mod.getStringExtra("nome");
+            nome_g2 = "AI";
         }
         else{
             nome_g1 = mod.getStringExtra("nome1");
@@ -129,6 +131,15 @@ public class PersonaggiActivity extends AppCompatActivity {
         btn_seleziona_personaggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    comms.InviaMessaggio("done");
+                    comms.RiceviRisposta();
+                    comms.wait();
+                    comms.InviaMessaggio("done");
+                } catch (InterruptedException e) {
+                    //ignoro l'errore
+                }
+
                 btn_seleziona_personaggio.startAnimation(scale_down);
                 btn_seleziona_personaggio.startAnimation(scale_up);
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
@@ -137,6 +148,7 @@ public class PersonaggiActivity extends AppCompatActivity {
                 gioco.putExtra("nome1", nome_g1);
                 gioco.putExtra("nome2", nome_g2);
                 gioco.putExtra("comms", (Serializable) comms);
+                gioco.putExtra("attacco", attacco);
                 suono_personaggio(indice);
                 startActivity(gioco);
             }

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     // HashMap per memorizzare le posizioni delle navi con l'ID dell'immagine come chiave
     HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
     HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
+    boolean attacco;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -100,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
                     modalita = personaggi.getIntExtra("mod", 1);
                     if (modalita == 1) {
                         nome_giocatore1 = personaggi.getStringExtra("nome1");
-                        nome_giocatore2 = "";
+                        nome_giocatore2 = personaggi.getStringExtra("nome2");
                     } else {
                         nome_giocatore1 = personaggi.getStringExtra("nome1");
                         nome_giocatore2 = personaggi.getStringExtra("nome2");
                     }
                     personaggio = personaggi.getIntExtra("personaggio", 1);
                     comms = (ConnectionThread) personaggi.getSerializableExtra("comms");
+                    attacco = personaggi.getBooleanExtra("attacco", true);
                     dati_arrivati_correttamente = true;
                 } catch (Exception e) {
                     CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
@@ -120,15 +122,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 btnConferma.startAnimation(scale_down);
                 btnConferma.startAnimation(scale_up);
-                Intent attacco = new Intent(MainActivity.this, Attack.class);
-                attacco.putExtra("mod", modalita);
-                attacco.putExtra("nome1", nome_giocatore1);
-                attacco.putExtra("nome2", nome_giocatore2);
-                attacco.putExtra("personaggio", personaggio);
+                Intent gioco;
+                if(attacco)
+                {
+                    gioco =  new Intent(MainActivity.this, Attack.class);
+                }
+                else
+                {
+                    gioco =  new Intent(MainActivity.this, Defence.class);
+                }
+
+                try {
+                    comms.InviaMessaggio("done");
+                    comms.RiceviRisposta();
+                    comms.wait();
+                    comms.InviaMessaggio("done");
+                } catch (InterruptedException e) {
+                    //ignoro l'errore
+                }
+
+                gioco.putExtra("mod", modalita);
+                gioco.putExtra("nome1", nome_giocatore1);
+                gioco.putExtra("nome2", nome_giocatore2);
+                gioco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
-                attacco.putExtra("comms", (Serializable) comms);
-                attacco.putExtra("Navi", (Serializable) shipPositions);
-                startActivity(attacco);
+                gioco.putExtra("comms", (Serializable) comms);
+                gioco.putExtra("Navi", (Serializable) shipPositions);
+                startActivity(gioco);
             }
         });
 
