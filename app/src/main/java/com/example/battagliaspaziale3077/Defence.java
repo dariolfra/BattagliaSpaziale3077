@@ -29,6 +29,7 @@ public class Defence extends Game {
     private Context context;
     private int[] casellaColpita;
     private int[] tabella;
+    private GridAdapterDifesa gridAdapterDifesa;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,7 @@ public class Defence extends Game {
 
 
         tabella = new int[100];
-        GridAdapterDifesa gridAdapterDifesa = new GridAdapterDifesa(this, tabella);
+        gridAdapterDifesa = new GridAdapterDifesa(this, tabella);
         GridView gridView = findViewById(R.id.gridView);
         gridView.setAdapter(gridAdapterDifesa);
 
@@ -78,24 +79,8 @@ public class Defence extends Game {
             NaviAffondate = new HashMap<Integer, List<Integer>>();
         }
 
-        for (int i = 0; i < NaveIDs.length; i++) {
-            for (Integer pos : Navi.get(NaveIDs[i])) {
-                tabella[pos] = R.drawable.naveda1;
-                gridAdapterDifesa.notifyDataSetChanged();
-            }
-        }
-        for (int i = 0; i < NaviColpite.size(); i++) {
-            for (Integer pos : NaviColpite.get(i)) {
-                tabella[pos] = R.drawable.nave_colpita;
-                gridAdapterDifesa.notifyDataSetChanged();
-            }
-        }
-        for (int i = 0; i < NaviAffondate.size(); i++) {
-            for (Integer pos : NaviAffondate.get(i)) {
-                tabella[pos] = R.drawable.x;
-                gridAdapterDifesa.notifyDataSetChanged();
-            }
-        }
+        AggiornaTabella();
+
         try {
             Gioca();
         } catch (Exception e) {
@@ -145,6 +130,8 @@ public class Defence extends Game {
         {
             attack.putExtra("nome2", nome_giocatore2);
         }
+        AggiornaTabella();
+        wait(1000);
         startActivity(attack);
     }
 
@@ -213,5 +200,25 @@ public class Defence extends Game {
         }
         NaviColpite.remove(ID);
         return mess;
+    }
+
+    public void AggiornaTabella()
+    {
+        for (int i = 0; i < NaveIDs.length; i++) {
+            for (Integer pos : Navi.get(NaveIDs[i])) {
+                tabella[pos] = R.drawable.naveda1;
+            }
+        }
+        for (int i = 0; i < NaviColpite.size(); i++) {
+            for (Integer pos : NaviColpite.get(i)) {
+                tabella[pos] = R.drawable.nave_colpita;
+            }
+        }
+        for (int i = 0; i < NaviAffondate.size(); i++) {
+            for (Integer pos : NaviAffondate.get(i)) {
+                tabella[pos] = R.drawable.x;
+            }
+        }
+        gridAdapterDifesa.notifyDataSetChanged();
     }
 }
