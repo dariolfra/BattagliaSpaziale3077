@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="350dp"
@@ -12,7 +13,7 @@
         android:id="@+id/a"
         android:gravity="center"
         android:background="#DA5F6A"
-        android:src="@drawable/ATTENZIONE"
+        android:src="@drawable/attenzione"
         android:scaleType="fitCenter" />
 
     <TextView
@@ -45,7 +46,8 @@
         android:textColor="#ff000000"
         android:textSize="18sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <!--<androidx.appcompat.widget.AppCompatButton-->
+    <Button
         android:id="@+id/annulla"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -53,22 +55,24 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="49dp"
+        android:layout_marginLeft="49dp"
         android:layout_marginTop="19dp"
-        android:layout_marginEnd="221dp"
+        android:layout_marginRight="221dp"
         android:layout_marginBottom="29dp"
 
         android:background="@drawable/dialog_button"
 
         android:gravity="center_vertical|center_horizontal"
         android:text="ANNULLA"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        tools:ignore="RtlHardcoded" />
 
 
 
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <!--androidx.appcompat.widget.AppCompatButton-->
+    <Button
         android:id="@+id/abbandona"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -76,9 +80,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="221dp"
+        android:layout_marginLeft="221dp"
         android:layout_marginTop="19dp"
-        android:layout_marginEnd="49dp"
+        android:layout_marginRight="49dp"
         android:layout_marginBottom="29dp"
         android:background="@drawable/dialog_button"
         android:gravity="center_vertical|center_horizontal"
