@@ -17,7 +17,7 @@ class ClientThread extends ConnectionThread implements Serializable {
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String txtFromServer;
-    private Socket client, client2;
+    private transient Socket client, client2;
     private User_vs_User_connect_Activity ClientActivity;
     private String serverName;
     private boolean primaConnessione;
@@ -67,17 +67,21 @@ class ClientThread extends ConnectionThread implements Serializable {
                     //ClientActivity.ShowToast(nome_giocatore1);
                     //connessione_instaurata = true;
 
+                    client2 = new Socket(serverName, serverPort);
+
+                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client2.getInputStream()));
+                    nome_giocatore2 = sv_reader.readLine();
+                    Log.i("CLIENT", nome_giocatore2);
+                    Thread.sleep(100);
+                    sv_reader.close();
+
                     ClientActivity.ResetTxb();
                     ClientActivity.ChangePage();
                     //server.connessione_instaurata = true;
                     txtFromServer = "";
                     primaConnessione = false;
 
-                    client2 = new Socket(serverName, serverPort);
 
-                    BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client2.getInputStream()));
-                    nome_giocatore2 = sv_reader.readLine();
-                    Thread.sleep(100);
                 }
                 else
                 {

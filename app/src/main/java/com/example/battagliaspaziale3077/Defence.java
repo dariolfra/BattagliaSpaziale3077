@@ -2,6 +2,7 @@ package com.example.battagliaspaziale3077;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -14,11 +15,12 @@ import java.util.HashMap;
 
 import java.util.List;
 
-public class Defence extends Game {
+public class Defence extends Game implements Serializable {
     private Integer[] NaveIDs = new Integer[]{2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
     private HashMap<Integer, List<Integer>> NaviAffondate;
+    private HashMap<Integer, Drawable> indici_personaggi;
     private ConnectionThread comms;
     private int id_pers;
     private int modalita;
@@ -50,7 +52,7 @@ public class Defence extends Game {
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         Intent attack = getIntent();
-        comms = (ConnectionThread) attack.getSerializableExtra("comms");
+        //comms = (ConnectionThread) attack.getSerializableExtra("comms");
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
         NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondata");
@@ -64,12 +66,17 @@ public class Defence extends Game {
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
         } else {
-            nome_giocatore2 = attack.getStringExtra("nome1");
+            nome_giocatore1 = attack.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
-            nome_giocatore1 = attack.getStringExtra("nome2");
+            nome_giocatore2 = attack.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;
         }
+
+        popola_personaggi();
+        immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
+
+        CustomToast.showToast(context, "G1: " + nome_giocatore1 + " G2: " + nome_giocatore2, Toast.LENGTH_SHORT);
 
         if (NaviColpite == null) {
             NaviColpite = new HashMap<Integer, List<Integer>>();
@@ -117,7 +124,7 @@ public class Defence extends Game {
             //gestico più tardi
         }
         Intent attack = new Intent(Defence.this, Attack.class);
-        attack.putExtra("comms", (Serializable) comms);
+        //attack.putExtra("comms", (Serializable) comms);
         attack.putExtra("Navi", (Serializable) Navi);
         attack.putExtra("defenceOrNot", true);
         attack.putExtra("casellaColpita", casellaColpita);
@@ -218,5 +225,20 @@ public class Defence extends Game {
             }
         }
         gridAdapterDifesa.notifyDataSetChanged();
+    }
+
+    public void popola_personaggi()
+    {
+        indici_personaggi = new HashMap<>();
+        indici_personaggi.put(1, getResources().getDrawable(R.drawable.blur, context.getTheme()));
+        indici_personaggi.put(2, getResources().getDrawable(R.drawable.meloni, context.getTheme()));
+        indici_personaggi.put(3, getResources().getDrawable(R.drawable.erbrasiliano, context.getTheme()));
+        indici_personaggi.put(4, getResources().getDrawable(R.drawable.ciccio, context.getTheme()));
+        indici_personaggi.put(5, getResources().getDrawable(R.drawable.marzone, context.getTheme()));
+        indici_personaggi.put(6, getResources().getDrawable(R.drawable.optimusprime, context.getTheme()));
+        indici_personaggi.put(7, getResources().getDrawable(R.drawable.papa, context.getTheme()));
+        indici_personaggi.put(8, getResources().getDrawable(R.drawable.peffo, context.getTheme()));
+        indici_personaggi.put(9, getResources().getDrawable(R.drawable.shiva, context.getTheme()));
+        indici_personaggi.put(10, getResources().getDrawable(R.drawable.panda, context.getTheme()));
     }
 }

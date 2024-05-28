@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.Optional;
 
-public class User_vs_User_connect_Activity extends AppCompatActivity {
+public class User_vs_User_connect_Activity extends AppCompatActivity implements Serializable{
     TextInputEditText txt_nome, txt_ip_server, txt_porta_server;
     String serverName, nome_giocatore1, nome_giocatore2;
     int serverPort;
@@ -117,7 +117,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity {
         personaggi.putExtra("nome1", nome_giocatore1);
         personaggi.putExtra("nome2", comms.Nome_G2());
         personaggi.putExtra("attacco", false);
-        personaggi.putExtra("comms", (Serializable) comms);
+        //personaggi.putExtra("comms", (Serializable) comms);
         startActivity(personaggi);
     }
 }

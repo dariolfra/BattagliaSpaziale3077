@@ -14,12 +14,12 @@ import java.util.*;
 
 class ServerThread extends ConnectionThread implements Serializable {
     private boolean serverRunning;
-    private ServerSocket serverSocket;
+    private transient ServerSocket serverSocket;
     private int count = 0;
     private String nome_giocatore1, nome_giocatore2;
     private int serverPort;
     private String serverIP;
-    private Socket client, client2;
+    private transient Socket client, client2;
     private User_vs_User_host_Activity HostActivity;
     private String clientIP;
     private String mess;
@@ -84,6 +84,7 @@ class ServerThread extends ConnectionThread implements Serializable {
 
                     BufferedReader br_input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                     nome_giocatore2 = br_input.readLine();
+                    Log.i("SERVER", nome_giocatore2);
                     br_input.close();
 
                     //HostActivity.ShowToast("nome host " + nome_giocatore1 + " nome client " + nome_giocatore2);

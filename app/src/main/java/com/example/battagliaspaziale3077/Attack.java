@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class Attack extends Game {
+public class Attack extends Game implements Serializable{
     private int id_pers, modalita;
     private String nome_giocatore1, nome_giocatore2;
     private ConnectionThread comms;
@@ -90,7 +90,7 @@ public class Attack extends Game {
         Navi = (HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("Navi");
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
-        comms = (ConnectionThread) gioco.getSerializableExtra("comms");
+        //comms = (ConnectionThread) gioco.getSerializableExtra("comms");
 
         if (modalita == 1) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
@@ -105,6 +105,7 @@ public class Attack extends Game {
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;         
         }
+        CustomToast.showToast(context, "G1: " + nome_giocatore1 + " G2: " + nome_giocatore2, Toast.LENGTH_SHORT);
         boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
         if(defence)
         {
@@ -282,7 +283,7 @@ public class Attack extends Game {
         defence.putExtra("casellaColpita", casellaColpita);
         defence.putExtra("Navi", (Serializable) Navi);
         defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-        defence.putExtra("comms", (Serializable) comms);
+        //defence.putExtra("comms", (Serializable) comms);
         startActivity(defence);
     }
 
