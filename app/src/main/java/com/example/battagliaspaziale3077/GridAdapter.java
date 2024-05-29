@@ -150,7 +150,11 @@ public class GridAdapter extends BaseAdapter {
         return position % 10;
     } //colonne da 0 a 9
     public boolean CellaOccupata(int posizione,int[] immaginiCasella){
-        if(immaginiCasella[posizione] != 0){
+        if(posizione > 99 || posizione < 0)
+        {
+            return true; //per risolvere bug
+        }
+        else if(immaginiCasella[posizione] != 0){
             return true; //se è occupata
         }
         else {

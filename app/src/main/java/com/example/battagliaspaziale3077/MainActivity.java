@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
     HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
     boolean attacco;
+    boolean primaVolta;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         initialX = new float[navi.length];
         initialY = new float[navi.length];
 
+        primaVolta = false;
         context = this.getApplicationContext();
 
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
@@ -391,23 +393,26 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         return -1;
     }
     public HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter,int[] arrayGridViewIA) {
-        Random random = new Random();
-        gridAdapter = new GridAdapter(this,arrayGridViewIA);
-        for (int i = 0; i < shipSizes.length; i++) { //finchè non ha inserito tutte le navi
-            boolean placed = false;
+        if (!primaVolta){
+            Random random = new Random();
+            gridAdapter = new GridAdapter(this,arrayGridViewIA);
+            for (int i = 0; i < shipSizes.length; i++) { //finchè non ha inserito tutte le navi
+                boolean placed = false;
 
-            //finchè la nave non è posizionata
-            while (!placed) {
-                int position = random.nextInt(100); //da 0 a 99
-                int rotation = random.nextInt(4) * 90; //da 0° a 270°
+                //finchè la nave non è posizionata
+                while (!placed) {
+                    int position = random.nextInt(100); //da 0 a 99
+                    int rotation = random.nextInt(4) * 90; //da 0° a 270°
 
-                //Controlla se è correttamente dentro al gridview e se le celle sono libere
-                if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridViewIA)) {
-                    //inserisce la navi
-                    posizionaNave(i,shipSizes[i],rotation,position,arrayGridViewIA,true);
-                    placed = true;
+                    //Controlla se è correttamente dentro al gridview e se le celle sono libere
+                    if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridViewIA)) {
+                        //inserisce la navi
+                        posizionaNave(i,shipSizes[i],rotation,position,arrayGridViewIA,true);
+                        placed = true;
+                    }
                 }
             }
+            primaVolta = true;
         }
         return shipPositionsAI; //hashmap con posizioni delle navi dell'ai
     }

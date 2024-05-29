@@ -46,7 +46,7 @@ public class Attack extends Game implements Serializable{
     private boolean multiplayer;
     private int[] casellaColpita;
     //array del gridview
-    private int[] arrayFormazioneIA;
+    private static int[] arrayFormazioneIA = new int[100];
     Animation scale_down, scale_up;
     ImageView background;
 
@@ -57,13 +57,14 @@ public class Attack extends Game implements Serializable{
     GridAdapterAttacco gridAdapterAttacco;
     GridAdapter gridAdapter;
     //HashMap per controllare se le navi sono state colpite
-    HashMap<Integer, List<Integer>> formazioneIA;
+    private static  HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
     MainActivity mainActivity;
     float[] initialX, initialY;
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0}; // Gradi di rotazione delle navi
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
+    private static boolean SingolaVolta = false;
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class Attack extends Game implements Serializable{
         modalita = gioco.getIntExtra("mod", 1);
         //comms = (ConnectionThread) gioco.getSerializableExtra("comms");
 
-        if (modalita == 1) {
+        if (modalita == 1 && !SingolaVolta) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = "AI";
@@ -106,11 +107,9 @@ public class Attack extends Game implements Serializable{
             multiplayer = false;
             //bisogna scegliere random personaggi IA
             mainActivity = new MainActivity();
-            arrayFormazioneIA = new int[100];
-            formazioneIA = new HashMap<>();
             formazioneIA = mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA); //l'IA posiziona le navi
-
-        } else {
+            SingolaVolta = true;
+        } else if(modalita != 1){
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = gioco.getStringExtra("nome2");
@@ -182,7 +181,6 @@ public class Attack extends Game implements Serializable{
         });
 
 
-        //bisogna far funzionare l'attacco di giorgia meloni
             GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -404,6 +402,7 @@ public class Attack extends Game implements Serializable{
     //inserisce l'immagine nella casella indicata nel gridview
     public void ImmaginiNavi(int position,int[] immaginiCasella) {
         immaginiCasella[position] = R.drawable.selected;
+        gridAdapterAttacco.notifyDataSetChanged();
     }
     public boolean ControllaSeOutBound(int column, int size, int index, int rotation, int position) {
         //verifica che l'attacco sia correttamente dentro il gridview
