@@ -49,8 +49,6 @@ public class Attack extends Game implements Serializable{
     private static int[] arrayFormazioneIA = new int[100];
     Animation scale_down, scale_up;
     ImageView background;
-
-    //variabili per mossa speciale
     private int counterAttacchi;
     private boolean attaccoSpeciale;
     float startX, startY;
@@ -58,10 +56,11 @@ public class Attack extends Game implements Serializable{
     GridAdapter gridAdapter;
     //HashMap per controllare se le navi sono state colpite
     private static  HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
+   
     MainActivity mainActivity;
     float[] initialX, initialY;
-    int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3}; // Dimensioni delle navi
-    int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0}; // Gradi di rotazione delle navi
+    int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
+    int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
     private static boolean SingolaVolta = false;
@@ -71,19 +70,21 @@ public class Attack extends Game implements Serializable{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attack);
 
+        //context per visualizzare toast
         context = this.getApplicationContext();
 
+        //parte di codice che imposta header color = black
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
+        //aquisizione componeneti da layout
         btn_attacca = (Button) findViewById(R.id.attacco);
         giocatore1 = (TextView) findViewById(R.id.txtNomeG1);
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         background = (ImageView) findViewById(R.id.background);
 
-        //per mossa speciale
         counterAttacchi = 0;
         attaccoSpeciale = false;
         btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
@@ -93,11 +94,12 @@ public class Attack extends Game implements Serializable{
 
         NaviColpite = new HashMap<Integer, List<Integer>>();
 
+        //parte di codice che recupera i dati dall'activity precedente
         Intent gioco = getIntent();
         Navi = (HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("Navi");
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
-        //comms = (ConnectionThread) gioco.getSerializableExtra("comms");
+        comms = (ConnectionThread) gioco.getParcelableExtra("comms");
 
         if (modalita == 1 && !SingolaVolta) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
@@ -116,7 +118,6 @@ public class Attack extends Game implements Serializable{
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;         
         }
-        CustomToast.showToast(context, "G1: " + nome_giocatore1 + " G2: " + nome_giocatore2, Toast.LENGTH_SHORT);
         boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
         if(defence)
         {
@@ -137,6 +138,56 @@ public class Attack extends Game implements Serializable{
 
         gridView.setAdapter(gridAdapterAttacco);
 
+        //azione del bottone che invia data la cella selezionata invia un messaggio a avversario
+        btn_attacca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    btn_attacca.startAnimation(scale_down);
+                    btn_attacca.startAnimation(scale_up);
+                    if(multiplayer)
+                    {
+                        comms.InviaMessaggio(String.valueOf(selectedPos));
+                        comms.RiceviRisposta();
+                        synchronized (comms){
+                            comms.wait(3000);
+                        }
+                        Attacco(comms.GetMessage());
+                    }
+                    else
+                    {
+                        contrallaSeColpita();
+                    }
+                    counterAttacchi++;
+                    if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
+                        //codice per visualizzare l'attacco speciale
+                        if(id_pers != 2){
+                            img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+                        }
+                        counterAttacchi = 0;
+                        attaccoSpeciale = true;
+                    }
+
+                    //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
+                    Intent defence = new Intent(Attack.this, Defence.class);
+                    defence.putExtra("mod", modalita);
+                    defence.putExtra("nome1", nome_giocatore1);
+                    if(multiplayer)
+                    {
+                        defence.putExtra("nome2", comms.getName());
+                    }
+                    defence.putExtra("personaggio", id_pers);
+                    defence.putExtra("casellaColpita", casellaColpita);
+                    defence.putExtra("Navi", (Serializable) Navi);
+                    defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+                    defence.putExtra("comms", comms);
+                    startActivity(defence);
+                }catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         // Utilizza un ViewTreeObserver per memorizzare le posizioni iniziali dopo il layout
         ViewTreeObserver viewTreeObserver = img_mossa_speciale.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -155,8 +206,11 @@ public class Attack extends Game implements Serializable{
 
         context = this.getApplicationContext();
 
+        //animazioni
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+
+        //azione che colora la cella selezionata nella gridview
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -256,45 +310,6 @@ public class Attack extends Game implements Serializable{
         //2 = nave colpita
         //3 = nave colpita e affondata
         casellaColpita = new int[99];
-    }
-
-    public void Attacca_G2(View view) throws InterruptedException {
-        btn_attacca.startAnimation(scale_down);
-        btn_attacca.startAnimation(scale_up);
-        if(multiplayer)
-        {
-            comms.InviaMessaggio(String.valueOf(selectedPos));
-            comms.RiceviRisposta();
-            comms.wait();
-            Attacco(comms.GetMessage());
-        }
-        else
-        {
-            contrallaSeColpita();
-        }
-        counterAttacchi++;
-        if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
-            //codice per visualizzare l'attacco speciale
-            if(id_pers != 2){
-                img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
-            }
-            counterAttacchi = 0;
-            attaccoSpeciale = true;
-        }
-
-        Intent defence = new Intent(Attack.this, Defence.class);
-        defence.putExtra("mod", modalita);
-        defence.putExtra("nome1", nome_giocatore1);
-        if(multiplayer)
-        {
-            defence.putExtra("nome2", comms.getName());
-        }
-        defence.putExtra("personaggio", id_pers);
-        defence.putExtra("casellaColpita", casellaColpita);
-        defence.putExtra("Navi", (Serializable) Navi);
-        defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-        //defence.putExtra("comms", (Serializable) comms);
-        startActivity(defence);
     }
 
     private void contrallaSeColpita() {

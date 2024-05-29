@@ -1,8 +1,12 @@
 package com.example.battagliaspaziale3077;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +16,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class ServerThread extends ConnectionThread implements Serializable {
+
+class ServerThread extends ConnectionThread implements Parcelable {
     private boolean serverRunning;
     private transient ServerSocket serverSocket;
     private int count = 0;
@@ -30,11 +35,11 @@ class ServerThread extends ConnectionThread implements Serializable {
 
     public ServerThread(String nome, int sPort)
     {
-        serverPort = sPort;
-        nome_giocatore1 = nome;
-        primaConnessione = true;
-        inviaMessaggio = false;
-        riceviMessaggio= false;
+        this.serverPort = sPort;
+        this.nome_giocatore1 = nome;
+        this.primaConnessione = true;
+        this.inviaMessaggio = false;
+        this.riceviMessaggio= false;
         /*try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
@@ -55,6 +60,33 @@ class ServerThread extends ConnectionThread implements Serializable {
 
 
     }
+    protected ServerThread(Parcel in) {
+        serverRunning = in.readByte() != 0;
+        count = in.readInt();
+        nome_giocatore1 = in.readString();
+        nome_giocatore2 = in.readString();
+        serverPort = in.readInt();
+        serverIP = in.readString();
+        clientIP = in.readString();
+        mess = in.readString();
+        txt_from_client = in.readString();
+        primaConnessione = in.readByte() != 0;
+        inviaMessaggio = in.readByte() != 0;
+        riceviMessaggio = in.readByte() != 0;
+    }
+
+
+    public static final Creator<ServerThread> CREATOR = new Creator<ServerThread>() {
+        @Override
+        public ServerThread createFromParcel(Parcel in) {
+            return new ServerThread(in);
+        }
+
+        @Override
+        public ServerThread[] newArray(int size) {
+            return new ServerThread[size];
+        }
+    };
 
     public void startServer() {
         serverRunning = true;
@@ -78,7 +110,7 @@ class ServerThread extends ConnectionThread implements Serializable {
                     client = serverSocket.accept();
                     count++;
                     clientIP = String.valueOf(client.getInetAddress());
-                    HostActivity.ChangeLabelText("Dispositivo " + clientIP + " connesso");
+                    HostActivity.ChangeLabelText("Dispositivo :\n" + clientIP + "\n connesso");
 
 
 
@@ -244,5 +276,26 @@ class ServerThread extends ConnectionThread implements Serializable {
     public String Nome_G2()
     {
         return nome_giocatore2;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeByte((byte) (serverRunning ? 1 : 0));
+        dest.writeInt(count);
+        dest.writeString(nome_giocatore1);
+        dest.writeString(nome_giocatore2);
+        dest.writeInt(serverPort);
+        dest.writeString(serverIP);
+        dest.writeString(clientIP);
+        dest.writeString(mess);
+        dest.writeString(txt_from_client);
+        dest.writeByte((byte) (primaConnessione ? 1 : 0));
+        dest.writeByte((byte) (inviaMessaggio ? 1 : 0));
+        dest.writeByte((byte) (riceviMessaggio ? 1 : 0));
     }
 }

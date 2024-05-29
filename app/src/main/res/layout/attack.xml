@@ -39,30 +39,30 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/orbitron_bold"
-        android:text="Giocatore 2"
+        android:text="Avversario"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeG1"
         app:layout_constraintVertical_bias="0.906" />
 
     <TextView
-        android:layout_width="85dp"
-        android:layout_height="16dp"
+        android:layout_width="86dp"
+        android:layout_height="22dp"
         android:fontFamily="@font/orbitron_bold"
-        android:text="Giocatore 1"
+        android:text="Tu"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.951" />
+        app:layout_constraintVertical_bias="0.927" />
 
     <TextView
         android:id="@+id/txtNomeG1"
@@ -92,12 +92,12 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/gridViewAttacco"
+        app:layout_constraintBottom_toTopOf="@+id/gridView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.812" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_attacco_speciale"
@@ -137,7 +137,6 @@
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:onClick="Attacca_G2"
         android:text="ATTACCA"
         android:textColor="@color/white"
         android:textSize="20dp"

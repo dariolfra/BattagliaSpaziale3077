@@ -117,7 +117,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         personaggi.putExtra("nome1", nome_giocatore1);
         personaggi.putExtra("nome2", comms.Nome_G2());
         personaggi.putExtra("attacco", false);
-        //personaggi.putExtra("comms", (Serializable) comms);
+        personaggi.putExtra("comms", comms);
         startActivity(personaggi);
     }
 }

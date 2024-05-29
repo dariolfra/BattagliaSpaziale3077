@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         nome_giocatore2 = personaggi.getStringExtra("nome2");
                     }
                     personaggio = personaggi.getIntExtra("personaggio", 1);
-                    //comms = (ConnectionThread) personaggi.getSerializableExtra("comms");
+                    comms = (ConnectionThread) personaggi.getParcelableExtra("comms");
                     attacco = personaggi.getBooleanExtra("attacco", true);
                     dati_arrivati_correttamente = true;
                 } catch (Exception e) {
@@ -134,21 +134,23 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     gioco =  new Intent(MainActivity.this, Defence.class);
                 }
 
-                /*try {
+                try {
                     comms.InviaMessaggio("done");
                     comms.RiceviRisposta();
-                    comms.wait();
-                    comms.InviaMessaggio("done");*/
-                /*} catch (InterruptedException e) {
+                    synchronized (comms){
+                        comms.wait(3000);
+                    }
+                    comms.InviaMessaggio("done");
+                } catch (InterruptedException e) {
                     //ignoro l'errore
-                }*/
+                }
 
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome1", nome_giocatore1);
                 gioco.putExtra("nome2", nome_giocatore2);
                 gioco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
-                //gioco.putExtra("comms", (Serializable) comms);
+                gioco.putExtra("comms", comms);
                 gioco.putExtra("Navi", (Serializable) shipPositions);
                 startActivity(gioco);
             }

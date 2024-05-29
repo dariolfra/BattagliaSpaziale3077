@@ -123,14 +123,13 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ShowToast("Nome Giocatore : " + nome_giocatore1 + " /Mod : " + modalita);
                 Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                 personaggi.putExtra("mod", modalita);
                 personaggi.putExtra("nome1",nome_giocatore1);
                 personaggi.putExtra("nome2",serverThread.Nome_G2());
                 personaggi.putExtra("attacco", true);
-                //personaggi.putExtra("comms", (Serializable) serverThread);
-                startActivity(personaggi);
+                personaggi.putExtra("comms", serverThread);
+                //startActivity(personaggi);
             }
         });
     }

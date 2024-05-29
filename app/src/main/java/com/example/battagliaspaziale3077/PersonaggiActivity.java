@@ -58,7 +58,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
 
         Intent mod = getIntent();
         modalita = mod.getIntExtra("mod", 1);
-        //comms = (ConnectionThread) mod.getSerializableExtra("comms");
+        comms = (ConnectionThread) mod.getParcelableExtra("comms");
         boolean attacco = mod.getBooleanExtra("attacco", true);
         if(modalita == 1){
             nome_g1 = mod.getStringExtra("nome");
@@ -131,14 +131,16 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         btn_seleziona_personaggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*try {
+                try {
                     comms.InviaMessaggio("done");
                     comms.RiceviRisposta();
-                    comms.wait();
+                    synchronized (comms){
+                        comms.wait(3000);
+                    }
                     comms.InviaMessaggio("done");
                 } catch (InterruptedException e) {
                     //ignoro l'errore
-                }*/
+                }
 
                 btn_seleziona_personaggio.startAnimation(scale_down);
                 btn_seleziona_personaggio.startAnimation(scale_up);
@@ -147,7 +149,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome1", nome_g1);
                 gioco.putExtra("nome2", nome_g2);
-                //gioco.putExtra("comms", (Serializable) comms);
+                gioco.putExtra("comms", comms);
                 gioco.putExtra("attacco", attacco);
                 suono_personaggio(indice);
                 startActivity(gioco);
