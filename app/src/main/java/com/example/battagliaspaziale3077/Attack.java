@@ -294,7 +294,6 @@ public class Attack extends Game implements Serializable{
         customDialog.showDialog(this);
     }
 
-    @Override
     public void Abbandona()
     {
         comms.Abbandona();

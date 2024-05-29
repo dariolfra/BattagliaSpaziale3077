@@ -226,4 +226,10 @@ class ClientThread extends ConnectionThread implements Parcelable {
         dest.writeString(mess);
         dest.writeByte((byte) (gameEnded ? 1 : 0));
     }
+
+    @Override
+    public void Abbandona()
+    {
+        InviaMessaggio("vittoria");
+    }
 }
