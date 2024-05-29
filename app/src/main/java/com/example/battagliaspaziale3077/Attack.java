@@ -101,16 +101,18 @@ public class Attack extends Game implements Serializable{
         modalita = gioco.getIntExtra("mod", 1);
         comms = (ConnectionThread) gioco.getParcelableExtra("comms");
 
-        if (modalita == 1 && !SingolaVolta) {
+        if (modalita == 1) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = "AI";
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
             //bisogna scegliere random personaggi IA
-            mainActivity = new MainActivity();
-            formazioneIA = mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA); //l'IA posiziona le navi
-            SingolaVolta = true;
+            if(!SingolaVolta){
+                mainActivity = new MainActivity();
+                formazioneIA = mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA); //l'IA posiziona le navi
+                SingolaVolta = true;
+            }
         } else if(modalita != 1){
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
@@ -175,6 +177,9 @@ public class Attack extends Game implements Serializable{
                     if(multiplayer)
                     {
                         defence.putExtra("nome2", comms.getName());
+                    }
+                    else{
+                        defence.putExtra("nome2", nome_giocatore2);
                     }
                     defence.putExtra("personaggio", id_pers);
                     defence.putExtra("casellaColpita", casellaColpita);
@@ -297,7 +302,9 @@ public class Attack extends Game implements Serializable{
 
     public void Abbandona()
     {
-        comms.Abbandona();
+        if(modalita != 1){
+            comms.Abbandona();
+        }
         Intent HA = new Intent(Attack.this, HomeActivity.class);
         startActivity(HA);
     }

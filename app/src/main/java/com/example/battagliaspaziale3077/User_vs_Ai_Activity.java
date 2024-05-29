@@ -50,6 +50,8 @@ public class    User_vs_Ai_Activity extends AppCompatActivity {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
+                btn_gioca.startAnimation(scale_down);
+                btn_gioca.startAnimation(scale_up);
                 nome_corretto = false;
                 try{
                     nome_giocatore = String.valueOf(txt_nome.getText());
@@ -61,13 +63,10 @@ public class    User_vs_Ai_Activity extends AppCompatActivity {
                     }
                 }catch (Exception e){
                     System.out.println(e.toString());
-                    //Toast toast = Toast.makeText(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
                     CustomToast.showToast(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
                     nome_corretto = false;
                 }
                 if(nome_corretto){
-                    btn_gioca.startAnimation(scale_down);
-                    btn_gioca.startAnimation(scale_up);
                     txt_nome.setText("");
                     Intent gioco = new Intent(User_vs_Ai_Activity.this, PersonaggiActivity.class);
                     gioco.putExtra("mod", modalita);

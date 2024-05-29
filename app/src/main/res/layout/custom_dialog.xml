@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@android:color/transparent"
     tools:ignore="MissingDefaultResource">
 
     <androidx.cardview.widget.CardView
@@ -63,19 +64,19 @@
                 android:id="@+id/abbandona"
                 android:layout_width="266dp"
                 android:layout_height="wrap_content"
-                android:text="ABBANDONA"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/dialog_button"/>
+                android:background="@drawable/dialog_button"
+                android:text="ABBANDONA" />
 
             <Button
                 android:id="@+id/annulla"
                 android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:text="ANNULLA"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/dialog_button"/>
+                android:background="@drawable/dialog_button"
+                android:text="ANNULLA" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
