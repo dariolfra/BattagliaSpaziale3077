@@ -131,17 +131,18 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         btn_seleziona_personaggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    comms.InviaMessaggio("done");
-                    comms.RiceviRisposta();
-                    synchronized (comms){
-                        comms.wait(3000);
+                if(modalita != 1){
+                    try {
+                        comms.InviaMessaggio("done");
+                        comms.RiceviRisposta();
+                        synchronized (comms){
+                            comms.wait(3000);
+                        }
+                        comms.InviaMessaggio("done");
+                    } catch (InterruptedException e) {
+                        //ignoro l'errore
                     }
-                    comms.InviaMessaggio("done");
-                } catch (InterruptedException e) {
-                    //ignoro l'errore
                 }
-
                 btn_seleziona_personaggio.startAnimation(scale_down);
                 btn_seleziona_personaggio.startAnimation(scale_up);
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
