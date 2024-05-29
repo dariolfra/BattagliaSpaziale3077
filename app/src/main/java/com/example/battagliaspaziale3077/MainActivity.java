@@ -131,18 +131,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 {
                     gioco =  new Intent(MainActivity.this, Defence.class);
                 }
-
-                try {
-                    comms.InviaMessaggio("done");
-                    comms.RiceviRisposta();
-                    synchronized (comms){
-                        comms.wait(3000);
+                if(modalita != 1){
+                    try {
+                        comms.InviaMessaggio("done");
+                        comms.RiceviRisposta();
+                        synchronized (comms){
+                            comms.wait(3000);
+                        }
+                        comms.InviaMessaggio("done");
+                    } catch (InterruptedException e) {
+                        //ignoro l'errore
                     }
-                    comms.InviaMessaggio("done");
-                } catch (InterruptedException e) {
-                    //ignoro l'errore
                 }
-
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome1", nome_giocatore1);
                 gioco.putExtra("nome2", nome_giocatore2);
