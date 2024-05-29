@@ -298,4 +298,10 @@ class ServerThread extends ConnectionThread implements Parcelable {
         dest.writeByte((byte) (inviaMessaggio ? 1 : 0));
         dest.writeByte((byte) (riceviMessaggio ? 1 : 0));
     }
+
+    @Override
+    public void Abbandona()
+    {
+        InviaMessaggio("vittoria");
+    }
 }

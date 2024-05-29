@@ -110,8 +110,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         txt_porta_server.setText("");
     }
 
-    public void ChangePage()
-    {
+    public void ChangePage() {
         Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
         personaggi.putExtra("mod", modalita);
         personaggi.putExtra("nome1", nome_giocatore1);
