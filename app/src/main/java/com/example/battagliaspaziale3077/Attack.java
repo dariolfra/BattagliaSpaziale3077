@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,7 +51,7 @@ public class Attack extends Game implements Serializable{
     Animation scale_down, scale_up;
     ImageView background;
     private int counterAttacchi;
-    private boolean attaccoSpeciale;
+    private static boolean attaccoSpeciale;
     float startX, startY;
     GridAdapterAttacco gridAdapterAttacco;
     GridAdapter gridAdapter;
@@ -64,6 +65,7 @@ public class Attack extends Game implements Serializable{
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
     private static boolean SingolaVolta = false;
+    private static int attacchi_a_segno = 0;
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,8 +322,21 @@ public class Attack extends Game implements Serializable{
 
     private void contrallaSeColpita() {
         if(arrayFormazioneIA[selectedPos] != 0){
+            CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
+            casellaColpita[selectedPos] = R.drawable.nave_colpita;
+            attacchi_a_segno++;
+            Log.i("ATTACCHI", "A SEGNO " + attacchi_a_segno);
+            if(attacchi_a_segno == 5){
+                attaccoSpeciale = true;
+                attacchi_a_segno = 0;
+                CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
+            }
+        }
+        else{
+            CustomToast2.showToast(context, "Acqua!", 5);
             casellaColpita[selectedPos] = R.drawable.naveda1;
         }
+
     }
 
     public boolean canAttack()
@@ -340,10 +355,18 @@ public class Attack extends Game implements Serializable{
     {
         if(result == "colpito")
         {
+            CustomToast2.showToast(context, "Bersaglio Colpito!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 2;
+            attacchi_a_segno += 1;
+            if(attacchi_a_segno == 5){
+                attaccoSpeciale = true;
+                attacchi_a_segno = 0;
+                CustomToast2.showToast(context, "Attacco Speciale disponibile!", Toast.LENGTH_SHORT);
+            }
         }
         else if(result == "acqua")
         {
+            CustomToast2.showToast(context, "Acqua!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 1;
         }
         else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
@@ -398,12 +421,14 @@ public class Attack extends Game implements Serializable{
         if (attaccoSpeciale) { //se posso fare la mossa speciale
             if (id_pers == 2) { //controllo se sono Giorgia Meloni
                 AttaccoRandom(casellaColpita);
-                attaccoSpeciale = false;
             }
+            else{
+                img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
+            }
+            attaccoSpeciale = false;
         }
         else { //se non è ancora tempo della mossa speciale
-            int i = 5 - counterAttacchi;
-            CustomToast.showToast(this,"Attacco speciale non disponibile",5);
+            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + attacchi_a_segno + " attacchi a segno",5);
         }
     }
 
@@ -411,6 +436,7 @@ public class Attack extends Game implements Serializable{
     {
 
     }
+
     private void AttaccoRandom(int[] immaginiCaselle) { //attacco della meloni
         for (int i = 0; i < 7; i ++){
             Random random = new Random();
