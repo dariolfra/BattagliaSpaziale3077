@@ -43,7 +43,7 @@ public class Attack extends Game implements Serializable{
     private TextView giocatore1, giocatore2;
     private ImageView immagine_pers, img_mossa_speciale;
     private int pos;
-    private int selectedPos;
+    private int selectedPos = -1;
     private boolean multiplayer;
     private int[] casellaColpita;
     //array del gridview
@@ -209,8 +209,6 @@ public class Attack extends Game implements Serializable{
                 img_mossa_speciale.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-
         context = this.getApplicationContext();
 
         //animazioni
@@ -317,7 +315,7 @@ public class Attack extends Game implements Serializable{
         //1 = buco nell'acqua
         //2 = nave colpita
         //3 = nave colpita e affondata
-        casellaColpita = new int[99];
+        casellaColpita = new int[100];
     }
 
     private void contrallaSeColpita() {
@@ -353,7 +351,7 @@ public class Attack extends Game implements Serializable{
 
     public void Attacco(String result)
     {
-        if(result == "colpito")
+        if(selectedPos != -1)
         {
             CustomToast2.showToast(context, "Bersaglio Colpito!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 2;
