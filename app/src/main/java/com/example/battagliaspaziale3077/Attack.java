@@ -42,7 +42,7 @@ public class Attack extends Game implements Serializable{
     private TextView giocatore1, giocatore2;
     private ImageView immagine_pers, img_mossa_speciale;
     private int pos;
-    private int selectedPos;
+    private int selectedPos = -1;
     private boolean multiplayer;
     private int[] casellaColpita;
     //array del gridview
@@ -202,8 +202,6 @@ public class Attack extends Game implements Serializable{
                 img_mossa_speciale.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-
         context = this.getApplicationContext();
 
         //animazioni
@@ -308,12 +306,13 @@ public class Attack extends Game implements Serializable{
         //1 = buco nell'acqua
         //2 = nave colpita
         //3 = nave colpita e affondata
-        casellaColpita = new int[99];
+        casellaColpita = new int[100];
     }
 
     private void contrallaSeColpita() {
         if(arrayFormazioneIA[selectedPos] != 0){
-            casellaColpita[selectedPos] = R.drawable.naveda1;
+            casellaColpita[selectedPos] = R.drawable.nave_colpita;
+            gridAdapterAttacco.notifyDataSetChanged();
         }
     }
 
@@ -331,17 +330,20 @@ public class Attack extends Game implements Serializable{
 
     public void Attacco(String result)
     {
-        if(result == "colpito")
+        if(selectedPos != -1)
         {
-            casellaColpita[selectedPos] = 2;
-        }
-        else if(result == "acqua")
-        {
-            casellaColpita[selectedPos] = 1;
-        }
-        else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
-        {
-            NaveColpitaEAffondata(result.split("|")[1]);
+            if(result == "colpito")
+            {
+                casellaColpita[selectedPos] = R.drawable.nave_colpita;
+            }
+            else if(result == "acqua")
+            {
+                casellaColpita[selectedPos] = 1;
+            }
+            else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
+            {
+                NaveColpitaEAffondata(result.split("|")[1]);
+            }
         }
     }
 
