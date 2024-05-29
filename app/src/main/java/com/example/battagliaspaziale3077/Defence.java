@@ -110,7 +110,9 @@ public class Defence extends Game implements Serializable {
 
     public void Abbandona()
     {
-        comms.Abbandona();
+        if(modalita != 1){
+            comms.Abbandona();
+        }
         Intent HA = new Intent(Defence.this, HomeActivity.class);
         startActivity(HA);
     }
