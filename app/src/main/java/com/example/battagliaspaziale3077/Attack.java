@@ -47,7 +47,7 @@ public class Attack extends Game implements Serializable{
     private int pos;
     private int selectedPos = -1;
     private boolean multiplayer;
-    private int[] casellaColpita;
+    private static int[] casellaColpita = new int[100];
     //array del gridview
     private static final int[] arrayFormazioneIA = new int[100];
     private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 213116544, 2131165443, 2131165440};
@@ -128,7 +128,7 @@ public class Attack extends Game implements Serializable{
         if(defence)
         {
             NaviColpite = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviColpite");
-            casellaColpita = gioco.getIntArrayExtra("casellaColpita");
+            //casellaColpita = gioco.getIntArrayExtra("casellaColpita");
             NaviAffondate = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviAffondate");
         }
 
@@ -301,15 +301,6 @@ public class Attack extends Game implements Serializable{
         }
         Intent HA = new Intent(Attack.this, HomeActivity.class);
         startActivity(HA);
-    }
-
-    public Attack()
-    {
-        //0 = non ancora colpita
-        //1 = buco nell'acqua
-        //2 = nave colpita
-        //3 = nave colpita e affondata
-        casellaColpita = new int[100];
     }
 
     private void contrallaSeColpita() {
