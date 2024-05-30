@@ -51,7 +51,7 @@ public class Attack extends Game implements Serializable{
     Animation scale_down, scale_up;
     ImageView background;
     private int counterAttacchi;
-    private static boolean attaccoSpeciale;
+    private static boolean attaccoSpeciale = false;
     float startX, startY;
     GridAdapterAttacco gridAdapterAttacco;
     GridAdapter gridAdapter;
@@ -66,6 +66,7 @@ public class Attack extends Game implements Serializable{
     private HashMap<Integer, List<Integer>> NaviColpite;
     private static boolean SingolaVolta = false;
     private static int attacchi_a_segno = 0;
+    private static int attacchi_necessari_att_speciale = 5;
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,6 @@ public class Attack extends Game implements Serializable{
         background = (ImageView) findViewById(R.id.background);
 
         counterAttacchi = 0;
-        attaccoSpeciale = false;
         btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
         img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
 
@@ -162,7 +162,7 @@ public class Attack extends Game implements Serializable{
                     {
                         contrallaSeColpita();
                     }
-                    counterAttacchi++;
+                    /*counterAttacchi++;
                     if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
                         //codice per visualizzare l'attacco speciale
                         if(id_pers != 2){
@@ -170,7 +170,7 @@ public class Attack extends Game implements Serializable{
                         }
                         counterAttacchi = 0;
                         attaccoSpeciale = true;
-                    }
+                    }*/
 
                     //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
                     Intent defence = new Intent(Attack.this, Defence.class);
@@ -325,8 +325,6 @@ public class Attack extends Game implements Serializable{
             attacchi_a_segno++;
             Log.i("ATTACCHI", "A SEGNO " + attacchi_a_segno);
             if(attacchi_a_segno == 5){
-                attaccoSpeciale = true;
-                attacchi_a_segno = 0;
                 CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
             }
         }
@@ -357,8 +355,6 @@ public class Attack extends Game implements Serializable{
             casellaColpita[selectedPos] = 2;
             attacchi_a_segno += 1;
             if(attacchi_a_segno == 5){
-                attaccoSpeciale = true;
-                attacchi_a_segno = 0;
                 CustomToast2.showToast(context, "Attacco Speciale disponibile!", Toast.LENGTH_SHORT);
             }
         }
@@ -416,17 +412,17 @@ public class Attack extends Game implements Serializable{
         btn_att_speciale.startAnimation(scale_down);
         btn_att_speciale.startAnimation(scale_up);;
         //img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
-        if (attaccoSpeciale) { //se posso fare la mossa speciale
+        if (attacchi_a_segno == 5) { //se posso fare la mossa speciale
             if (id_pers == 2) { //controllo se sono Giorgia Meloni
                 AttaccoRandom(casellaColpita);
             }
-            else{
+            else {
                 img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
             }
-            attaccoSpeciale = false;
+            attacchi_a_segno = 0;
         }
         else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + attacchi_a_segno + " attacchi a segno",5);
+            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " attacchi a segno",5);
         }
     }
 
