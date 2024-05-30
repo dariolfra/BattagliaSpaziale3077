@@ -63,7 +63,7 @@ public class Defence extends Game implements Serializable {
         comms = (ConnectionThread) attack.getParcelableExtra("comms");
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
-        NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondata");
+        NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
         id_pers = attack.getIntExtra("personaggio", 1);
         modalita = attack.getIntExtra("mod", 1);
         casellaColpita = attack.getIntArrayExtra("casellaColpita");
@@ -92,7 +92,7 @@ public class Defence extends Game implements Serializable {
             NaviAffondate = new HashMap<Integer, List<Integer>>();
         }
 
-        AggiornaTabella();
+        //AggiornaTabella();
 
         try {
             Gioca();
@@ -141,11 +141,12 @@ public class Defence extends Game implements Serializable {
         attack.putExtra("personaggio", id_pers);
         attack.putExtra("nome1", nome_giocatore1);
         attack.putExtra("NaviColpite", (Serializable) NaviColpite);
+        attack.putExtra("NaviAffondate", (Serializable) NaviAffondate);
         if(multiplayer)
         {
             attack.putExtra("nome2", nome_giocatore2);
         }
-        AggiornaTabella();
+        //AggiornaTabella();
         startActivity(attack);
     }
 

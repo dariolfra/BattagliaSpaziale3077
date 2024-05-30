@@ -28,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -47,26 +49,26 @@ public class Attack extends Game implements Serializable{
     private boolean multiplayer;
     private int[] casellaColpita;
     //array del gridview
-    private static int[] arrayFormazioneIA = new int[100];
+    private static final int[] arrayFormazioneIA = new int[100];
+    private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 213116544, 2131165443, 2131165440};
     Animation scale_down, scale_up;
     ImageView background;
-    private int counterAttacchi;
-    private static boolean attaccoSpeciale = false;
     float startX, startY;
     GridAdapterAttacco gridAdapterAttacco;
     GridAdapter gridAdapter;
     //HashMap per controllare se le navi sono state colpite
-    private static  HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
-   
+    private static HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
     MainActivity mainActivity;
     float[] initialX, initialY;
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite;
+    private HashMap<Integer, List<Integer>> NaviAffondate;
     private static boolean SingolaVolta = false;
     private static int attacchi_a_segno = 0;
     private static int attacchi_necessari_att_speciale = 5;
+    private static final List<Integer> posizioni_colpite = new ArrayList<Integer>();
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +90,17 @@ public class Attack extends Game implements Serializable{
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         background = (ImageView) findViewById(R.id.background);
 
-        counterAttacchi = 0;
         btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
         img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
 
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         NaviColpite = new HashMap<Integer, List<Integer>>();
+        NaviAffondate = new HashMap<Integer, List<Integer>>();
 
         //parte di codice che recupera i dati dall'activity precedente
         Intent gioco = getIntent();
-        Navi = (HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("Navi");
+        Navi = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("Navi");
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
         comms = (ConnectionThread) gioco.getParcelableExtra("comms");
@@ -112,10 +114,10 @@ public class Attack extends Game implements Serializable{
             //bisogna scegliere random personaggi IA
             if(!SingolaVolta){
                 mainActivity = new MainActivity();
-                formazioneIA = mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA); //l'IA posiziona le navi
+                formazioneIA.putAll(mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA)); //l'IA posiziona le navi
                 SingolaVolta = true;
             }
-        } else if(modalita != 1){
+        } else {
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = gioco.getStringExtra("nome2");
@@ -127,6 +129,7 @@ public class Attack extends Game implements Serializable{
         {
             NaviColpite = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviColpite");
             casellaColpita = gioco.getIntArrayExtra("casellaColpita");
+            NaviAffondate = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviAffondate");
         }
 
         popola_mosse_speciale();
@@ -162,15 +165,6 @@ public class Attack extends Game implements Serializable{
                     {
                         contrallaSeColpita();
                     }
-                    /*counterAttacchi++;
-                    if(counterAttacchi == 5){ //dopo 5 attacchi si sblocca la mossa speciale
-                        //codice per visualizzare l'attacco speciale
-                        if(id_pers != 2){
-                            img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
-                        }
-                        counterAttacchi = 0;
-                        attaccoSpeciale = true;
-                    }*/
 
                     //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
                     Intent defence = new Intent(Attack.this, Defence.class);
@@ -187,6 +181,7 @@ public class Attack extends Game implements Serializable{
                     defence.putExtra("casellaColpita", casellaColpita);
                     defence.putExtra("Navi", (Serializable) Navi);
                     defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+                    defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
                     defence.putExtra("comms", comms);
                     startActivity(defence);
                 }catch (InterruptedException e) {
@@ -234,7 +229,7 @@ public class Attack extends Game implements Serializable{
                 }
                 else
                 {
-                    CustomToast.showToast(context, "casella già attaccata, selezionarne un altra", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "Attacco già sferrato in questo punto", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -288,7 +283,6 @@ public class Attack extends Game implements Serializable{
                 }
                 return true;
             });
-            attaccoSpeciale = false;
         }
 
     //}
@@ -323,18 +317,49 @@ public class Attack extends Game implements Serializable{
             CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
             casellaColpita[selectedPos] = R.drawable.nave_colpita;
             attacchi_a_segno++;
-            Log.i("ATTACCHI", "A SEGNO " + attacchi_a_segno);
             if(attacchi_a_segno == 5){
                 CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
             }
+            posizioni_colpite.add(selectedPos);
         }
         else{
             CustomToast2.showToast(context, "Acqua!", 5);
             casellaColpita[selectedPos] = R.drawable.naveda1;
         }
-
+        boolean risultato = Controllo_Fine_Gioco_AI();
+        if(risultato){
+            CustomToast2.showToast(context, "VITTORIA", Toast.LENGTH_SHORT);
+        }
     }
 
+    public boolean Controllo_Fine_Gioco_AI(){
+        boolean risultato = false;
+        int navi_affondate = 0;
+        for(int id : id_navi){
+            List<Integer> posizioni_nave_IA = formazioneIA.get(id);
+            int ship_size = posizioni_nave_IA.size();
+            int colpi_a_segno = 0;
+            for(int pos : posizioni_colpite){
+                if(posizioni_nave_IA.contains(pos)){
+                    colpi_a_segno++;
+                }
+            }
+            if(colpi_a_segno == ship_size){
+                navi_affondate++;
+                Nave_Affondata(posizioni_nave_IA);
+            }
+        }
+        if(navi_affondate == 6){
+            risultato = true;
+        }
+        return risultato;
+    }
+
+    public void Nave_Affondata(List<Integer> lista){
+        for(Integer i : lista){
+            casellaColpita[i] = R.drawable.nave_affondata;
+        }
+    }
     public boolean canAttack()
     {
         if (casellaColpita[pos] != 0)
@@ -354,7 +379,7 @@ public class Attack extends Game implements Serializable{
             CustomToast2.showToast(context, "Bersaglio Colpito!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 2;
             attacchi_a_segno += 1;
-            if(attacchi_a_segno == 5){
+            if(attacchi_a_segno >= 5){
                 CustomToast2.showToast(context, "Attacco Speciale disponibile!", Toast.LENGTH_SHORT);
             }
         }
@@ -412,7 +437,7 @@ public class Attack extends Game implements Serializable{
         btn_att_speciale.startAnimation(scale_down);
         btn_att_speciale.startAnimation(scale_up);;
         //img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
-        if (attacchi_a_segno == 5) { //se posso fare la mossa speciale
+        if (attacchi_a_segno >= 5) { //se posso fare la mossa speciale
             if (id_pers == 2) { //controllo se sono Giorgia Meloni
                 AttaccoRandom(casellaColpita);
             }
@@ -422,14 +447,10 @@ public class Attack extends Game implements Serializable{
             attacchi_a_segno = 0;
         }
         else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " attacchi a segno",5);
+            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " attacchi",Toast.LENGTH_LONG);
         }
     }
 
-    public void CambiaImmagini()
-    {
-
-    }
 
     private void AttaccoRandom(int[] immaginiCaselle) { //attacco della meloni
         for (int i = 0; i < 7; i ++){

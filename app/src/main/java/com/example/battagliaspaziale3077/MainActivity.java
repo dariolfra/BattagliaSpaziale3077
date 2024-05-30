@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -151,7 +152,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 gioco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
                 gioco.putExtra("comms", comms);
-                gioco.putExtra("Navi", (Serializable) shipPositions);
+                if(modalita == 1){
+                    gioco.putExtra("Navi", (Serializable) shipPositionsAI);
+                }
+                else{
+                    gioco.putExtra("Navi", (Serializable) shipPositions);
+                }
                 startActivity(gioco);
             }
         });
@@ -296,7 +302,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         } else {
                             ImmaginiNavi(posizione + j * 10, index, immaginiCasella,false);
                             positions.add(posizione + j * 10);
-
                         }
                         if ((index == 0 && j == 1 && rotationDegrees == 90) || (index == 2 && j == 0 && rotationDegrees == 90) || (index == 5 && j == 2 && rotationDegrees == 90) || (index == 4 && j == 2 && rotationDegrees == 90)) {
                             p = posizione + j * 10 + 1;
