@@ -48,7 +48,6 @@ public class Attack extends Game implements Serializable{
     private int selectedPos = -1;
     private boolean multiplayer;
     private static int[] casellaColpita = new int[100];
-    //array del gridview
     private static final int[] arrayFormazioneIA = new int[100];
     private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 213116544, 2131165443, 2131165440};
     Animation scale_down, scale_up;
@@ -63,8 +62,8 @@ public class Attack extends Game implements Serializable{
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
     private HashMap<Integer, List<Integer>> Navi;
-    private HashMap<Integer, List<Integer>> NaviColpite;
-    private HashMap<Integer, List<Integer>> NaviAffondate;
+    private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
     private static boolean SingolaVolta = false;
     private static int attacchi_a_segno = 0;
     private static int attacchi_necessari_att_speciale = 5;
@@ -127,9 +126,8 @@ public class Attack extends Game implements Serializable{
         boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
         if(defence)
         {
-            NaviColpite = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviColpite");
-            //casellaColpita = gioco.getIntArrayExtra("casellaColpita");
-            NaviAffondate = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviAffondate");
+            NaviColpite.putAll((HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("NaviColpite"));
+            NaviAffondate.putAll((HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviAffondate"));
         }
 
         popola_mosse_speciale();
@@ -186,6 +184,8 @@ public class Attack extends Game implements Serializable{
                     startActivity(defence);
                 }catch (InterruptedException e) {
                     throw new RuntimeException(e);
+                }catch (Exception e){
+                    CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
                 }
             }
         });

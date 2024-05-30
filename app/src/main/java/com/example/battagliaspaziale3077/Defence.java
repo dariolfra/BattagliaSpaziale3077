@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,16 +20,17 @@ import android.widget.Button;
 import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
 import java.util.Random;
 
 public class Defence extends Game implements Serializable {
-    private Integer[] NaveIDs = new Integer[]{2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
-    private HashMap<Integer, List<Integer>> Navi;
-    private HashMap<Integer, List<Integer>> NaviColpite;
-    private HashMap<Integer, List<Integer>> NaviAffondate;
+    private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
+    private static HashMap<Integer, List<Integer>> Navi = new HashMap<Integer, List<Integer>>();
+    private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
+    private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, Drawable> indici_personaggi;
     private ConnectionThread comms;
     private int id_pers;
@@ -37,6 +40,7 @@ public class Defence extends Game implements Serializable {
     private ImageView background ,immagine_pers;
     private TextView giocatore1,giocatore2;
     private Context context;
+    private Animation scale_down, scale_up;
     private static int[] casellaColpita = new int[100];
     private static int[] tabella = new int[100];
     private GridAdapterDifesa gridAdapterDifesa;
@@ -89,12 +93,20 @@ public class Defence extends Game implements Serializable {
         popola_personaggi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
+        scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
 
-        if (NaviColpite == null) {
-            NaviColpite = new HashMap<Integer, List<Integer>>();
+        if (NaviColpite.isEmpty()) {
+            for(Integer i : NaveIDs){
+                NaviColpite.put(i, new ArrayList<>());
+                Log.i("COLPITE", i.toString());
+            }
         }
-        if (NaviAffondate == null) {
-            NaviAffondate = new HashMap<Integer, List<Integer>>();
+        if (NaviAffondate.isEmpty()) {
+            for(Integer i : NaveIDs){
+                NaviAffondate.put(i, new ArrayList<>());
+                Log.i("AFFONDATE", i.toString());
+            }
         }
 
         AggiornaTabella();
@@ -108,6 +120,8 @@ public class Defence extends Game implements Serializable {
         btn_torna_attacco.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                btn_torna_attacco.startAnimation(scale_down);
+                btn_torna_attacco.startAnimation(scale_up);
                 if(attacco_ai_effettuato){
                     Intent attack = new Intent(Defence.this, Attack.class);
                     attack.putExtra("comms",comms);
@@ -164,20 +178,18 @@ public class Defence extends Game implements Serializable {
             AttaccoAI(pos);
             attacco_ai_effettuato = true;
         }
-        //AggiornaTabella();
+        AggiornaTabella();
     }
 
     public void AttaccoAI(int posizione) {
         boolean colpita = false;
-        for(int i : NaveIDs){
-            Log.i("AI", "naveeeeee");
+        for(Integer i : NaveIDs){
             List<Integer> posizioni_nave = Navi.get(i);
             for(int j : posizioni_nave){
                 if(j == posizione){
                     tabella[posizione] = R.drawable.nave_colpita;
-                    //NaveColpita(i, posizione);
-                    //String s = NaveColpitaAffondata(i);
-                    gridAdapterDifesa.notifyDataSetChanged();
+                    NaveColpita(i, posizione);
+                    String s = NaveColpitaAffondata(i);
                     colpita = true;
                     CustomToast2.showToast(context, "Bersaglio colpito da AI", Toast.LENGTH_SHORT);
                     break;
@@ -189,6 +201,7 @@ public class Defence extends Game implements Serializable {
             CustomToast2.showToast(context, "Acqua di AI!", Toast.LENGTH_SHORT);
         }
     }
+
     public int genera_pos_attacco_ai_random(){
         int pos = -1;
         boolean corretta = false;
@@ -200,6 +213,14 @@ public class Defence extends Game implements Serializable {
             }
         }
         return pos;
+    }
+
+    public boolean Controllo_Fine_Gioco_AI(){
+        boolean risultato = false;
+        //PROBLEMA caselle che sono state colpite -> quindi rosse -> sovrascritte da selezionata
+        //PROBLEMA problema riga 263, 264 ID non so come non combiacia
+        //MANCA mossa speciale + controllo vittoria AI
+        return risultato;
     }
 
     public String AspettaMessaggio() throws InterruptedException {
@@ -246,7 +267,7 @@ public class Defence extends Game implements Serializable {
         List<Integer> posizioni = Navi.get(ID);
         for (Integer i : posizioni)
         {
-            if (posizioni.get(i) == pos)
+            if (i == pos)
             {
                 posizioni.remove(i);
                 break;
@@ -258,7 +279,7 @@ public class Defence extends Game implements Serializable {
     {
         String mess = "colpita e affondata|";
         List<Integer> posizioni = NaviColpite.get(ID);
-        for (int i = posizioni.size(); i >= 0; i--)
+        for (int i = posizioni.size()-1; i >= 0; i--)
         {
             mess = mess + String.valueOf(posizioni.get(i));
             if(posizioni.size() > 1)
@@ -272,27 +293,24 @@ public class Defence extends Game implements Serializable {
     }
 
     public void AggiornaTabella() {
-        for (int i = 0; i < NaveIDs.length; i++) {
-            Log.i("DEF", "Navi");
-            for (Integer pos : Navi.get(NaveIDs[i])) {
+        for (Integer i : NaveIDs) {
+            for (Integer pos : Navi.get(i)) {
                 tabella[pos] = R.drawable.naveda1;
             }
         }
         if(!NaviColpite.isEmpty()){
-            Log.i("DEF", "colpite");
-            for (int i = 0; i < NaviColpite.size(); i++) {
-                for (Integer pos : NaviColpite.get(i)) {
+            NaviColpite.forEach((k, v) -> {
+                for (Integer pos : v) {
                     tabella[pos] = R.drawable.nave_colpita;
                 }
-            }
+            });
         }
         if(!NaviAffondate.isEmpty()){
-            Log.i("DEF", "affondate");
-            for (int i = 0; i < NaviAffondate.size(); i++) {
-                for (Integer pos : NaviAffondate.get(i)) {
+            NaviAffondate.forEach((k, v) -> {
+                for (Integer pos : v) {
                     tabella[pos] = R.drawable.x;
                 }
-            }
+            });
         }
         gridAdapterDifesa.notifyDataSetChanged();
     }

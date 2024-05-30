@@ -18,12 +18,12 @@
 
     <Button
         android:id="@+id/btn_connettiti"
-        android:layout_width="255dp"
-        android:layout_height="65dp"
+        android:layout_width="286dp"
+        android:layout_height="70dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:text="Unisciti alla Partita"
+        android:text="UNISCITI ALLA PARTITA"
         android:textColor="@color/white"
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"

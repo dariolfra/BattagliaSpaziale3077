@@ -66,11 +66,11 @@
 
     <TextView
         android:id="@+id/lbl_titolo_pagina_host"
-        android:layout_width="310dp"
-        android:layout_height="43dp"
+        android:layout_width="309dp"
+        android:layout_height="63dp"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:paddingTop="4dp"
+        android:paddingTop="14dp"
         android:text="GIOCA CONTRO AI"
         android:textAlignment="center"
         android:textColor="@color/white"

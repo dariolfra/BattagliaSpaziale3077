@@ -16,6 +16,6 @@
         android:text="Custom Message"
         android:textColor="#FF0000"
         android:fontFamily="@font/orbitron_bold"
-        android:textSize="15dp">
+        android:textSize="16sp">
     </TextView>
 </LinearLayout>

@@ -152,13 +152,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 gioco.putExtra("personaggio", personaggio);
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
                 gioco.putExtra("comms", comms);
-                if(modalita == 1){
-                    gioco.putExtra("NaviAI", (Serializable) shipPositionsAI);
-                    gioco.putExtra("Navi", (Serializable) shipPositions);
-                }
-                else{
-                    gioco.putExtra("Navi", (Serializable) shipPositions);
-                }
+                gioco.putExtra("Navi", (Serializable) shipPositions);
                 startActivity(gioco);
             }
         });
