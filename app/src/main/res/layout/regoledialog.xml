@@ -21,14 +21,14 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:srcCompat="@drawable/selected" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="235dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="32dp"
+            android:layout_marginVertical="22dp"
             android:layout_marginStart="95dp"
             android:fontFamily="@font/orbitron_bold"
             android:text="Questa immagine indica che la casella è selezionata e/o il colpo ha fatto acqua"
@@ -40,7 +40,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="100dp"
             app:srcCompat="@drawable/nave_colpita" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="95dp"
-            android:layout_marginTop="122dp"
+            android:layout_marginTop="104dp"
             android:fontFamily="@font/orbitron_bold"
             android:text="Questa immagine indica che la nave è stata colpita ma non affondata"
             android:textAlignment="center"
@@ -59,7 +59,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="205dp"
+            android:layout_marginTop="180dp"
             app:srcCompat="@drawable/nave_affondata" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="95dp"
-            android:layout_marginTop="205dp"
+            android:layout_marginTop="180dp"
             android:fontFamily="@font/orbitron_bold"
             android:text="Questa immagine indica che la nave è stata colpita e affondata"
             android:textAlignment="center"
@@ -78,9 +78,9 @@
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="355dp"
+            android:layout_marginTop="330dp"
             android:fontFamily="@font/orbitron_bold"
-            android:text="La mossa speciale sarà disponibile solamente dopo 5 colpi andati a segno da parte di una delle due parti. Non è possibile attaccare nello stesso punto e la vittoria va al giocatore che abbatte le flotte nemiche per primo, la mossa speciale varia in base al personaggio selezionato."
+            android:text="La mossa speciale sarà disponibile solamente dopo 5 colpi andati a segno da parte di una delle due parti. Non è possibile attaccare nello stesso punto e la vittoria va al giocatore che abbatte le flotte nemiche per primo, la mossa speciale varia in base al personaggio selezionato.Al momento della selezione se una nave viene cliccata verrà routata di 90 gradi"
             android:textAlignment="center"
             android:textColor="@color/white" />
 
@@ -89,7 +89,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="510dp"
+            android:layout_marginTop="520dp"
             android:backgroundTint="@android:color/transparent"
             android:fontFamily="@font/orbitron_bold"
             android:foreground="@drawable/bordo_rettangolo_textbox"
@@ -100,7 +100,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="285dp"
+            android:layout_marginTop="260dp"
             app:srcCompat="@drawable/cellaattaccata" />
 
         <TextView
@@ -108,7 +108,7 @@
             android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="95dp"
-            android:layout_marginTop="287dp"
+            android:layout_marginTop="260dp"
             android:fontFamily="@font/orbitron_bold"
             android:text="Questa immagine indica la presenza di una nave alleata nella griglia"
             android:textAlignment="center"
