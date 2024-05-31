@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="347dp"
         android:layout_height="579dp"
-        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent"
         android:foreground="@drawable/bordo_rettangolo_textbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,8 @@
             android:backgroundTint="@android:color/transparent"
             android:fontFamily="@font/orbitron_bold"
             android:foreground="@drawable/bordo_rettangolo_textbox"
-            android:text="ESCI" />
+            android:text="ESCI"
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/imageView4"

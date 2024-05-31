@@ -33,7 +33,7 @@ import java.net.Socket;
 public class User_vs_User_host_Activity extends AppCompatActivity implements Serializable {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
     TextInputEditText txt_nome_giocatore;
-    Button btn_start_sv, btn_stop_sv;
+    Button btn_start_sv, btn_stop_sv, btn_regole;
     String serverIP = "192.168.55.249"; //mettere quello del proprio telefono
     int serverPort = 42069; //>1023 no porte riservate
     private ServerThread serverThread;
@@ -67,6 +67,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);
         btn_stop_sv = (Button) findViewById(R.id.btn_stop_server);
         txt_nome_giocatore = (TextInputEditText) findViewById(R.id.txt_nome_giocatore);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
 
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_up);
@@ -142,5 +143,11 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
                 CustomToast.showToast(context, text, Toast.LENGTH_SHORT);
             }
         });
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 }

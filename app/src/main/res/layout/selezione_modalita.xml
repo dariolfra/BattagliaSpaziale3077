@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_user_vs_user_conn"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.01"
         app:srcCompat="@drawable/right" />
 
     <ImageButton
@@ -46,10 +46,10 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/btn_mod_user_vs_user_conn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintHorizontal_bias="0.794"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titolo_pagina_selezione_modalita"
-        app:layout_constraintVertical_bias="0.612"
+        app:layout_constraintVertical_bias="0.575"
         app:srcCompat="@drawable/right" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:layout_width="203dp"
         android:layout_height="41dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="88dp"
         android:fontFamily="@font/orbitron_regular"
         android:text="USER VS USER (Unisciti ad una partita)"
         android:textAlignment="center"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.227"
+        app:layout_constraintVertical_bias="0.212"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -135,8 +135,26 @@
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_user_vs_ai"
-        app:layout_constraintVertical_bias="0.14"
+        app:layout_constraintVertical_bias="0.135"
         app:srcCompat="@drawable/right"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_regole"
+        android:layout_width="105dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="btn_regole_pressed"
+        android:text="REGOLE"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

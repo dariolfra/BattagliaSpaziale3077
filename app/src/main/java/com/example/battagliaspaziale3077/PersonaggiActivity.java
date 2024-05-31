@@ -1,5 +1,6 @@
 package com.example.battagliaspaziale3077;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,7 +34,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
     ImageButton btn_pers_succ, btn_pers_prec;
     TextView lbl_descr_pers, lbl_abilita_pers;
     ImageView img_personaggio;
-    Button btn_seleziona_personaggio;
+    Button btn_seleziona_personaggio, btn_regole;
     HashMap<Integer, Drawable> indici_immagini;
     HashMap<Integer, String> indici_descrizione;
     HashMap<Integer, String> indici_abilita;
@@ -45,6 +46,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
     MediaPlayer mp;
     Animation scale_down, scale_up;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         lbl_abilita_pers = (TextView) findViewById(R.id.lbl_abilita);
         img_personaggio = (ImageView) findViewById(R.id.img_pers);
         btn_seleziona_personaggio = (Button) findViewById(R.id.btn_seleziona_personaggio);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
 
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
@@ -156,6 +159,12 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 startActivity(gioco);
             }
         });
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 
     public void popola_hashmap_immagini(){

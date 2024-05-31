@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     ImageView[] navi;
     float startX, startY;
     float[] initialX, initialY;
-    Button btnConferma;
+    Button btnConferma, btn_regole;
     int[] shipSizes = {3, 2, 2, 4, 4, 3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
     boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         btnConferma = findViewById(R.id.btnConferma);
         btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
+        btn_regole = findViewById(R.id.btn_regole);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -272,6 +273,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
         // Controllo generale delle colonne
         return column + size <= 10;
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 
     private void posizionaNave(int index, int size, int rotationDegrees, int posizione, int[] immaginiCasella, boolean AI) {

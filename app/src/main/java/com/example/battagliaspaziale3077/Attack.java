@@ -62,12 +62,14 @@ public class Attack extends Game implements Serializable{
     int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
     private HashMap<Integer, List<Integer>> Navi;
-    private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
-    private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
+    private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
+    private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
     private static boolean SingolaVolta = false;
     private static int attacchi_a_segno = 0;
     private static int attacchi_necessari_att_speciale = 5;
     private static final List<Integer> posizioni_colpite = new ArrayList<Integer>();
+    private static int navi_affondate = 0;
+    private static List<Integer> id_navi_affondate = new ArrayList<>();
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,25 +167,32 @@ public class Attack extends Game implements Serializable{
                         contrallaSeColpita();
                         //thread dorme
                     }
-
-                    //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
-                    Intent defence = new Intent(Attack.this, Defence.class);
-                    defence.putExtra("mod", modalita);
-                    defence.putExtra("nome1", nome_giocatore1);
-                    if(multiplayer)
-                    {
-                        defence.putExtra("nome2", comms.getName());
+                    if(Controllo_Fine_Gioco_AI()){
+                        Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
+                        vittoria.putExtra("nome", nome_giocatore1);
+                        vittoria.putExtra("risultato", true);
+                        startActivity(vittoria);
                     }
                     else{
-                        defence.putExtra("nome2", nome_giocatore2);
+                        //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
+                        Intent defence = new Intent(Attack.this, Defence.class);
+                        defence.putExtra("mod", modalita);
+                        defence.putExtra("nome1", nome_giocatore1);
+                        if(multiplayer)
+                        {
+                            defence.putExtra("nome2", comms.getName());
+                        }
+                        else{
+                            defence.putExtra("nome2", nome_giocatore2);
+                        }
+                        defence.putExtra("personaggio", id_pers);
+                        defence.putExtra("casellaColpita", casellaColpita);
+                        defence.putExtra("Navi", (Serializable) Navi);
+                        defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+                        defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
+                        defence.putExtra("comms", comms);
+                        startActivity(defence);
                     }
-                    defence.putExtra("personaggio", id_pers);
-                    defence.putExtra("casellaColpita", casellaColpita);
-                    defence.putExtra("Navi", (Serializable) Navi);
-                    defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-                    defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
-                    defence.putExtra("comms", comms);
-                    startActivity(defence);
                 }catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }catch (Exception e){
@@ -297,6 +306,8 @@ public class Attack extends Game implements Serializable{
     }
 
     public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
         regoleDialog.showDialog(this);
     }
 
@@ -323,27 +334,26 @@ public class Attack extends Game implements Serializable{
             CustomToast2.showToast(context, "Acqua!", 5);
             casellaColpita[selectedPos] = R.drawable.naveda1;
         }
-        boolean risultato = Controllo_Fine_Gioco_AI();
-        if(risultato){
-            CustomToast2.showToast(context, "VITTORIA", Toast.LENGTH_SHORT);
-        }
     }
 
     public boolean Controllo_Fine_Gioco_AI(){
         boolean risultato = false;
-        int navi_affondate = 0;
         for(int id : id_navi){
-            List<Integer> posizioni_nave_IA = formazioneIA.get(id);
-            int ship_size = posizioni_nave_IA.size();
-            int colpi_a_segno = 0;
-            for(int pos : posizioni_colpite){
-                if(posizioni_nave_IA.contains(pos)){
-                    colpi_a_segno++;
+            if(!id_navi_affondate.contains(id)){
+                List<Integer> posizioni_nave_IA = formazioneIA.get(id);
+                int ship_size = posizioni_nave_IA.size();
+                int colpi_a_segno = 0;
+                for(int pos : posizioni_colpite){
+                    if(posizioni_nave_IA.contains(pos)){
+                        colpi_a_segno++;
+                    }
                 }
-            }
-            if(colpi_a_segno == ship_size){
-                navi_affondate++;
-                Nave_Affondata(posizioni_nave_IA);
+                if(colpi_a_segno == ship_size){
+                    navi_affondate++;
+                    Nave_Affondata(posizioni_nave_IA);
+                    id_navi_affondate.add(id);
+                    Log.i("NAVI AFFONDATE", String.valueOf(navi_affondate));
+                }
             }
         }
         if(navi_affondate == 6){

@@ -36,6 +36,7 @@
         <activity android:name=".PersonaggiActivity" />
         <activity android:name=".Attack" />
         <activity android:name=".Defence" />
+        <activity android:name=".Fine_Gioco_Activity" android:noHistory="true" />
     </application>
 
 </manifest>

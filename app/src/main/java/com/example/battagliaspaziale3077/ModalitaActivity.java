@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 public class ModalitaActivity extends AppCompatActivity {
     ImageButton btn_User_vs_AI, btn_User_vs_User_connect, btn_User_vs_User_hosted;
     Animation scale_down, scale_up;
+    Button btn_regole;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class ModalitaActivity extends AppCompatActivity {
         btn_User_vs_AI = findViewById(R.id.btn_user_vs_ai);
         btn_User_vs_User_connect = findViewById(R.id.btn_mod_user_vs_user_conn);
         btn_User_vs_User_hosted = findViewById(R.id.bnt_mod_user_vs_user_host);
+        btn_regole = findViewById(R.id.btn_regole);
 
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
@@ -64,6 +66,10 @@ public class ModalitaActivity extends AppCompatActivity {
             }
         });
 
-
+    }
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 }

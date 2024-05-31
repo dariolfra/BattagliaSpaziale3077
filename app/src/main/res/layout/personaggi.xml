@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <ImageView
         android:id="@+id/img_pers"
@@ -159,4 +159,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_descr_pers"
         app:layout_constraintVertical_bias="0.888" />
+
+    <Button
+        android:id="@+id/btn_regole"
+        android:layout_width="105dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="btn_regole_pressed"
+        android:paddingBottom="5dp"
+        android:text="REGOLE"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/titolo_pagina"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.987"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.238" />
 </androidx.constraintlayout.widget.ConstraintLayout>

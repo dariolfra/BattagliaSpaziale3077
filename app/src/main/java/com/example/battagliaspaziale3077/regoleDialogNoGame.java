@@ -1,5 +1,4 @@
 package com.example.battagliaspaziale3077;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,10 +10,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-public class regoleDialog {
-    static Animation scale_down, scale_up;
-    public static void showDialog(Game g){
-        Dialog dialog = new Dialog(g);
+public class regoleDialogNoGame {
+    static Animation scale_up, scale_down;
+
+    public static void showDialog(Context context){
+        Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.regoledialog);
@@ -28,13 +28,11 @@ public class regoleDialog {
         img2.setImageResource(R.drawable.nave_colpita);
         img3.setImageResource(R.drawable.nave_affondata);
 
-        scale_down = AnimationUtils.loadAnimation(g, R.anim.scale_down);
-        scale_up = AnimationUtils.loadAnimation(g, R.anim.scale_up);
+        scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
 
         btn_annulla.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
+            @Override public void onClick(View v) {
                 btn_annulla.startAnimation(scale_down);
                 btn_annulla.startAnimation(scale_up);
                 dialog.dismiss();

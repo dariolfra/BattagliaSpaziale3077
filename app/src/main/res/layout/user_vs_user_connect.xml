@@ -28,9 +28,10 @@
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.869" />
+        app:layout_constraintVertical_bias="0.853" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/txt_input_nome"
@@ -128,5 +129,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_ip_server"
         app:layout_constraintVertical_bias="0.831" />
+
+    <Button
+        android:id="@+id/btn_regole"
+        android:layout_width="105dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="btn_regole_pressed"
+        android:text="REGOLE"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity {
-    Button btn_gioca;
+    Button btn_gioca, btn_regole;
     Context context;
     Animation scale_down, scale_up;
     @Override
@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         context = this.getApplicationContext();
 
         btn_gioca = findViewById(id.btn_Gioca);
+        btn_regole = findViewById(id.btn_regole);
 
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
@@ -49,5 +50,11 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(selezione_modalita);
             }
         });
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 }

@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Defence extends Game implements Serializable {
     //private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
@@ -50,7 +51,8 @@ public class Defence extends Game implements Serializable {
     private Button btn_torna_attacco, btn_regole;
     private static boolean colpo_a_segno = false;
     private static int casella_a_segno = 0;
-    private static int colpi_a_segno_ai = 0;
+    private static int navi_affondate = 0;
+    private static List<Integer> id_navi_affondate = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +193,7 @@ public class Defence extends Game implements Serializable {
 
     public void AttaccoAI(int posizione) {
         boolean colpita = false;
+        boolean vittoria = false;
         for(Integer i : NaveIDs){
             List<Integer> posizioni_nave = Navi.get(i);
             for(int j : posizioni_nave){
@@ -202,8 +205,7 @@ public class Defence extends Game implements Serializable {
                     colpita = true;
                     colpo_a_segno = true;
                     casella_a_segno = posizione;
-                    CustomToast2.showToast(context, "Bersaglio colpito da AI", Toast.LENGTH_SHORT);
-                    Controllo_Fine_Gioco_AI();
+                    vittoria = Controllo_Fine_Gioco_AI();
                     break;
                 }
             }
@@ -214,6 +216,12 @@ public class Defence extends Game implements Serializable {
             colpo_a_segno = false;
             casella_a_segno = 0;
         }
+        if(vittoria){
+            Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);
+            sconfitta.putExtra("nome", nome_giocatore1);
+            sconfitta.putExtra("risulato", false);
+            startActivity(sconfitta);
+        }
     }
 
     public int genera_pos_attacco_ai_random(){
@@ -222,7 +230,15 @@ public class Defence extends Game implements Serializable {
         boolean corretta = false;
         while(!corretta){
             if(colpo_a_segno){
-                pos = rnd.nextInt(casella_a_segno+21 - casella_a_segno-20) + casella_a_segno-20;
+                if((casella_a_segno+21) > 100){
+                    pos = rnd.nextInt(100 - (casella_a_segno-20)) + casella_a_segno-20;
+                }
+                else if(casella_a_segno-20 < 0){
+                    pos = rnd.nextInt(casella_a_segno+21) + casella_a_segno-20;
+                }
+                else{
+                    pos = rnd.nextInt(casella_a_segno+21 - casella_a_segno-20) + casella_a_segno-20;
+                }
                 Log.i("ATT", "range " + (casella_a_segno-20) + "-" + (casella_a_segno+21) + " pos " + pos);
             }
             else{
@@ -241,16 +257,24 @@ public class Defence extends Game implements Serializable {
     }
 
     public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
         regoleDialog.showDialog(this);
     }
 
     public boolean Controllo_Fine_Gioco_AI(){
         boolean risultato = false;
         NaviAffondate.forEach((k, v) ->{
-            if(v.size() == size_navi.get(k)){
-                CustomToast2.showToast(context, "AI HA VINTO!", Toast.LENGTH_SHORT);
+            if(!id_navi_affondate.contains(k)){
+                if(v.size() == size_navi.get(k)){
+                    navi_affondate++;
+                    id_navi_affondate.add(k);
+                }
             }
         });
+        if(navi_affondate == 6){
+            risultato = true;
+        }
         return risultato;
     }
 
@@ -309,19 +333,6 @@ public class Defence extends Game implements Serializable {
 
     public String NaveColpitaAffondata(Integer ID)
     {
-
-        /*List<Integer> posizioni = NaviColpite.get(ID);
-        for (int i = posizioni.size(); i >= 0; i--)
-        {
-            mess = mess + String.valueOf(posizioni.get(i));
-            if(posizioni.size() > 1)
-            {
-                mess = mess + "-";
-            }
-            posizioni.remove(i);
-        }
-
-        NaviColpite.remove(ID);*/
         String mess = "colpita e affondata|";
         List<Integer> posizioni = NaviColpite.get(ID);
         int blocchi_nave_colpiti = 0;
@@ -336,7 +347,6 @@ public class Defence extends Game implements Serializable {
             CustomToast2.showToast(context, "Nave affondata da AI!", Toast.LENGTH_SHORT);
         }
         return mess;
-
     }
 
     public void AggiornaTabella() {

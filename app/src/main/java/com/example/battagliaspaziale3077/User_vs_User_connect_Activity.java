@@ -33,7 +33,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
     TextInputEditText txt_nome, txt_ip_server, txt_porta_server;
     String serverName, nome_giocatore1, nome_giocatore2;
     int serverPort;
-    Button btn_connettiti;
+    Button btn_connettiti, btn_regole;
     int modalita = 2;
     boolean connessione_instaurata;
     Context context;
@@ -52,6 +52,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         txt_nome = (TextInputEditText) findViewById(R.id.txt_input_nome);
         txt_ip_server = (TextInputEditText) findViewById(R.id.txt_input_ip_server);
         txt_porta_server = (TextInputEditText) findViewById(R.id.txt_input_porta_server);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
 
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
@@ -118,5 +119,11 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         personaggi.putExtra("attacco", false);
         personaggi.putExtra("comms", comms);
         startActivity(personaggi);
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 }

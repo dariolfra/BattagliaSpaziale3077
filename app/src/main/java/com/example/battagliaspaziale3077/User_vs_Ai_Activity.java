@@ -24,7 +24,7 @@ import org.w3c.dom.Text;
 
 public class    User_vs_Ai_Activity extends AppCompatActivity {
 
-    Button btn_gioca;
+    Button btn_gioca, btn_regole;
     TextInputEditText txt_nome;
     String nome_giocatore;
     Boolean nome_corretto;
@@ -42,6 +42,7 @@ public class    User_vs_Ai_Activity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
         btn_gioca = (Button) findViewById(R.id.btn_gioca);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
         txt_nome = (TextInputEditText) findViewById(R.id.txt_nome);
 
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
@@ -75,5 +76,11 @@ public class    User_vs_Ai_Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void btn_regole_pressed(View v){
+        btn_regole.startAnimation(scale_down);
+        btn_regole.startAnimation(scale_up);
+        regoleDialogNoGame.showDialog(this);
     }
 }
