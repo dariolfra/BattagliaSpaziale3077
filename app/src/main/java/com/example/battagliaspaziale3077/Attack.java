@@ -24,14 +24,19 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 public class Attack extends Game implements Serializable{
@@ -50,17 +55,17 @@ public class Attack extends Game implements Serializable{
     private static int[] casellaColpita = new int[100];
     private static final int[] arrayFormazioneIA = new int[100];
     private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 2131165442, 2131165443, 2131165440};
-    Animation scale_down, scale_up;
-    ImageView background;
-    float startX, startY;
-    GridAdapterAttacco gridAdapterAttacco;
-    GridAdapter gridAdapter;
+    private Animation scale_down, scale_up;
+    private ImageView background;
+    private float startX, startY, mossaSpecialeX, mossaSpecialeY;
+    private GridAdapterAttacco gridAdapterAttacco;
+    private GridAdapter gridAdapter;
     //HashMap per controllare se le navi sono state colpite
     private static HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
-    MainActivity mainActivity;
-    float[] initialX, initialY;
-    int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
-    int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
+    private MainActivity mainActivity;
+    private float[] initialX, initialY;
+    private int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
+    private int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
     private HashMap<Integer, List<Integer>> Navi;
     private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
     private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
@@ -68,9 +73,12 @@ public class Attack extends Game implements Serializable{
     private static int attacchi_a_segno = 0;
     private static int attacchi_necessari_att_speciale = 5;
     private static final List<Integer> posizioni_colpite = new ArrayList<Integer>();
+    private boolean mossaSpeciale = false;
+    private ArrayList<Integer> posSpeciale;
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
+        posSpeciale = new ArrayList<Integer>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attack);
 
@@ -112,9 +120,9 @@ public class Attack extends Game implements Serializable{
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
             //bisogna scegliere random personaggi IA
-            if(!SingolaVolta){
+            if (!SingolaVolta) {
                 mainActivity = new MainActivity();
-                formazioneIA.putAll(mainActivity.generateRandomShipPositions(gridAdapter,arrayFormazioneIA)); //l'IA posiziona le navi
+                formazioneIA.putAll(mainActivity.generateRandomShipPositions(gridAdapter, arrayFormazioneIA)); //l'IA posiziona le navi
                 SingolaVolta = true;
             }
         } else {
@@ -122,12 +130,11 @@ public class Attack extends Game implements Serializable{
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = gioco.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
-            multiplayer = true;         
+            multiplayer = true;
         }
         boolean defence = gioco.getBooleanExtra("defenceOrNot", false);
-        if(defence)
-        {
-            NaviColpite.putAll((HashMap<Integer, List<Integer>>)gioco.getSerializableExtra("NaviColpite"));
+        if (defence) {
+            NaviColpite.putAll((HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviColpite"));
             NaviAffondate.putAll((HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("NaviAffondate"));
         }
 
@@ -143,54 +150,6 @@ public class Attack extends Game implements Serializable{
         initialY = new float[indici_mossaspeciale.size()];
 
         gridView.setAdapter(gridAdapterAttacco);
-
-        //azione del bottone che invia data la cella selezionata invia un messaggio a avversario
-        btn_attacca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                    btn_attacca.startAnimation(scale_down);
-                    btn_attacca.startAnimation(scale_up);
-                    if(multiplayer)
-                    {
-                        comms.InviaMessaggio(String.valueOf(selectedPos));
-                        comms.RiceviRisposta();
-                        synchronized (comms){
-                            comms.wait(3000);
-                        }
-                        Attacco(comms.GetMessage());
-                    }
-                    else
-                    {
-                        contrallaSeColpita();
-                        //thread dorme
-                    }
-
-                    //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
-                    Intent defence = new Intent(Attack.this, Defence.class);
-                    defence.putExtra("mod", modalita);
-                    defence.putExtra("nome1", nome_giocatore1);
-                    if(multiplayer)
-                    {
-                        defence.putExtra("nome2", comms.getName());
-                    }
-                    else{
-                        defence.putExtra("nome2", nome_giocatore2);
-                    }
-                    defence.putExtra("personaggio", id_pers);
-                    defence.putExtra("casellaColpita", casellaColpita);
-                    defence.putExtra("Navi", (Serializable) Navi);
-                    defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-                    defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
-                    defence.putExtra("comms", comms);
-                    startActivity(defence);
-                }catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }catch (Exception e){
-                    CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
-                }
-            }
-        });
 
         // Utilizza un ViewTreeObserver per memorizzare le posizioni iniziali dopo il layout
         ViewTreeObserver viewTreeObserver = img_mossa_speciale.getViewTreeObserver();
@@ -218,9 +177,30 @@ public class Attack extends Game implements Serializable{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //da finire
                 pos = position;
-                if(canAttack())
-                {
-                    if(selectedPos != -1)
+                if (canAttack()) {
+                    if(mossaSpeciale)
+                    {
+                        //resetto le condizioni della mossa speciale
+                        for (int posSpec : posSpeciale)
+                        {
+                            casellaColpita[posSpec] = 0;
+                        }
+                        posSpeciale.clear();
+                        attacchi_a_segno += 5;
+                        mossaSpeciale = false;
+
+                        //riporto l'imageview alla posizione originale
+                        img_mossa_speciale.setX(mossaSpecialeX);
+                        img_mossa_speciale.setY(mossaSpecialeY);
+
+                        //resetto la rotazione
+                        rotationDegrees[id_pers] = 0;
+                        img_mossa_speciale.setRotation(rotationDegrees[id_pers]);
+
+                        //nascondo l'imageview
+                        img_mossa_speciale.setVisibility(View.INVISIBLE);
+                    }
+                    if (selectedPos != -1)
                     {
                         casellaColpita[selectedPos] = 0;
                     }
@@ -228,66 +208,110 @@ public class Attack extends Game implements Serializable{
                     selectedPos = pos;
                     pos = -1;
                     gridAdapterAttacco.notifyDataSetChanged();
-                }
-                else
-                {
+                } else {
                     CustomToast.showToast(context, "Attacco già sferrato in questo punto", Toast.LENGTH_SHORT);
                 }
             }
         });
 
 
-            GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    // Ruota l'immagine di 90 gradi
-                    rotationDegrees[id_pers] = (rotationDegrees[id_pers] + 90) % 360;
-                    img_mossa_speciale.setRotation(rotationDegrees[id_pers]);
-                    return true;
-                }
-            });
-            img_mossa_speciale.setOnTouchListener((v, event) -> {
-                gestureDetector.onTouchEvent(event);
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getRawX();
-                        startY = event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float dx = event.getRawX() - startX;
-                        float dy = event.getRawY() - startY;
-
-                        img_mossa_speciale.setX(img_mossa_speciale.getX() + dx);
-                        img_mossa_speciale.setY(img_mossa_speciale.getY() + dy);
-
-                        startX = event.getRawX();
-                        startY = event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        int[] gridLocation = new int[2];
-                        gridView.getLocationInWindow(gridLocation);
-                        float x = img_mossa_speciale.getX() +img_mossa_speciale.getWidth() / 2;
-                        float y = img_mossa_speciale.getY() + img_mossa_speciale.getHeight() / 2;
-                        int column = (int) ((x - gridLocation[0]) / (gridView.getWidth() / 10) - 1);
-                        int row = (int) ((y - gridLocation[1]) / (gridView.getHeight() / 10) + 1);
-                        int position = row * 10 + column;
-                        int size = shipSizes[id_pers];
-                        int posizione = gridAdapterAttacco.AggiustaPosizioni(id_pers,rotationDegrees[id_pers],position); //per sistemare le posizioni
-                        if (ControllaSeOutBound(gridAdapterAttacco.getColumnFromPosition(posizione),size,id_pers,rotationDegrees[id_pers],posizione)){
-                            //inserimento delle navi
-                            posizionaAttacco(id_pers,size,rotationDegrees[id_pers],posizione,casellaColpita);
-                        }
-                        // Resetta la posizione x e y alle posizioni iniziali
-                        img_mossa_speciale.setX(initialX[id_pers]);
-                        img_mossa_speciale.setY(initialY[id_pers]);
-                        gridAdapterAttacco.notifyDataSetChanged();
-                        break;
-                }
+        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                // Ruota l'immagine di 90 gradi
+                rotationDegrees[id_pers] = (rotationDegrees[id_pers] + 90) % 360;
+                img_mossa_speciale.setRotation(rotationDegrees[id_pers]);
                 return true;
-            });
-        }
+            }
+        });
+        img_mossa_speciale.setOnTouchListener((v, event) -> {
+            gestureDetector.onTouchEvent(event);
+            switch (event.getAction())
+            {
+                case MotionEvent.ACTION_DOWN:
+                    startX = event.getRawX();
+                    startY = event.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
 
-    //}
+                    float dx = event.getRawX() - startX;
+                    float dy = event.getRawY() - startY;
+
+                    img_mossa_speciale.setX(img_mossa_speciale.getX() + dx);
+                    img_mossa_speciale.setY(img_mossa_speciale.getY() + dy);
+
+                    startX = event.getRawX();
+                    startY = event.getRawY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int[] gridLocation = new int[2];
+                    gridView.getLocationInWindow(gridLocation);
+                    float x = img_mossa_speciale.getX() + img_mossa_speciale.getWidth() / 2;
+                    float y = img_mossa_speciale.getY() + img_mossa_speciale.getHeight() / 2;
+                    int column = (int) ((x - gridLocation[0]) / (gridView.getWidth() / 10) - 1);
+                    int row = (int) ((y - gridLocation[1]) / (gridView.getHeight() / 10) + 1);
+                    int position = row * 10 + column;
+                    int size = shipSizes[id_pers];
+                    int posizione = gridAdapterAttacco.AggiustaPosizioni(id_pers, rotationDegrees[id_pers], position); //per sistemare le posizioni
+                    if (ControllaSeOutBound(gridAdapterAttacco.getColumnFromPosition(posizione), size, id_pers, rotationDegrees[id_pers], posizione)) {
+                        //inserimento delle navi
+                        posizionaAttacco(id_pers, size, rotationDegrees[id_pers], posizione, casellaColpita);
+                    }
+                    // Resetta la posizione x e y alle posizioni iniziali
+                    img_mossa_speciale.setX(initialX[id_pers]);
+                    img_mossa_speciale.setY(initialY[id_pers]);
+                    gridAdapterAttacco.notifyDataSetChanged();
+                    break;
+            }
+
+            return true;
+        });
+    }
+
+    public void confermaAttacco(View v)
+    {
+        try{
+            btn_attacca.startAnimation(scale_down);
+            btn_attacca.startAnimation(scale_up);
+            if(multiplayer)
+            {
+                comms.InviaMessaggio(String.valueOf(selectedPos));
+                comms.RiceviRisposta();
+                synchronized (comms){
+                    comms.wait(3000);
+                }
+                Attacco(comms.GetMessage());
+            }
+            else
+            {
+                contrallaSeColpita();
+                //thread dorme
+            }
+
+            //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
+            Intent defence = new Intent(Attack.this, Defence.class);
+            defence.putExtra("mod", modalita);
+            defence.putExtra("nome1", nome_giocatore1);
+            if(multiplayer)
+            {
+                defence.putExtra("nome2", comms.getName());
+            }
+            else{
+                defence.putExtra("nome2", nome_giocatore2);
+            }
+            defence.putExtra("personaggio", id_pers);
+            defence.putExtra("casellaColpita", casellaColpita);
+            defence.putExtra("Navi", (Serializable) Navi);
+            defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+            defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
+            defence.putExtra("comms", comms);
+            startActivity(defence);
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }catch (Exception e){
+            CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
+        }
+    }
 
     @Override
     public void onBackPressed()
@@ -310,18 +334,36 @@ public class Attack extends Game implements Serializable{
     }
 
     private void contrallaSeColpita() {
-        if(arrayFormazioneIA[selectedPos] != 0){
-            CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
-            casellaColpita[selectedPos] = R.drawable.nave_colpita;
-            attacchi_a_segno++;
-            if(attacchi_a_segno == 5){
-                CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
+        if(mossaSpeciale)
+        {
+            for (int posSpec : posSpeciale)
+            {
+                if(arrayFormazioneIA[posSpec] != 0){
+                    CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
+                    casellaColpita[posSpec] = R.drawable.nave_colpita;
+                    posizioni_colpite.add(posSpec);
+                }
+                else{
+                    CustomToast2.showToast(context, "Acqua!", 5);
+                    casellaColpita[posSpec] = R.drawable.naveda1;
+                }
             }
-            posizioni_colpite.add(selectedPos);
         }
-        else{
-            CustomToast2.showToast(context, "Acqua!", 5);
-            casellaColpita[selectedPos] = R.drawable.naveda1;
+        else
+        {
+            if(arrayFormazioneIA[selectedPos] != 0){
+                CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
+                casellaColpita[selectedPos] = R.drawable.nave_colpita;
+                attacchi_a_segno++;
+                if(attacchi_a_segno == 5){
+                    CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
+                }
+                posizioni_colpite.add(selectedPos);
+            }
+            else{
+                CustomToast2.showToast(context, "Acqua!", 5);
+                casellaColpita[selectedPos] = R.drawable.naveda1;
+            }
         }
         boolean risultato = Controllo_Fine_Gioco_AI();
         if(risultato){
@@ -359,13 +401,17 @@ public class Attack extends Game implements Serializable{
     }
     public boolean canAttack()
     {
-        if (casellaColpita[pos] != 0)
+        if (casellaColpita[pos] == 0)
         {
-            return false;
+            return true;
+        }
+        else if(casellaColpita[pos] == R.drawable.selected)
+        {
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
 
@@ -435,13 +481,17 @@ public class Attack extends Game implements Serializable{
         btn_att_speciale.startAnimation(scale_up);;
         //img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
         if (attacchi_a_segno >= 5) { //se posso fare la mossa speciale
+            mossaSpecialeX = img_mossa_speciale.getX();
+            mossaSpecialeY = img_mossa_speciale.getY();
+            img_mossa_speciale.setVisibility(View.VISIBLE);
+            mossaSpeciale = true;
             if (id_pers == 2) { //controllo se sono Giorgia Meloni
                 AttaccoRandom(casellaColpita);
             }
             else {
                 img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
             }
-            attacchi_a_segno = 0;
+            attacchi_a_segno -= 5;
         }
         else { //se non è ancora tempo della mossa speciale
             CustomToast.showToast(this,"Attacco Speciale disponibile tra " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " attacchi",Toast.LENGTH_LONG);
@@ -450,6 +500,10 @@ public class Attack extends Game implements Serializable{
 
 
     private void AttaccoRandom(int[] immaginiCaselle) { //attacco della meloni
+        if(casellaColpita[selectedPos] == R.drawable.selected)
+        {
+            casellaColpita[selectedPos] = 0;
+        }
         for (int i = 0; i < 7; i ++){
             Random random = new Random();
             int p = random.nextInt(100); //numero da 0 a 99
@@ -460,8 +514,12 @@ public class Attack extends Game implements Serializable{
 
     //inserisce l'immagine nella casella indicata nel gridview
     public void ImmaginiNavi(int position,int[] immaginiCasella) {
-        immaginiCasella[position] = R.drawable.selected;
-        gridAdapterAttacco.notifyDataSetChanged();
+        if(casellaColpita[position] == 0)
+        {
+            posSpeciale.add(position);
+            immaginiCasella[position] = R.drawable.selected;
+            gridAdapterAttacco.notifyDataSetChanged();
+        }
     }
     public boolean ControllaSeOutBound(int column, int size, int index, int rotation, int position) {
         //verifica che l'attacco sia correttamente dentro il gridview
@@ -495,6 +553,12 @@ public class Attack extends Game implements Serializable{
     }
     private void posizionaAttacco(int index, int size, int rotationDegrees, int posizione,int[] immaginiCasella) {
         //insercisce l'attacco all'interno della griglia
+
+        if(selectedPos != -1)
+        {
+            casellaColpita[selectedPos] = 0;
+        }
+
         for (int j = 0; j < size; j++) {
             int currentPos = posizione + j;
             int p;

@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.w3c.dom.Text;
 
-public class    User_vs_Ai_Activity extends AppCompatActivity {
+public class User_vs_Ai_Activity extends AppCompatActivity {
 
     Button btn_gioca;
     TextInputEditText txt_nome;
