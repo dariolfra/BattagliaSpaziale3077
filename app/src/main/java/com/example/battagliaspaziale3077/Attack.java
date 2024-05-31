@@ -162,6 +162,7 @@ public class Attack extends Game implements Serializable{
                     else
                     {
                         contrallaSeColpita();
+                        //thread dorme
                     }
 
                     //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa

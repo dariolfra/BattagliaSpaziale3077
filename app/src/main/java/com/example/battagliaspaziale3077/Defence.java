@@ -41,7 +41,7 @@ public class Defence extends Game implements Serializable {
     private TextView giocatore1,giocatore2;
     private Context context;
     private Animation scale_down, scale_up;
-    private static int[] casellaColpita = new int[100];
+    private static final int[] casellaColpita = new int[100];
     private static int[] tabella = new int[100];
     private GridAdapterDifesa gridAdapterDifesa;
     private static boolean attacco_ai_effettuato = false;
@@ -188,6 +188,7 @@ public class Defence extends Game implements Serializable {
             for(int j : posizioni_nave){
                 if(j == posizione){
                     tabella[posizione] = R.drawable.nave_colpita;
+                    casellaColpita[posizione] = R.drawable.nave_colpita;
                     NaveColpita(i, posizione);
                     String s = NaveColpitaAffondata(i);
                     colpita = true;
@@ -208,8 +209,9 @@ public class Defence extends Game implements Serializable {
         while(!corretta){
             Random rnd = new Random();
             pos = rnd.nextInt(100) ;
-            if(casellaColpita[pos] == 0){
+            if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.selected && casellaColpita[pos] != R.drawable.x){
                 corretta = true;
+                casellaColpita[pos] = R.drawable.selected;
             }
         }
         return pos;
