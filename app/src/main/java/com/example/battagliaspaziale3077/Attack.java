@@ -49,7 +49,7 @@ public class Attack extends Game implements Serializable{
     private boolean multiplayer;
     private static int[] casellaColpita = new int[100];
     private static final int[] arrayFormazioneIA = new int[100];
-    private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 213116544, 2131165443, 2131165440};
+    private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 2131165442, 2131165443, 2131165440};
     Animation scale_down, scale_up;
     ImageView background;
     float startX, startY;

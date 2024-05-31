@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             case 2:
                 return 2131165438;
             case 3:
-                return 213116544;
+                return 2131165442;
             case 4:
                 return 2131165443;
             case 5:
@@ -416,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
             primaVolta = true;
         }
+        int i = arrayGridViewIA.length;
         return shipPositionsAI; //hashmap con posizioni delle navi dell'ai
     }
 }
