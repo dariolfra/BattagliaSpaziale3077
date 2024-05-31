@@ -60,11 +60,11 @@
 
     <TextView
         android:id="@+id/titolo_gioco"
-        android:layout_width="260dp"
-        android:layout_height="104dp"
+        android:layout_width="375dp"
+        android:layout_height="113dp"
         android:fontFamily="@font/orbitron_bold"
         android:paddingTop="10dp"
-        android:text="BATTAGLIA SPAZIALE"
+        android:text="BATTAGLIA SPAZIALE 3077"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="35sp"

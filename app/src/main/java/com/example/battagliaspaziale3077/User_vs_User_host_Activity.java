@@ -35,7 +35,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
     TextInputEditText txt_nome_giocatore;
     Button btn_start_sv, btn_stop_sv, btn_regole;
     String serverIP = "192.168.55.249"; //mettere quello del proprio telefono
-    int serverPort = 42069; //>1023 no porte riservate
+    int serverPort = 12345; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;
     String nome_giocatore1, nome_giocatore2;;

@@ -152,7 +152,7 @@ public class Attack extends Game implements Serializable{
         initialY = new float[indici_mossaspeciale.size()];
 
         gridView.setAdapter(gridAdapterAttacco);
-        
+
         //azione del bottone che invia data la cella selezionata invia un messaggio a avversario
         btn_attacca.setOnClickListener(new View.OnClickListener() {
             @Override
