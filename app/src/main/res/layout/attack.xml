@@ -161,4 +161,21 @@
         app:layout_constraintTop_toBottomOf="@+id/gridView"
         app:layout_constraintVertical_bias="0.531" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="98dp"
+        android:layout_height="34dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo_textbox"
+        android:onClick="btn_regole_pressed"
+        android:text="REGOLE"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/gridView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

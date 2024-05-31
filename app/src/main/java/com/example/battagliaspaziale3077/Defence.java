@@ -29,10 +29,10 @@ import java.util.Random;
 public class Defence extends Game implements Serializable {
     //private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
     private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 2131165442, 2131165438, 2131165443};
-
+    private static HashMap<Integer, Integer> size_navi = new HashMap<Integer, Integer>();
     private static HashMap<Integer, List<Integer>> Navi = new HashMap<Integer, List<Integer>>();
-    private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
-    private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
+    private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
+    private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, Drawable> indici_personaggi;
     private ConnectionThread comms;
     private int id_pers;
@@ -48,6 +48,9 @@ public class Defence extends Game implements Serializable {
     private GridAdapterDifesa gridAdapterDifesa;
     private static boolean attacco_ai_effettuato = false;
     private Button btn_torna_attacco;
+    private static boolean colpo_a_segno = false;
+    private static int casella_a_segno = 0;
+    private static int colpi_a_segno_ai = 0;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class Defence extends Game implements Serializable {
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
         NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
+        colpo_a_segno = attack.getBooleanExtra("colpoasegno", false);
         id_pers = attack.getIntExtra("personaggio", 1);
         modalita = attack.getIntExtra("mod", 1);
         if (modalita == 1) {
@@ -93,6 +97,7 @@ public class Defence extends Game implements Serializable {
         }
 
         popola_personaggi();
+        popola_size_navi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
@@ -194,7 +199,10 @@ public class Defence extends Game implements Serializable {
                     NaveColpita(i, posizione);
                     String s = NaveColpitaAffondata(i);
                     colpita = true;
+                    colpo_a_segno = true;
+                    casella_a_segno = posizione;
                     CustomToast2.showToast(context, "Bersaglio colpito da AI", Toast.LENGTH_SHORT);
+                    Controllo_Fine_Gioco_AI();
                     break;
                 }
             }
@@ -202,15 +210,23 @@ public class Defence extends Game implements Serializable {
         if(!colpita){
             tabella[posizione] = R.drawable.selected;
             CustomToast2.showToast(context, "Acqua di AI!", Toast.LENGTH_SHORT);
+            colpo_a_segno = false;
+            casella_a_segno = 0;
         }
     }
 
     public int genera_pos_attacco_ai_random(){
+        Random rnd = new Random();
         int pos = -1;
         boolean corretta = false;
         while(!corretta){
-            Random rnd = new Random();
-            pos = rnd.nextInt(100) ;
+            if(colpo_a_segno){
+                pos = rnd.nextInt(casella_a_segno+21 - casella_a_segno-20) + casella_a_segno-20;
+                Log.i("ATT", "range " + (casella_a_segno-20) + "-" + (casella_a_segno+21) + " pos " + pos);
+            }
+            else{
+                pos = rnd.nextInt(100);
+            }
             if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.selected && casellaColpita[pos] != R.drawable.x){
                 corretta = true;
                 casellaColpita[pos] = R.drawable.selected;
@@ -219,11 +235,19 @@ public class Defence extends Game implements Serializable {
         return pos;
     }
 
+    public void Attacco_Speciale_AI(){
+
+    }
+
     public boolean Controllo_Fine_Gioco_AI(){
         boolean risultato = false;
         //PROBLEMA caselle che sono state colpite -> quindi rosse -> sovrascritte da selezionata
         //PROBLEMA problema riga 263, 264 ID non so come non combiacia
         //MANCA mossa speciale + controllo vittoria AI
+        if(NaviAffondate.size() == 6){
+            risultato = true;
+            CustomToast2.showToast(context, "AI ha vinto!", Toast.LENGTH_SHORT);
+        }
         return risultato;
     }
 
@@ -266,6 +290,7 @@ public class Defence extends Game implements Serializable {
     public void NaveColpita(Integer ID, Integer pos)
     {
         List<Integer> temp = NaviColpite.get(ID);
+        Log.i("ID NAVE COLPITA", ID.toString());
         temp.add(pos);
         NaviColpite.put(ID, temp);
         List<Integer> posizioni = Navi.get(ID);
@@ -281,9 +306,9 @@ public class Defence extends Game implements Serializable {
 
     public String NaveColpitaAffondata(Integer ID)
     {
-        String mess = "colpita e affondata|";
-        List<Integer> posizioni = NaviColpite.get(ID);
-        for (int i = posizioni.size()-1; i >= 0; i--)
+
+        /*List<Integer> posizioni = NaviColpite.get(ID);
+        for (int i = posizioni.size(); i >= 0; i--)
         {
             mess = mess + String.valueOf(posizioni.get(i));
             if(posizioni.size() > 1)
@@ -292,8 +317,23 @@ public class Defence extends Game implements Serializable {
             }
             posizioni.remove(i);
         }
-        NaviColpite.remove(ID);
+
+        NaviColpite.remove(ID);*/
+        String mess = "colpita e affondata|";
+        List<Integer> posizioni = NaviColpite.get(ID);
+        int blocchi_nave_colpiti = 0;
+        for(Integer i : posizioni){
+            if(tabella[i] == R.drawable.nave_colpita){
+                blocchi_nave_colpiti++;
+            }
+        }
+        if(blocchi_nave_colpiti == size_navi.get(ID)){
+            NaviColpite.remove(ID);
+            NaviAffondate.put(ID, posizioni);
+            CustomToast2.showToast(context, "Nave affondata da AI!", Toast.LENGTH_SHORT);
+        }
         return mess;
+
     }
 
     public void AggiornaTabella() {
@@ -332,5 +372,14 @@ public class Defence extends Game implements Serializable {
         indici_personaggi.put(8, getResources().getDrawable(R.drawable.peffo, context.getTheme()));
         indici_personaggi.put(9, getResources().getDrawable(R.drawable.shiva, context.getTheme()));
         indici_personaggi.put(10, getResources().getDrawable(R.drawable.panda, context.getTheme()));
+    }
+
+    public void popola_size_navi(){
+        size_navi.put(2131165441, 2);
+        size_navi.put(2131165439, 4);
+        size_navi.put(2131165440, 4);
+        size_navi.put(2131165442, 4);
+        size_navi.put(2131165438, 3);
+        size_navi.put(2131165443, 5);
     }
 }

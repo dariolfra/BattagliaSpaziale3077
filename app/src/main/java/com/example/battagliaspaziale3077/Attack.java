@@ -41,7 +41,7 @@ public class Attack extends Game implements Serializable{
     private Context context;
     private HashMap<Integer, Drawable> indici_mossaspeciale;
     private HashMap<Integer, Drawable> indici_personaggi;
-    private Button btn_attacca, btn_att_speciale;
+    private Button btn_attacca, btn_att_speciale, btn_regole;
     private TextView giocatore1, giocatore2;
     private ImageView immagine_pers, img_mossa_speciale;
     private int pos;
@@ -88,6 +88,7 @@ public class Attack extends Game implements Serializable{
         giocatore2 = (TextView) findViewById(R.id.txtNomeG2);
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         background = (ImageView) findViewById(R.id.background);
+        btn_regole = (Button) findViewById(R.id.button2);
 
         btn_att_speciale = (Button) findViewById(R.id.btn_attacco_speciale);
         img_mossa_speciale = (ImageView) findViewById(R.id.img_mossa_speciale);
@@ -293,6 +294,10 @@ public class Attack extends Game implements Serializable{
     {
         //super.onBackPressed();
         customDialog.showDialog(this);
+    }
+
+    public void btn_regole_pressed(View v){
+        regoleDialog.showDialog(this);
     }
 
     public void Abbandona()
