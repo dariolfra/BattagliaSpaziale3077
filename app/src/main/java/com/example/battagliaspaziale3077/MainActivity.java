@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     // HashMap per memorizzare le posizioni delle navi con l'ID dell'immagine come chiave
     HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
     HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
+    private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
     boolean attacco;
     boolean primaVolta;
 
@@ -153,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
                 gioco.putExtra("comms", comms);
                 gioco.putExtra("Navi", (Serializable) shipPositions);
+                gioco.putExtra("NaviColpite", NaviColpite);
+                gioco.putExtra("NaviAffondate", NaviAffondate);
                 startActivity(gioco);
             }
         });
