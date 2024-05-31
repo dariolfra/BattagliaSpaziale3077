@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Defence extends Game implements Serializable {
-    private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
+    //private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 213116544, 2131165438, 2131165443};
+    private Integer[] NaveIDs = new Integer[] {2131165441, 2131165439, 2131165440, 2131165442, 2131165438, 2131165443};
+
     private static HashMap<Integer, List<Integer>> Navi = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
