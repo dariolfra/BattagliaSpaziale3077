@@ -138,6 +138,7 @@
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
+        android:onClick="confermaAttacco"
         android:text="ATTACCA"
         android:textColor="@color/white"
         android:textSize="20dp"
