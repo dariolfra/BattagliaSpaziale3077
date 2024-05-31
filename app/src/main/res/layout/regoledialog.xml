@@ -7,8 +7,8 @@
     android:backgroundTint="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="348dp"
-        android:layout_height="498dp"
+        android:layout_width="347dp"
+        android:layout_height="579dp"
         android:background="@android:color/transparent"
         android:foreground="@drawable/bordo_rettangolo_textbox"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="355dp"
             android:fontFamily="@font/orbitron_bold"
             android:text="La mossa speciale sarà disponibile solamente dopo 5 colpi andati a segno da parte di una delle due parti. Non è possibile attaccare nello stesso punto e la vittoria va al giocatore che abbatte le flotte nemiche per primo, la mossa speciale varia in base al personaggio selezionato."
             android:textAlignment="center"
@@ -89,10 +89,29 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="430dp"
+            android:layout_marginTop="510dp"
             android:backgroundTint="@android:color/transparent"
             android:fontFamily="@font/orbitron_bold"
             android:foreground="@drawable/bordo_rettangolo_textbox"
             android:text="ESCI" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="285dp"
+            app:srcCompat="@drawable/cellaattaccata" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="287dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Questa immagine indica la presenza di una nave alleata nella griglia"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

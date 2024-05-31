@@ -47,7 +47,7 @@ public class Defence extends Game implements Serializable {
     private static int[] tabella = new int[100];
     private GridAdapterDifesa gridAdapterDifesa;
     private static boolean attacco_ai_effettuato = false;
-    private Button btn_torna_attacco;
+    private Button btn_torna_attacco, btn_regole;
     private static boolean colpo_a_segno = false;
     private static int casella_a_segno = 0;
     private static int colpi_a_segno_ai = 0;
@@ -66,6 +66,7 @@ public class Defence extends Game implements Serializable {
         immagine_pers = (ImageView) findViewById(R.id.img_pers);
         background = (ImageView) findViewById(R.id.background);
         btn_torna_attacco = (Button) findViewById(R.id.btn_vai_attacco);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
         context = this.getApplicationContext();
 
         Window window = this.getWindow();
@@ -239,15 +240,17 @@ public class Defence extends Game implements Serializable {
 
     }
 
+    public void btn_regole_pressed(View v){
+        regoleDialog.showDialog(this);
+    }
+
     public boolean Controllo_Fine_Gioco_AI(){
         boolean risultato = false;
-        //PROBLEMA caselle che sono state colpite -> quindi rosse -> sovrascritte da selezionata
-        //PROBLEMA problema riga 263, 264 ID non so come non combiacia
-        //MANCA mossa speciale + controllo vittoria AI
-        if(NaviAffondate.size() == 6){
-            risultato = true;
-            CustomToast2.showToast(context, "AI ha vinto!", Toast.LENGTH_SHORT);
-        }
+        NaviAffondate.forEach((k, v) ->{
+            if(v.size() == size_navi.get(k)){
+                CustomToast2.showToast(context, "AI HA VINTO!", Toast.LENGTH_SHORT);
+            }
+        });
         return risultato;
     }
 
