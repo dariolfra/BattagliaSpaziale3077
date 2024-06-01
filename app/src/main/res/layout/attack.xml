@@ -171,6 +171,7 @@
         android:foreground="@drawable/bordo_rettangolo"
         android:onClick="btn_regole_pressed"
         android:text="REGOLE"
+        android:textColor="@color/white"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/gridView"
         app:layout_constraintEnd_toEndOf="parent"

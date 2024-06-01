@@ -69,4 +69,12 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
             }
         });
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed()
+    {
+        //super.onBackPressed();
+        indietroDialog.showDialog(this);
+    }
 }
