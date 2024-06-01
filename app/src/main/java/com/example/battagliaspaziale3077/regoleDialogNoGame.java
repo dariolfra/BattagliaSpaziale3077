@@ -10,6 +10,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 public class regoleDialogNoGame {
     static Animation scale_up, scale_down;
 
@@ -23,6 +27,7 @@ public class regoleDialogNoGame {
         ImageView img2 = (ImageView) dialog.findViewById(R.id.imageView2);
         ImageView img3 = (ImageView) dialog.findViewById(R.id.imageView3);
         Button btn_annulla = (Button) dialog.findViewById(R.id.button);
+        CardView card = (CardView) dialog.findViewById(R.id.CardView);
 
         img1.setImageResource(R.drawable.selected);
         img2.setImageResource(R.drawable.nave_colpita);
@@ -30,6 +35,8 @@ public class regoleDialogNoGame {
 
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+
+
 
         btn_annulla.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

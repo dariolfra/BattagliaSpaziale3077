@@ -82,7 +82,6 @@ public class Defence extends Game implements Serializable {
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
         NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
-        colpo_a_segno = attack.getBooleanExtra("colpoasegno", false);
         id_pers = attack.getIntExtra("personaggio", 1);
         modalita = attack.getIntExtra("mod", 1);
         if (modalita == 1) {
@@ -212,7 +211,7 @@ public class Defence extends Game implements Serializable {
         }
         if(!colpita){
             tabella[posizione] = R.drawable.selected;
-            CustomToast2.showToast(context, "Acqua di AI!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
             colpo_a_segno = false;
             casella_a_segno = 0;
         }
@@ -230,19 +229,23 @@ public class Defence extends Game implements Serializable {
         boolean corretta = false;
         while(!corretta){
             if(colpo_a_segno){
+                Log.i("A SEGNO", "SONO ENTRATO");
                 if((casella_a_segno+21) > 100){
                     pos = rnd.nextInt(100 - (casella_a_segno-20)) + casella_a_segno-20;
+                    Log.i("A SEGNO", "1");
                 }
                 else if(casella_a_segno-20 < 0){
                     pos = rnd.nextInt(casella_a_segno+21) + casella_a_segno-20;
+                    Log.i("A SEGNO", "2");
                 }
                 else{
                     pos = rnd.nextInt(casella_a_segno+21 - casella_a_segno-20) + casella_a_segno-20;
+                    Log.i("A SEGNO", "3");
                 }
-                Log.i("ATT", "range " + (casella_a_segno-20) + "-" + (casella_a_segno+21) + " pos " + pos);
             }
             else{
                 pos = rnd.nextInt(100);
+                Log.i("NON A SEGNO", "BORGODIO");
             }
             if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.selected && casellaColpita[pos] != R.drawable.x){
                 corretta = true;
@@ -344,7 +347,7 @@ public class Defence extends Game implements Serializable {
         if(blocchi_nave_colpiti == size_navi.get(ID)){
             NaviColpite.remove(ID);
             NaviAffondate.put(ID, posizioni);
-            CustomToast2.showToast(context, "Nave affondata da AI!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "AI: NAVE AFFONDATA!", Toast.LENGTH_SHORT);
         }
         return mess;
     }

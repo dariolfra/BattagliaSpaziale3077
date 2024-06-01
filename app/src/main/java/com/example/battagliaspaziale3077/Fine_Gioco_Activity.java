@@ -1,7 +1,9 @@
 package com.example.battagliaspaziale3077;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +27,9 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
     Animation scale_down, scale_up;
     String nome_giocatore = "";
     boolean risulato = false;
+    int id_personaggio;
+    MediaPlayer mp;
+    Context context;
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
+        context = this.getApplicationContext();
 
         txt_nome = findViewById(R.id.txt_Nome);
         txt_risultato = findViewById(R.id.txt_risultato);
@@ -47,6 +54,9 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
         Intent gioco = getIntent();
         nome_giocatore = gioco.getStringExtra("nome");
         risulato = gioco.getBooleanExtra("risultato", false);
+        id_personaggio = gioco.getIntExtra("id_personaggio", 1);
+
+        suono_personaggio(id_personaggio);
 
         txt_nome.setText(nome_giocatore);
         if(risulato){
@@ -70,11 +80,56 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
         });
     }
 
+
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed()
     {
         //super.onBackPressed();
         indietroDialog.showDialog(this);
+    }
+
+    public void suono_personaggio(int indice){
+        if(indice == 1){
+            mp = MediaPlayer.create(context, R.raw.blur);
+            mp.start();
+        }
+        else if (indice == 2){
+            mp = MediaPlayer.create(context, R.raw.meloni);
+            mp.start();
+        }
+        else if(indice == 3){
+            mp = MediaPlayer.create(context, R.raw.brasiliano);
+            mp.start();
+        }
+        else if(indice == 4){
+            mp = MediaPlayer.create(context, R.raw.ciccio);
+            mp.start();
+        }
+        else if(indice == 5){
+            mp = MediaPlayer.create(context, R.raw.marza);
+            mp.start();
+        }
+        else if(indice == 6){
+            mp = MediaPlayer.create(context, R.raw.optimusprime);
+            mp.start();
+        }
+        else if(indice == 7){
+            mp = MediaPlayer.create(context, R.raw.papa);
+            mp.start();
+        }
+        else if(indice == 8){
+            mp = MediaPlayer.create(context, R.raw.pefforza);
+            mp.start();
+        }
+        else if(indice == 9) {
+            mp = MediaPlayer.create(context, R.raw.shiva);
+            mp.start();
+        }
+        else if(indice == 10){
+            mp = MediaPlayer.create(context, R.raw.kungfupanda);
+            mp.start();
+        }
+
     }
 }

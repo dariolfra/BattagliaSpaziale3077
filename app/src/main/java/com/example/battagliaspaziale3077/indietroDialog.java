@@ -8,6 +8,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import androidx.cardview.widget.CardView;
+
 public class indietroDialog {
     static Animation scale_down, scale_up;
     public static void showDialog(Context context) {
@@ -20,6 +22,7 @@ public class indietroDialog {
         scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
 
         Button btn_annulla = dialog.findViewById(R.id.btn_annulla);
+        CardView card = dialog.findViewById(R.id.CardView);
 
         btn_annulla.setOnClickListener(new View.OnClickListener() {
             @Override

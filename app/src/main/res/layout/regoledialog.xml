@@ -7,15 +7,19 @@
     android:backgroundTint="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/CardView"
         android:layout_width="347dp"
         android:layout_height="579dp"
-        android:backgroundTint="@android:color/transparent"
         android:foreground="@drawable/bordo_rettangolo_textbox"
-        app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background" />
 
         <ImageView
             android:id="@+id/imageView"

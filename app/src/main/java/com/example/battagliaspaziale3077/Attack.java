@@ -172,12 +172,12 @@ public class Attack extends Game implements Serializable{
                     else
                     {
                         contrallaSeColpita();
-                        //thread dorme
                     }
                     if(Controllo_Fine_Gioco_AI()){
                         Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
                         vittoria.putExtra("nome", nome_giocatore1);
                         vittoria.putExtra("risultato", true);
+                        vittoria.putExtra("personaggio", id_pers);
                         startActivity(vittoria);
                     }
                     else{
@@ -200,6 +200,7 @@ public class Attack extends Game implements Serializable{
                         defence.putExtra("comms", comms);
                         startActivity(defence);
                     }
+
                 }catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }catch (Exception e){
@@ -341,9 +342,7 @@ public class Attack extends Game implements Serializable{
             else
             {
                 contrallaSeColpita();
-                //thread dorme
             }
-
             //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
             Intent defence = new Intent(Attack.this, Defence.class);
             defence.putExtra("mod", modalita);
@@ -365,7 +364,7 @@ public class Attack extends Game implements Serializable{
         }catch (InterruptedException e) {
             throw new RuntimeException(e);
         }catch (Exception e){
-            CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", Toast.LENGTH_SHORT);
         }
     }
 
@@ -387,42 +386,45 @@ public class Attack extends Game implements Serializable{
         if(modalita != 1){
             comms.Abbandona();
         }
-        Intent HA = new Intent(Attack.this, HomeActivity.class);
-        startActivity(HA);
+        Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
+        vittoria.putExtra("nome", nome_giocatore1);
+        vittoria.putExtra("risultato", false);
+        vittoria.putExtra("personaggio", id_pers);
+        startActivity(vittoria);
     }
 
     private void contrallaSeColpita() {
-        if(mossaSpeciale)
-        {
-            for (int posSpec : posSpeciale)
+            if(mossaSpeciale)
             {
-                if(arrayFormazioneIA[posSpec] != 0){
-                    CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
-                    casellaColpita[posSpec] = R.drawable.nave_colpita;
-                    posizioni_colpite.add(posSpec);
+                for (int posSpec : posSpeciale)
+                {
+                    if(arrayFormazioneIA[posSpec] != 0){
+                        CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
+                        casellaColpita[posSpec] = R.drawable.nave_colpita;
+                        posizioni_colpite.add(posSpec);
+                    }
+                    else{
+                        CustomToast2.showToast(context, "ACQUA!", 5);
+                        casellaColpita[posSpec] = R.drawable.naveda1;
+                    }
+                }
+            }
+            else
+            {
+                if(arrayFormazioneIA[selectedPos] != 0){
+                    CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
+                    casellaColpita[selectedPos] = R.drawable.nave_colpita;
+                    attacchi_a_segno++;
+                    if(attacchi_a_segno == 5){
+                        CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", 5);
+                    }
+                    posizioni_colpite.add(selectedPos);
                 }
                 else{
-                    CustomToast2.showToast(context, "Acqua!", 5);
-                    casellaColpita[posSpec] = R.drawable.naveda1;
+                    CustomToast2.showToast(context, "ACQUA!", 5);
+                    casellaColpita[selectedPos] = R.drawable.naveda1;
                 }
             }
-        }
-        else
-        {
-            if(arrayFormazioneIA[selectedPos] != 0){
-                CustomToast2.showToast(context, "Bersaglio Colpito!", 5);
-                casellaColpita[selectedPos] = R.drawable.nave_colpita;
-                attacchi_a_segno++;
-                if(attacchi_a_segno == 5){
-                    CustomToast2.showToast(context, "Attacco Speciale disponibile!", 5);
-                }
-                posizioni_colpite.add(selectedPos);
-            }
-            else{
-                CustomToast2.showToast(context, "Acqua!", 5);
-                casellaColpita[selectedPos] = R.drawable.naveda1;
-            }
-        }
     }
 
     public boolean Controllo_Fine_Gioco_AI(){
@@ -476,16 +478,16 @@ public class Attack extends Game implements Serializable{
     {
         if(selectedPos != -1)
         {
-            CustomToast2.showToast(context, "Bersaglio Colpito!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "BERSAGLIO COLPITO!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 2;
             attacchi_a_segno += 1;
             if(attacchi_a_segno >= 5){
-                CustomToast2.showToast(context, "Attacco Speciale disponibile!", Toast.LENGTH_SHORT);
+                CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", Toast.LENGTH_SHORT);
             }
         }
         else if(result == "acqua")
         {
-            CustomToast2.showToast(context, "Acqua!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "ACQUA!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 1;
         }
         else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
@@ -501,6 +503,7 @@ public class Attack extends Game implements Serializable{
         {
             casellaColpita[Integer.valueOf(s)] = 3;
         }
+        CustomToast2.showToast(context, "NAVE AFFONDATA", Toast.LENGTH_SHORT);
     }
 
     public void popola_mosse_speciale()
@@ -551,7 +554,7 @@ public class Attack extends Game implements Serializable{
             attacchi_a_segno -= 5;
         }
         else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this,"Attacco Speciale disponibile tra " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " attacchi",Toast.LENGTH_LONG);
+            CustomToast.showToast(this,"ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI/O",Toast.LENGTH_LONG);
         }
     }
 
