@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     ImageView[] navi;
     float startX, startY;
     float[] initialX, initialY;
-    Button btnConferma, btn_regole;
+    Button btnConferma, btn_regole,btnRipristina;
     int[] shipSizes = {3, 2, 2, 4, 4, 3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
     boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         btnConferma = findViewById(R.id.btnConferma);
         btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
         btn_regole = findViewById(R.id.btn_regole);
+        btnRipristina = findViewById(R.id.btnRipristina);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -237,6 +239,31 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 return true;
             });
         }
+        // Set OnClickListener for the btnRipristina button
+        btnRipristina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetShips(gridAdapter, immaginiCasella);
+            }
+        });
+    }
+    // Method to reset ships to their initial positions
+    private void resetShips(GridAdapter gridAdapter, int[] immaginiCasella) {
+        // Reset the ships' visibility and position
+        for (int i = 0; i < navi.length; i++) {
+            navi[i].setVisibility(View.VISIBLE);
+            navi[i].setX(initialX[i]);
+            navi[i].setY(initialY[i]);
+            shipPlaced[i] = false; // Mark ship as not placed
+        }
+
+        // Clear the ship positions and images on the grid
+        shipPositions.clear();
+        Arrays.fill(immaginiCasella, 0);
+        gridAdapter.notifyDataSetChanged();
+
+        // Hide the confirm button
+        btnConferma.setVisibility(View.GONE);
     }
 
     public boolean ControllaSeOutBound(int column, int size, int index, int rotation, int position) {
