@@ -131,7 +131,7 @@ class ServerThread extends ConnectionThread implements Parcelable {
                     outputServer.close();
                     client2.close();
 
-                    HostActivity.ChangePage();
+                    //HostActivity.ChangePage();
                     primaConnessione = false;
                 }
                 else

@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         background = (ImageView) findViewById(R.id.imageView8);
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, getTheme()));
 
+        ConnectionFirebase connectionFirebase = new ConnectionFirebase();
+
         //Inizializzazione delle navi
         navi = new ImageView[6];
         navi[0] = findViewById(R.id.navecap);
@@ -128,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                connectionFirebase.inviaHashMapFormazione();
                 btnConferma.startAnimation(scale_down);
                 btnConferma.startAnimation(scale_up);
                 Intent gioco;
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     gioco =  new Intent(MainActivity.this, Defence.class);
                 }
                 if(modalita != 1){
-                    try {
+                    /*try {
                         comms.InviaMessaggio("done");
                         comms.RiceviRisposta();
                         synchronized (comms){
@@ -149,7 +152,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         comms.InviaMessaggio("done");
                     } catch (InterruptedException e) {
                         //ignoro l'errore
-                    }
+                    }*/
+                    //connectionFirebase.inviaHashMapFormazione(shipPositions);
                 }
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome1", nome_giocatore1);

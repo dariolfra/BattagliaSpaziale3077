@@ -1,5 +1,6 @@
 package com.example.battagliaspaziale3077;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
@@ -14,12 +15,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +35,7 @@ import java.net.Socket;
 import java.util.Optional;
 
 public class User_vs_User_connect_Activity extends AppCompatActivity implements Serializable{
-    TextInputEditText txt_nome, txt_ip_server, txt_porta_server;
+    TextInputEditText txt_nome, txt_ip_server, txt_porta_server,lbl_codiceConn;
     String serverName, nome_giocatore1, nome_giocatore2;
     int serverPort;
     Button btn_connettiti, btn_regole;
@@ -42,7 +47,9 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
     Socket client;
     String txtFromServer;
     private ClientThread comms;
+    ConnectionFirebase connectionFirebase;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,11 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         txt_ip_server = (TextInputEditText) findViewById(R.id.txt_input_ip_server);
         txt_porta_server = (TextInputEditText) findViewById(R.id.txt_input_porta_server);
         btn_regole = (Button) findViewById(R.id.btn_regole);
+
+
+        //per connessione db
+        connectionFirebase = new ConnectionFirebase();
+        lbl_codiceConn = findViewById(R.id.lbl_codiceDiConn);
 
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
@@ -67,7 +79,28 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
             public void onClick(View v) {
                 btn_connettiti.startAnimation(scale_down);
                 btn_connettiti.startAnimation(scale_up);
-                onClickConnect();
+                //onClickConnect();
+                String codice = String.valueOf(lbl_codiceConn.getText());
+                nome_giocatore2 = txt_nome.getText().toString();
+                //metodo per unirmi alla partita
+                connectionFirebase.unisciAPartita(codice,nome_giocatore2, new ValueEventListener() {
+
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Stampa lo snapshot per controllare i dati ricevuti
+                        Log.d("DataSnapshot", snapshot.toString());
+                        // Verifica se il nome del giocatore 1 è stato impostato
+                        String nomeGiocatore1 = snapshot.child("nomeGiocatore1").getValue(String.class);
+                        if (nomeGiocatore1 != null && !nomeGiocatore1.isEmpty()) {
+                            // Passa alla schermata di gioco per il Giocatore 2
+                            ChangePage(nomeGiocatore1);
+                        }
+                    }
+                @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
     }
@@ -111,13 +144,13 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         txt_porta_server.setText("");
     }
 
-    public void ChangePage() {
+    public void ChangePage(String nome_giocatore1) {
         Intent personaggi = new Intent(User_vs_User_connect_Activity.this, PersonaggiActivity.class);
         personaggi.putExtra("mod", modalita);
         personaggi.putExtra("nome1", nome_giocatore1);
-        personaggi.putExtra("nome2", comms.Nome_G2());
+        personaggi.putExtra("nome2", nome_giocatore2);
         personaggi.putExtra("attacco", false);
-        personaggi.putExtra("comms", comms);
+        //personaggi.putExtra("comms", comms);
         startActivity(personaggi);
     }
 

@@ -45,12 +45,16 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
     int modalita;
     MediaPlayer mp;
     Animation scale_down, scale_up;
+    ConnectionFirebase connectionFirebase;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personaggi);
+
+        connectionFirebase = new ConnectionFirebase();
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -60,7 +64,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
 
         Intent mod = getIntent();
         modalita = mod.getIntExtra("mod", 1);
-        comms = (ConnectionThread) mod.getParcelableExtra("comms");
+        //comms = (ConnectionThread) mod.getParcelableExtra("comms");
         boolean attacco = mod.getBooleanExtra("attacco", true);
         if(modalita == 1){
             nome_g1 = mod.getStringExtra("nome");
@@ -135,17 +139,28 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             @Override
             public void onClick(View v) {
                 if(modalita != 1){
-                    try {
-                        comms.InviaMessaggio("done");
+                    //try {
+                        /*comms.InviaMessaggio("done");
                         comms.RiceviRisposta();
                         synchronized (comms){
                             comms.wait(3000);
                         }
-                        comms.InviaMessaggio("done");
-                    } catch (InterruptedException e) {
+                        comms.InviaMessaggio("done");*/
+                        if (modalita == 2){
+                            //quello che si unisce alla partita
+
+                            //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
+                            connectionFirebase.personaggioGiocatore2();
+                        }
+                        else if(modalita == 3){
+                            //quello che la crea
+                            connectionFirebase.personaggioGiocatore1();
+
+                        }
+                        }
+                   // } catch (InterruptedException e) {
                         //ignoro l'errore
-                    }
-                }
+                   // }
                 btn_seleziona_personaggio.startAnimation(scale_down);
                 btn_seleziona_personaggio.startAnimation(scale_up);
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
@@ -153,7 +168,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 gioco.putExtra("mod", modalita);
                 gioco.putExtra("nome1", nome_g1);
                 gioco.putExtra("nome2", nome_g2);
-                gioco.putExtra("comms", comms);
+               // gioco.putExtra("comms", comms);
                 gioco.putExtra("attacco", attacco);
                 suono_personaggio(indice);
                 startActivity(gioco);

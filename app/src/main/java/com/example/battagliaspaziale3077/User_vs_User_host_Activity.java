@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -29,6 +33,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 public class User_vs_User_host_Activity extends AppCompatActivity implements Serializable {
     TextView lbl_ip_sv, lbl_ip_sv_box, lbl_porta_sv, lbl_porta_sv_box, lbl_conn, lbl_conn_box;
@@ -45,6 +50,8 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
     //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
     public  boolean connessione_instaurata;
     Animation scale_up, scale_down;
+    TextView lbl_codiceConn;
+    ConnectionFirebase connectionFirebase;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,8 +76,13 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         txt_nome_giocatore = (TextInputEditText) findViewById(R.id.txt_nome_giocatore);
         btn_regole = (Button) findViewById(R.id.btn_regole);
 
+
+        lbl_codiceConn = findViewById(R.id.lbl_codiceDiConn);
+        connectionFirebase = new ConnectionFirebase();
+
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+
     }
 
     public void onClickStartServer(View view){
@@ -78,12 +90,34 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         btn_start_sv.startAnimation(scale_up);
 
         nome_giocatore1 = String.valueOf(txt_nome_giocatore.getText());
-        serverThread = new ServerThread(nome_giocatore1, serverPort);
+        /*serverThread = new ServerThread(nome_giocatore1, serverPort);
         serverThread.SetActivity(this);
         serverThread.startServer();
 
         lbl_ip_sv_box.setText(serverIP);
-        lbl_porta_sv_box.setText(String.valueOf(serverPort));
+        lbl_porta_sv_box.setText(String.valueOf(serverPort));*/
+
+
+        //stringa per creare il codice della partita
+        String codiceConn = generaTreLettere() + generaTreNumeri();
+        //metodo per creare la partita
+
+        connectionFirebase.CreaPartita(codiceConn, nome_giocatore1, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Verifica se il nome del giocatore 2 è stato impostato
+                String nomeGiocatore2 = snapshot.child("nomeGiocatore2").getValue(String.class);
+                if (nomeGiocatore2 != null && !nomeGiocatore2.isEmpty()) {
+                    // Passa alla schermata di gioco per il Giocatore 1
+                    ChangePage(nomeGiocatore2);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        lbl_codiceConn.setText(codiceConn);
     }
 
     public void SetAddressPort(String sIP, int sPort)
@@ -119,7 +153,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         }
         );
     }
-    public void ChangePage()
+    public void ChangePage(String nome_giocatore2)
     {
         runOnUiThread(new Runnable() {
             @Override
@@ -127,9 +161,9 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
                 Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                 personaggi.putExtra("mod", modalita);
                 personaggi.putExtra("nome1",nome_giocatore1);
-                personaggi.putExtra("nome2",serverThread.Nome_G2());
+                personaggi.putExtra("nome2",nome_giocatore2);
                 personaggi.putExtra("attacco", true);
-                personaggi.putExtra("comms", serverThread);
+                //personaggi.putExtra("comms", serverThread);
                 startActivity(personaggi);
             }
         });
@@ -149,5 +183,27 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);
+    }
+    public static String generaTreLettere() {
+        Random random = new Random();
+        StringBuilder lettere = new StringBuilder(3);
+
+        for (int i = 0; i < 3; i++) {
+            char lettera = (char) (random.nextInt(26) + 'A'); // Genera una lettera maiuscola casuale
+            lettere.append(lettera);
+        }
+        return lettere.toString();
+    }
+
+    public static String generaTreNumeri() {
+        Random random = new Random();
+        StringBuilder numeri = new StringBuilder(3);
+
+        for (int i = 0; i < 3; i++) {
+            int numero = random.nextInt(10); // Genera un numero da 0 a 9
+            numeri.append(numero);
+        }
+
+        return numeri.toString();
     }
 }

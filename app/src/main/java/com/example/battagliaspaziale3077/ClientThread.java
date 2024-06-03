@@ -106,7 +106,7 @@ class ClientThread extends ConnectionThread implements Parcelable {
                     sv_reader.close();
 
                     ClientActivity.ResetTxb();
-                    ClientActivity.ChangePage();
+                    //ClientActivity.ChangePage();
                     //server.connessione_instaurata = true;
                     txtFromServer = "";
                     primaConnessione = false;
