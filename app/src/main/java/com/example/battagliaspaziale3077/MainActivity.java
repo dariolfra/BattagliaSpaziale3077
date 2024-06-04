@@ -22,6 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.zip.Inflater;
+
 public class MainActivity extends AppCompatActivity implements Serializable {
     //Effettura controllo della modalita che viene passata dalla pagina che crea il gioco
 
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     ImageView[] navi;
     float startX, startY;
     float[] initialX, initialY;
-    Button btnConferma, btn_regole,btnRipristina;
+    Button btnConferma, btn_regole, btnRipristina;
     int[] shipSizes = {3, 2, 2, 4, 4, 3}; // Dimensioni delle navi
     int[] rotationDegrees = {0, 0, 0, 0, 0, 0}; // Gradi di rotazione delle navi
     boolean[] shipPlaced = {false, false, false, false, false, false}; // Stato delle navi
@@ -100,6 +104,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+
         // Inizializza gli array per le posizioni iniziali
         initialX = new float[navi.length];
         initialY = new float[navi.length];
@@ -124,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         nome_giocatore2 = personaggi.getStringExtra("nome2");
                     }
                     personaggio = personaggi.getIntExtra("personaggio", 1);
-                    comms = (ConnectionThread) personaggi.getParcelableExtra("comms");
                     attacco = personaggi.getBooleanExtra("attacco", true);
                     dati_arrivati_correttamente = true;
                 } catch (Exception e) {
@@ -241,9 +253,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         int position = row * 10 + column;
                         int size = shipSizes[index];
                         int posizione = gridAdapter.AggiustaPosizioni(index, rotationDegrees[index], position); //per sistemare le posizioni
-                        if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(posizione), size, index, rotationDegrees[index], posizione) && gridAdapter.ControllaSeLiberi(posizione, size, index, rotationDegrees[index],immaginiCasella)) {
+                        if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(posizione), size, index, rotationDegrees[index], posizione) && gridAdapter.ControllaSeLiberi(posizione, size, index, rotationDegrees[index], immaginiCasella)) {
                             //inserimento delle navi
-                            posizionaNave(index, size, rotationDegrees[index], posizione, immaginiCasella,false);
+                            posizionaNave(index, size, rotationDegrees[index], posizione, immaginiCasella, false);
                         }
                         // Resetta la posizione x e y alle posizioni iniziali
                         navi[index].setX(initialX[index]);
@@ -271,13 +283,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     private void ChangePage(boolean attacco) {
         Intent gioco;
-        if(attacco)
-        {
-            gioco =  new Intent(MainActivity.this, Attack.class);
-        }
-        else
-        {
-            gioco =  new Intent(MainActivity.this, Defence.class);
+        if (attacco) {
+            gioco = new Intent(MainActivity.this, Attack.class);
+        } else {
+            gioco = new Intent(MainActivity.this, Defence.class);
         }
         gioco.putExtra("mod", modalita);
         gioco.putExtra("nome1", nome_giocatore1);
@@ -345,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         return column + size <= 10;
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);
@@ -364,24 +373,24 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 case 4:
                 case 5:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(currentPos, index, immaginiCasella,false);
+                        ImmaginiNavi(currentPos, index, immaginiCasella, false);
                         positions.add(currentPos);
                         if ((index == 2 && j == 0 && rotationDegrees == 0) || (index == 0 && j == 1 && rotationDegrees == 0) || (index == 4 && j == 2 && rotationDegrees == 0) || (index == 5 && j == 2 && rotationDegrees == 0)) {
                             p = posizione - 10 + j;
-                            ImmaginiNavi(p, index, immaginiCasella,false);
+                            ImmaginiNavi(p, index, immaginiCasella, false);
                             positions.add(p);
                         }
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
                         if (index == 2 && rotationDegrees == 270) {
-                            ImmaginiNavi(currentPos, index, immaginiCasella,false);
+                            ImmaginiNavi(currentPos, index, immaginiCasella, false);
                             positions.add(currentPos);
                         } else {
-                            ImmaginiNavi(posizione + j * 10, index, immaginiCasella,false);
+                            ImmaginiNavi(posizione + j * 10, index, immaginiCasella, false);
                             positions.add(posizione + j * 10);
                         }
                         if ((index == 0 && j == 1 && rotationDegrees == 90) || (index == 2 && j == 0 && rotationDegrees == 90) || (index == 5 && j == 2 && rotationDegrees == 90) || (index == 4 && j == 2 && rotationDegrees == 90)) {
                             p = posizione + j * 10 + 1;
-                            ImmaginiNavi(p, index, immaginiCasella,false);
+                            ImmaginiNavi(p, index, immaginiCasella, false);
                             positions.add(p);
                         }
                     }
@@ -389,10 +398,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
                 case 3:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(currentPos, index, immaginiCasella,false);
+                        ImmaginiNavi(currentPos, index, immaginiCasella, false);
                         positions.add(currentPos);
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(posizione + j * 10, index, immaginiCasella,false);
+                        ImmaginiNavi(posizione + j * 10, index, immaginiCasella, false);
                         positions.add(posizione + j * 10);
                     }
                     break;
@@ -405,34 +414,33 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             if (rotationDegrees == 180) {
                 if ((index == 2 && j == 1) || (index == 0 && j == 1) || (index == 5 && j == 0) || (index == 4 && j == 1)) {
                     p = posizione + 10 + j;
-                    ImmaginiNavi(p, index, immaginiCasella,false);
+                    ImmaginiNavi(p, index, immaginiCasella, false);
                     positions.add(p);
                 }
             } else if (rotationDegrees == 270) {
                 if ((index == 4 && j == 1) || (index == 0 && j == 1) || (index == 5 && j == 0)) {
                     p = posizione + j * 10 - 1;
-                    ImmaginiNavi(p, index, immaginiCasella,false);
+                    ImmaginiNavi(p, index, immaginiCasella, false);
                     positions.add(p);
                 } else if (index == 2 && j == 1) {
                     p = posizione - 10 + 1;
-                    ImmaginiNavi(p, index, immaginiCasella,false);
+                    ImmaginiNavi(p, index, immaginiCasella, false);
                     positions.add(p);
                 }
             }
         }
         shipPlaced[index] = true; // Segna la nave inserita
-        if(!AI){ //se posizione le navi per l'utente o per l'AI
-            shipPositions.put(getShipName(index),positions);
+        if (!AI) { //se posizione le navi per l'utente o per l'AI
+            shipPositions.put(getShipName(index), positions);
             navi[index].setVisibility(View.INVISIBLE);
-        }
-        else {
-            shipPositionsAI.put(getShipName(index),positions);
+        } else {
+            shipPositionsAI.put(getShipName(index), positions);
         }
     }
 
-    public void ImmaginiNavi(int position, int index, int[] immaginiCasella,boolean AI) {
+    public void ImmaginiNavi(int position, int index, int[] immaginiCasella, boolean AI) {
         //Ogni nave ha la sua immagine
-        if(!AI){
+        if (!AI) {
             if (index == 0) {
                 immaginiCasella[position] = R.drawable.navexcap;
             } else if (index == 1) {
@@ -475,10 +483,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
         return -1;
     }
-    public HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter,int[] arrayGridViewIA) {
-        if (!primaVolta){
+
+    public HashMap<Integer, List<Integer>> generateRandomShipPositions(GridAdapter gridAdapter, int[] arrayGridViewIA) {
+        if (!primaVolta) {
             Random random = new Random();
-            gridAdapter = new GridAdapter(this,arrayGridViewIA);
+            gridAdapter = new GridAdapter(this, arrayGridViewIA);
             for (int i = 0; i < shipSizes.length; i++) { //finchè non ha inserito tutte le navi
                 boolean placed = false;
 
@@ -488,9 +497,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     int rotation = random.nextInt(4) * 90; //da 0° a 270°
 
                     //Controlla se è correttamente dentro al gridview e se le celle sono libere
-                    if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position),shipSizes[i],i,rotation,position) && gridAdapter.ControllaSeLiberi(position,shipSizes[i],i,rotation,arrayGridViewIA)) {
+                    if (ControllaSeOutBound(gridAdapter.getColumnFromPosition(position), shipSizes[i], i, rotation, position) && gridAdapter.ControllaSeLiberi(position, shipSizes[i], i, rotation, arrayGridViewIA)) {
                         //inserisce la navi
-                        posizionaNave(i,shipSizes[i],rotation,position,arrayGridViewIA,true);
+                        posizionaNave(i, shipSizes[i], rotation, position, arrayGridViewIA, true);
                         placed = true;
                     }
                 }

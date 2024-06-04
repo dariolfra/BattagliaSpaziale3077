@@ -19,10 +19,10 @@ public class ConnectionFirebase {
 
     private static String personaggioG2;
 
-    public void inviaHashMapFormazione(int modalità,ValueEventListener listener) {
+    public void inviaHashMapFormazione(int modalità, ValueEventListener listener) {
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = instance.getReference(codiceConn);
-        if(modalità == 2){
+        if (modalità == 2) {
             //si collega alla partita
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -46,8 +46,7 @@ public class ConnectionFirebase {
                 }
             });
 
-        }
-        else if(modalità == 3){
+        } else if (modalità == 3) {
             //crea la partita
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -91,8 +90,8 @@ public class ConnectionFirebase {
             data.put("nomeGiocatore2", "");
             data.put("PersonaggioGiocatore1", "");
             data.put("PersonaggioGiocatore2", "");
-            data.put("Formazioneg1","");
-            data.put("Formazioneg2","");
+            data.put("Formazioneg1", "");
+            data.put("Formazioneg2", "");
 
             databaseReference.setValue(data);
 
@@ -173,11 +172,10 @@ public class ConnectionFirebase {
                 if (dataSnapshot.exists()) {
                     // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore1
                     Map<String, Object> updates = new HashMap<>();
-                    updates.put("PersonaggioGiocatore1","true" );
+                    updates.put("PersonaggioGiocatore1", "true");
                     personaggioG1 = "true";
                     databaseReference.updateChildren(updates);
-                }
-                else {
+                } else {
                     // Se la partita non esiste, gestisci l'errore
                     System.err.println("Partita non trovata: " + codiceConn);
                 }
@@ -191,10 +189,12 @@ public class ConnectionFirebase {
         // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
         databaseReference.addValueEventListener(listener);
     }
-    public String PersonaggioG2(){
+
+    public String PersonaggioG2() {
         return personaggioG2;
     }
-    public String PersonaggioG1(){
+
+    public String PersonaggioG1() {
         return personaggioG1;
     }
 }

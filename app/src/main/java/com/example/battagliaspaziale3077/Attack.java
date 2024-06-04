@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
-public class Attack extends Game implements Serializable{
+public class Attack extends Game implements Serializable {
     private int id_pers, modalita;
     private String nome_giocatore1, nome_giocatore2;
     private ConnectionThread comms;
@@ -64,8 +64,8 @@ public class Attack extends Game implements Serializable{
     private static HashMap<Integer, List<Integer>> formazioneIA = new HashMap<>();
     private MainActivity mainActivity;
     private float[] initialX, initialY;
-    private int[] shipSizes = {0,5,0,3,5,5,4,5,3,3,3};
-    private int[] rotationDegrees = {0, 0, 0, 0, 0, 0,0, 0, 0,0,0};
+    private int[] shipSizes = {0, 5, 0, 3, 5, 5, 4, 5, 3, 3, 3};
+    private int[] rotationDegrees = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
     private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
@@ -91,6 +91,15 @@ public class Attack extends Game implements Serializable{
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
 
         //aquisizione componeneti da layout
         btn_attacca = (Button) findViewById(R.id.attacco);
@@ -157,39 +166,33 @@ public class Attack extends Game implements Serializable{
         btn_attacca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     btn_attacca.startAnimation(scale_down);
                     btn_attacca.startAnimation(scale_up);
-                    if(multiplayer)
-                    {
+                    if (multiplayer) {
                         comms.InviaMessaggio(String.valueOf(selectedPos));
                         comms.RiceviRisposta();
-                        synchronized (comms){
+                        synchronized (comms) {
                             comms.wait(3000);
                         }
                         Attacco(comms.GetMessage());
-                    }
-                    else
-                    {
+                    } else {
                         contrallaSeColpita();
                     }
-                    if(Controllo_Fine_Gioco_AI()){
+                    if (Controllo_Fine_Gioco_AI()) {
                         Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
                         vittoria.putExtra("nome", nome_giocatore1);
                         vittoria.putExtra("risultato", true);
                         vittoria.putExtra("personaggio", id_pers);
                         startActivity(vittoria);
-                    }
-                    else{
+                    } else {
                         //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
                         Intent defence = new Intent(Attack.this, Defence.class);
                         defence.putExtra("mod", modalita);
                         defence.putExtra("nome1", nome_giocatore1);
-                        if(multiplayer)
-                        {
+                        if (multiplayer) {
                             defence.putExtra("nome2", comms.getName());
-                        }
-                        else{
+                        } else {
                             defence.putExtra("nome2", nome_giocatore2);
                         }
                         defence.putExtra("personaggio", id_pers);
@@ -201,9 +204,9 @@ public class Attack extends Game implements Serializable{
                         startActivity(defence);
                     }
 
-                }catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
-                }catch (Exception e){
+                } catch (Exception e) {
                     CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
                 }
             }
@@ -235,11 +238,9 @@ public class Attack extends Game implements Serializable{
                 //da finire
                 pos = position;
                 if (canAttack()) {
-                    if(mossaSpeciale)
-                    {
+                    if (mossaSpeciale) {
                         //resetto le condizioni della mossa speciale
-                        for (int posSpec : posSpeciale)
-                        {
+                        for (int posSpec : posSpeciale) {
                             casellaColpita[posSpec] = 0;
                         }
                         posSpeciale.clear();
@@ -257,8 +258,7 @@ public class Attack extends Game implements Serializable{
                         //nascondo l'imageview
                         img_mossa_speciale.setVisibility(View.INVISIBLE);
                     }
-                    if (selectedPos != -1)
-                    {
+                    if (selectedPos != -1) {
                         casellaColpita[selectedPos] = 0;
                     }
                     casellaColpita[pos] = R.drawable.selected;
@@ -283,8 +283,7 @@ public class Attack extends Game implements Serializable{
         });
         img_mossa_speciale.setOnTouchListener((v, event) -> {
             gestureDetector.onTouchEvent(event);
-            switch (event.getAction())
-            {
+            switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     startX = event.getRawX();
                     startY = event.getRawY();
@@ -325,33 +324,27 @@ public class Attack extends Game implements Serializable{
         });
     }
 
-    public void confermaAttacco(View v)
-    {
-        try{
+    public void confermaAttacco(View v) {
+        try {
             btn_attacca.startAnimation(scale_down);
             btn_attacca.startAnimation(scale_up);
-            if(multiplayer)
-            {
+            if (multiplayer) {
                 comms.InviaMessaggio(String.valueOf(selectedPos));
                 comms.RiceviRisposta();
-                synchronized (comms){
+                synchronized (comms) {
                     comms.wait(3000);
                 }
                 Attacco(comms.GetMessage());
-            }
-            else
-            {
+            } else {
                 contrallaSeColpita();
             }
             //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
             Intent defence = new Intent(Attack.this, Defence.class);
             defence.putExtra("mod", modalita);
             defence.putExtra("nome1", nome_giocatore1);
-            if(multiplayer)
-            {
+            if (multiplayer) {
                 defence.putExtra("nome2", comms.getName());
-            }
-            else{
+            } else {
                 defence.putExtra("nome2", nome_giocatore2);
             }
             defence.putExtra("personaggio", id_pers);
@@ -361,29 +354,27 @@ public class Attack extends Game implements Serializable{
             defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
             defence.putExtra("comms", comms);
             startActivity(defence);
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }catch (Exception e){
+        } catch (Exception e) {
             CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", Toast.LENGTH_SHORT);
         }
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //super.onBackPressed();
         customDialog.showDialog(this);
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialog.showDialog(this);
     }
 
-    public void Abbandona()
-    {
-        if(modalita != 1){
+    public void Abbandona() {
+        if (modalita != 1) {
             comms.Abbandona();
         }
         Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
@@ -394,52 +385,46 @@ public class Attack extends Game implements Serializable{
     }
 
     private void contrallaSeColpita() {
-            if(mossaSpeciale)
-            {
-                for (int posSpec : posSpeciale)
-                {
-                    if(arrayFormazioneIA[posSpec] != 0){
-                        CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
-                        casellaColpita[posSpec] = R.drawable.nave_colpita;
-                        posizioni_colpite.add(posSpec);
-                    }
-                    else{
-                        CustomToast2.showToast(context, "ACQUA!", 5);
-                        casellaColpita[posSpec] = R.drawable.naveda1;
-                    }
-                }
-            }
-            else
-            {
-                if(arrayFormazioneIA[selectedPos] != 0){
+        if (mossaSpeciale) {
+            for (int posSpec : posSpeciale) {
+                if (arrayFormazioneIA[posSpec] != 0) {
                     CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
-                    casellaColpita[selectedPos] = R.drawable.nave_colpita;
-                    attacchi_a_segno++;
-                    if(attacchi_a_segno == 5){
-                        CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", 5);
-                    }
-                    posizioni_colpite.add(selectedPos);
-                }
-                else{
+                    casellaColpita[posSpec] = R.drawable.nave_colpita;
+                    posizioni_colpite.add(posSpec);
+                } else {
                     CustomToast2.showToast(context, "ACQUA!", 5);
-                    casellaColpita[selectedPos] = R.drawable.naveda1;
+                    casellaColpita[posSpec] = R.drawable.naveda1;
                 }
             }
+        } else {
+            if (arrayFormazioneIA[selectedPos] != 0) {
+                CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
+                casellaColpita[selectedPos] = R.drawable.nave_colpita;
+                attacchi_a_segno++;
+                if (attacchi_a_segno == 5) {
+                    CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", 5);
+                }
+                posizioni_colpite.add(selectedPos);
+            } else {
+                CustomToast2.showToast(context, "ACQUA!", 5);
+                casellaColpita[selectedPos] = R.drawable.naveda1;
+            }
+        }
     }
 
-    public boolean Controllo_Fine_Gioco_AI(){
+    public boolean Controllo_Fine_Gioco_AI() {
         boolean risultato = false;
-        for(int id : id_navi){
-            if(!id_navi_affondate.contains(id)){
+        for (int id : id_navi) {
+            if (!id_navi_affondate.contains(id)) {
                 List<Integer> posizioni_nave_IA = formazioneIA.get(id);
                 int ship_size = posizioni_nave_IA.size();
                 int colpi_a_segno = 0;
-                for(int pos : posizioni_colpite){
-                    if(posizioni_nave_IA.contains(pos)){
+                for (int pos : posizioni_colpite) {
+                    if (posizioni_nave_IA.contains(pos)) {
                         colpi_a_segno++;
                     }
                 }
-                if(colpi_a_segno == ship_size){
+                if (colpi_a_segno == ship_size) {
                     navi_affondate++;
                     Nave_Affondata(posizioni_nave_IA);
                     id_navi_affondate.add(id);
@@ -447,67 +432,54 @@ public class Attack extends Game implements Serializable{
                 }
             }
         }
-        if(navi_affondate == 6){
+        if (navi_affondate == 6) {
             risultato = true;
         }
         return risultato;
     }
 
-    public void Nave_Affondata(List<Integer> lista){
-        for(Integer i : lista){
+    public void Nave_Affondata(List<Integer> lista) {
+        for (Integer i : lista) {
             casellaColpita[i] = R.drawable.nave_affondata;
         }
     }
-    public boolean canAttack()
-    {
-        if (casellaColpita[pos] == 0)
-        {
+
+    public boolean canAttack() {
+        if (casellaColpita[pos] == 0) {
             return true;
-        }
-        else if(casellaColpita[pos] == R.drawable.selected)
-        {
+        } else if (casellaColpita[pos] == R.drawable.selected) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    public void Attacco(String result)
-    {
-        if(selectedPos != -1)
-        {
+    public void Attacco(String result) {
+        if (selectedPos != -1) {
             CustomToast2.showToast(context, "BERSAGLIO COLPITO!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 2;
             attacchi_a_segno += 1;
-            if(attacchi_a_segno >= 5){
+            if (attacchi_a_segno >= 5) {
                 CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", Toast.LENGTH_SHORT);
             }
-        }
-        else if(result == "acqua")
-        {
+        } else if (result == "acqua") {
             CustomToast2.showToast(context, "ACQUA!", Toast.LENGTH_SHORT);
             casellaColpita[selectedPos] = 1;
-        }
-        else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
+        } else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
         {
             NaveColpitaEAffondata(result.split("|")[1]);
         }
     }
 
-    public void NaveColpitaEAffondata(String pos)
-    {
+    public void NaveColpitaEAffondata(String pos) {
         String[] posizioni = pos.split("-");
-        for (String s: posizioni)
-        {
+        for (String s : posizioni) {
             casellaColpita[Integer.valueOf(s)] = 3;
         }
         CustomToast2.showToast(context, "NAVE AFFONDATA", Toast.LENGTH_SHORT);
     }
 
-    public void popola_mosse_speciale()
-    {
+    public void popola_mosse_speciale() {
         indici_mossaspeciale = new HashMap<>();
         indici_mossaspeciale.put(1, getResources().getDrawable(R.drawable.attaccoserpente, context.getTheme()));
         indici_mossaspeciale.put(2, getResources().getDrawable(R.drawable.attaccot, context.getTheme())); //ha attacco random
@@ -521,8 +493,7 @@ public class Attack extends Game implements Serializable{
         indici_mossaspeciale.put(10, getResources().getDrawable(R.drawable.attaccot, context.getTheme()));
     }
 
-    public void popola_personaggi()
-    {
+    public void popola_personaggi() {
         indici_personaggi = new HashMap<>();
         indici_personaggi.put(1, getResources().getDrawable(R.drawable.blur, context.getTheme()));
         indici_personaggi.put(2, getResources().getDrawable(R.drawable.meloni, context.getTheme()));
@@ -538,7 +509,8 @@ public class Attack extends Game implements Serializable{
 
     public void genera_img_mossa_speciale(View view) throws InterruptedException {
         btn_att_speciale.startAnimation(scale_down);
-        btn_att_speciale.startAnimation(scale_up);;
+        btn_att_speciale.startAnimation(scale_up);
+        ;
         //img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
         if (attacchi_a_segno >= 5) { //se posso fare la mossa speciale
             mossaSpecialeX = img_mossa_speciale.getX();
@@ -547,75 +519,70 @@ public class Attack extends Game implements Serializable{
             mossaSpeciale = true;
             if (id_pers == 2) { //controllo se sono Giorgia Meloni
                 AttaccoRandom(casellaColpita);
-            }
-            else {
+            } else {
                 img_mossa_speciale.setImageDrawable(indici_mossaspeciale.get(id_pers));
             }
             attacchi_a_segno -= 5;
-        }
-        else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this,"ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI/O",Toast.LENGTH_LONG);
+        } else { //se non è ancora tempo della mossa speciale
+            CustomToast.showToast(this, "ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI/O", Toast.LENGTH_LONG);
         }
     }
 
 
     private void AttaccoRandom(int[] immaginiCaselle) { //attacco della meloni
-        if(casellaColpita[selectedPos] == R.drawable.selected)
-        {
+        if (casellaColpita[selectedPos] == R.drawable.selected) {
             casellaColpita[selectedPos] = 0;
         }
-        for (int i = 0; i < 7; i ++){
+        for (int i = 0; i < 7; i++) {
             Random random = new Random();
             int p = random.nextInt(100); //numero da 0 a 99
-            ImmaginiNavi(p,immaginiCaselle);
+            ImmaginiNavi(p, immaginiCaselle);
         }
         gridAdapterAttacco.notifyDataSetChanged();
     }
 
     //inserisce l'immagine nella casella indicata nel gridview
-    public void ImmaginiNavi(int position,int[] immaginiCasella) {
-        if(casellaColpita[position] == 0)
-        {
+    public void ImmaginiNavi(int position, int[] immaginiCasella) {
+        if (casellaColpita[position] == 0) {
             posSpeciale.add(position);
             immaginiCasella[position] = R.drawable.selected;
             gridAdapterAttacco.notifyDataSetChanged();
         }
     }
+
     public boolean ControllaSeOutBound(int column, int size, int index, int rotation, int position) {
         //verifica che l'attacco sia correttamente dentro il gridview
-        if(position < 0 || position > 99){ //99 == immaginiCasella.lenght
+        if (position < 0 || position > 99) { //99 == immaginiCasella.lenght
             return false;
-        }
-        else if(index == 3 && (position > 9 && position < 90) && (column != 0 && column < 9) ||
+        } else if (index == 3 && (position > 9 && position < 90) && (column != 0 && column < 9) ||
                 index == 7 && (rotation == 0 || rotation == 180) && column < 6 ||
                 index == 7 && (rotation == 90 || rotation == 270) && position < 60 ||
                 index == 9 && (rotation == 0 || rotation == 180) && position < 80 && (column != 0 && column != 9) ||
-                index == 9 && (rotation == 90 || rotation == 270) && column < 8 && (position > 9 && position < 90 ) ||
+                index == 9 && (rotation == 90 || rotation == 270) && column < 8 && (position > 9 && position < 90) ||
                 index == 5 && (rotation == 0 || rotation == 180) && column < 6 && position < 69 ||
                 index == 5 && (rotation == 90 || rotation == 270) && column < 7 && position > 39 ||
-                index == 1 && rotation == 0 && position > 9 && column < 6  ||
+                index == 1 && rotation == 0 && position > 9 && column < 6 ||
                 index == 1 && rotation == 90 && column < 9 && position < 60 ||
                 index == 1 && rotation == 180 && position < 90 && column < 6 ||
                 index == 1 && rotation == 270 && column > 0 && position < 60 ||
                 index == 6 && (rotation == 0 || rotation == 180) && column < 8 && (position > 9 && position < 90) ||
-                index == 6 && (rotation == 90 || rotation == 270 ) && (column < 9 && column > 0) && position < 80 ||
-                index == 10 && (rotation == 0 || rotation == 180) && column < 8 &&(position > 9 && position < 90) ||
+                index == 6 && (rotation == 90 || rotation == 270) && (column < 9 && column > 0) && position < 80 ||
+                index == 10 && (rotation == 0 || rotation == 180) && column < 8 && (position > 9 && position < 90) ||
                 index == 10 && rotation == 90 && (column > 0 && column < 9) && (position < 80 && position > 9) ||
                 index == 10 && rotation == 270 && (column > 0 && column < 9) && position > 19 ||
                 index == 4 && (rotation == 0 || rotation == 180) && (column < 3) ||
                 index == 4 && ((rotation == 90 || rotation == 270) && position < 19) ||
-                index == 8 && position < 80 && column < 8){
+                index == 8 && position < 80 && column < 8) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-    private void posizionaAttacco(int index, int size, int rotationDegrees, int posizione,int[] immaginiCasella) {
+
+    private void posizionaAttacco(int index, int size, int rotationDegrees, int posizione, int[] immaginiCasella) {
         //insercisce l'attacco all'interno della griglia
 
-        if(selectedPos != -1)
-        {
+        if (selectedPos != -1) {
             casellaColpita[selectedPos] = 0;
         }
 
@@ -627,124 +594,116 @@ public class Attack extends Game implements Serializable{
                 case 3:
                 case 7:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(currentPos,immaginiCasella);
-                        if (index == 3 && j == 1){
+                        ImmaginiNavi(currentPos, immaginiCasella);
+                        if (index == 3 && j == 1) {
                             p = posizione - 10 + j;
-                            ImmaginiNavi(p,immaginiCasella);
+                            ImmaginiNavi(p, immaginiCasella);
                         }
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(posizione + j * 10,immaginiCasella);
+                        ImmaginiNavi(posizione + j * 10, immaginiCasella);
                         if (index == 3 && j == 1) {
                             p = posizione + j * 10 + 1;
-                            ImmaginiNavi(p,immaginiCasella);
+                            ImmaginiNavi(p, immaginiCasella);
                         }
                     }
                     break;
 
                 case 9:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(posizione + j * 10 ,immaginiCasella);
-                        if(j == 0){
-                            ImmaginiNavi(posizione + 1,immaginiCasella);
+                        ImmaginiNavi(posizione + j * 10, immaginiCasella);
+                        if (j == 0) {
+                            ImmaginiNavi(posizione + 1, immaginiCasella);
                         }
-                        if(j == 2){
-                            ImmaginiNavi(posizione + j * 10 - 1,immaginiCasella);
+                        if (j == 2) {
+                            ImmaginiNavi(posizione + j * 10 - 1, immaginiCasella);
                         }
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(currentPos,immaginiCasella);
-                        if(j == 0){
-                            ImmaginiNavi(posizione - 10 ,immaginiCasella);
+                        ImmaginiNavi(currentPos, immaginiCasella);
+                        if (j == 0) {
+                            ImmaginiNavi(posizione - 10, immaginiCasella);
                         }
-                        if(j == 2){
-                            ImmaginiNavi(posizione + j + 10,immaginiCasella);
+                        if (j == 2) {
+                            ImmaginiNavi(posizione + j + 10, immaginiCasella);
                         }
                     }
                     break;
                 case 5:
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        ImmaginiNavi(posizione + 10 * j + j,immaginiCasella);
+                        ImmaginiNavi(posizione + 10 * j + j, immaginiCasella);
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(posizione - j * 10 + j,immaginiCasella);
+                        ImmaginiNavi(posizione - j * 10 + j, immaginiCasella);
                     }
                     break;
                 case 1:
-                    if(rotationDegrees == 0){
-                        if(j == 0 || j == 2 || j == 4)
-                        {
-                            ImmaginiNavi(posizione + j,immaginiCasella);
+                    if (rotationDegrees == 0) {
+                        if (j == 0 || j == 2 || j == 4) {
+                            ImmaginiNavi(posizione + j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + j - 10, immaginiCasella);
                         }
-                        else{
-                            ImmaginiNavi(posizione + j - 10 ,immaginiCasella);
+                    } else if (rotationDegrees == 90) {
+                        if (j == 0 || j == 2 || j == 4) {
+                            ImmaginiNavi(posizione + 10 * j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + 10 * j + 1, immaginiCasella);
                         }
-                    }
-                    else if (rotationDegrees == 90){
-                        if(j == 0 || j == 2 || j == 4){
-                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
-                        }else {
-                            ImmaginiNavi(posizione + 10 * j + 1,immaginiCasella);
-                        }
-                    }
-                    else if(rotationDegrees == 180){
-                        if(j == 0 || j == 2 || j == 4){
-                            ImmaginiNavi(posizione + j,immaginiCasella);
-                        }
-                        else {
-                            ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                    } else if (rotationDegrees == 180) {
+                        if (j == 0 || j == 2 || j == 4) {
+                            ImmaginiNavi(posizione + j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + 10 + j, immaginiCasella);
                         }
                     } else if (rotationDegrees == 270) {
-                        if(j == 0 || j == 2 || j == 4){
-                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
-                        }
-                        else {
-                            ImmaginiNavi(posizione + 10 * j - 1,immaginiCasella);
+                        if (j == 0 || j == 2 || j == 4) {
+                            ImmaginiNavi(posizione + 10 * j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + 10 * j - 1, immaginiCasella);
                         }
                     }
                     break;
                 case 6:
-                    if(rotationDegrees == 0 || rotationDegrees == 180){
-                        if(j != 1 && rotationDegrees == 0 || j != 2 && rotationDegrees == 180){
-                            ImmaginiNavi(posizione + j,immaginiCasella);
-                        }else {
-                            ImmaginiNavi(posizione + j - 10,immaginiCasella);
-                            ImmaginiNavi(posizione + j + 10,immaginiCasella);
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        if (j != 1 && rotationDegrees == 0 || j != 2 && rotationDegrees == 180) {
+                            ImmaginiNavi(posizione + j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + j - 10, immaginiCasella);
+                            ImmaginiNavi(posizione + j + 10, immaginiCasella);
                         }
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        if(j != 1 && rotationDegrees == 90 || j != 2 && rotationDegrees == 270){
-                            ImmaginiNavi(posizione + 10 * j,immaginiCasella);
-                        }else {
-                            ImmaginiNavi(posizione + j * 10 + 1,immaginiCasella);
-                            ImmaginiNavi(posizione + j * 10 - 1,immaginiCasella);
+                        if (j != 1 && rotationDegrees == 90 || j != 2 && rotationDegrees == 270) {
+                            ImmaginiNavi(posizione + 10 * j, immaginiCasella);
+                        } else {
+                            ImmaginiNavi(posizione + j * 10 + 1, immaginiCasella);
+                            ImmaginiNavi(posizione + j * 10 - 1, immaginiCasella);
                         }
                     }
                     break;
                 case 10:
-                    ImmaginiNavi(currentPos,immaginiCasella);
-                    if(j == 1 && rotationDegrees == 90 ){
-                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
-                        ImmaginiNavi(posizione + 20 + j,immaginiCasella);
-                    }
-                    else if(j == 2 && rotationDegrees == 180 || j == 0 && rotationDegrees == 0){
-                        ImmaginiNavi(posizione - 10 + j,immaginiCasella);
-                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                    ImmaginiNavi(currentPos, immaginiCasella);
+                    if (j == 1 && rotationDegrees == 90) {
+                        ImmaginiNavi(posizione + 10 + j, immaginiCasella);
+                        ImmaginiNavi(posizione + 20 + j, immaginiCasella);
+                    } else if (j == 2 && rotationDegrees == 180 || j == 0 && rotationDegrees == 0) {
+                        ImmaginiNavi(posizione - 10 + j, immaginiCasella);
+                        ImmaginiNavi(posizione + 10 + j, immaginiCasella);
                     } else if (j == 1 && rotationDegrees == 270) {
-                        ImmaginiNavi(posizione - 10 + j,immaginiCasella);
-                        ImmaginiNavi(posizione - 20 + j,immaginiCasella);
+                        ImmaginiNavi(posizione - 10 + j, immaginiCasella);
+                        ImmaginiNavi(posizione - 20 + j, immaginiCasella);
                     }
                     break;
                 case 4:
-                    if(rotationDegrees == 0 || rotationDegrees == 180){
-                        ImmaginiNavi(posizione + 2 * j,immaginiCasella);
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        ImmaginiNavi(posizione + 2 * j, immaginiCasella);
                     } else if (rotationDegrees == 90 || rotationDegrees == 270) {
-                        ImmaginiNavi(posizione + 10 * 2 * j,immaginiCasella);
+                        ImmaginiNavi(posizione + 10 * 2 * j, immaginiCasella);
                     }
                     break;
                 case 8:
-                    if(j == 0 || j == 2){
-                        ImmaginiNavi(posizione + j,immaginiCasella);
-                        ImmaginiNavi(posizione + j + 20,immaginiCasella);
-                    }
-                    else if(j == 1){
-                        ImmaginiNavi(posizione + 10 + j,immaginiCasella);
+                    if (j == 0 || j == 2) {
+                        ImmaginiNavi(posizione + j, immaginiCasella);
+                        ImmaginiNavi(posizione + j + 20, immaginiCasella);
+                    } else if (j == 1) {
+                        ImmaginiNavi(posizione + 10 + j, immaginiCasella);
                     }
                     break;
                 default:
@@ -753,14 +712,14 @@ public class Attack extends Game implements Serializable{
 
             // Additional checks for specific rotations
             if (rotationDegrees == 180 || rotationDegrees == 0) {
-                if (index == 3 && j == 1){
+                if (index == 3 && j == 1) {
                     p = posizione + 10 + j;
-                    ImmaginiNavi(p,immaginiCasella);
+                    ImmaginiNavi(p, immaginiCasella);
                 }
             } else if (rotationDegrees == 90 || rotationDegrees == 270) {
                 if (index == 3 && j == 1) {
                     p = posizione + j * 10 - 1;
-                    ImmaginiNavi(p,immaginiCasella);
+                    ImmaginiNavi(p, immaginiCasella);
                 }
             }
         }

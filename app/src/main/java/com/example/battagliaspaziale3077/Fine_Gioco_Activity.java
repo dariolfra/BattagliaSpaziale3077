@@ -30,6 +30,7 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
     int id_personaggio;
     MediaPlayer mp;
     Context context;
+
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,15 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
 
         context = this.getApplicationContext();
 
@@ -59,12 +69,11 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
         suono_personaggio(id_personaggio);
 
         txt_nome.setText(nome_giocatore);
-        if(risulato){
+        if (risulato) {
             txt_risultato.setText("HA VINTO");
             img_1.setImageResource(R.drawable.coppa);
             img_2.setImageResource(R.drawable.coppa);
-        }
-        else{
+        } else {
             txt_risultato.setText("HA PERSO");
             img_1.setImageResource(R.drawable.pianto);
             img_2.setImageResource(R.drawable.pianto);
@@ -83,50 +92,40 @@ public class Fine_Gioco_Activity extends AppCompatActivity implements Serializab
 
     @SuppressLint("MissingSuperCall")
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //super.onBackPressed();
         indietroDialog.showDialog(this);
     }
 
-    public void suono_personaggio(int indice){
-        if(indice == 1){
+    public void suono_personaggio(int indice) {
+        if (indice == 1) {
             mp = MediaPlayer.create(context, R.raw.blur);
             mp.start();
-        }
-        else if (indice == 2){
+        } else if (indice == 2) {
             mp = MediaPlayer.create(context, R.raw.meloni);
             mp.start();
-        }
-        else if(indice == 3){
+        } else if (indice == 3) {
             mp = MediaPlayer.create(context, R.raw.brasiliano);
             mp.start();
-        }
-        else if(indice == 4){
+        } else if (indice == 4) {
             mp = MediaPlayer.create(context, R.raw.ciccio);
             mp.start();
-        }
-        else if(indice == 5){
+        } else if (indice == 5) {
             mp = MediaPlayer.create(context, R.raw.marza);
             mp.start();
-        }
-        else if(indice == 6){
+        } else if (indice == 6) {
             mp = MediaPlayer.create(context, R.raw.optimusprime);
             mp.start();
-        }
-        else if(indice == 7){
+        } else if (indice == 7) {
             mp = MediaPlayer.create(context, R.raw.papa);
             mp.start();
-        }
-        else if(indice == 8){
+        } else if (indice == 8) {
             mp = MediaPlayer.create(context, R.raw.pefforza);
             mp.start();
-        }
-        else if(indice == 9) {
+        } else if (indice == 9) {
             mp = MediaPlayer.create(context, R.raw.shiva);
             mp.start();
-        }
-        else if(indice == 10){
+        } else if (indice == 10) {
             mp = MediaPlayer.create(context, R.raw.kungfupanda);
             mp.start();
         }

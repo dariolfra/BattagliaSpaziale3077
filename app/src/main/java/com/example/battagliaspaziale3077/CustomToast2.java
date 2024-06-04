@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 public class CustomToast2 {
-    public static void showToast(Context context, String message, int duration){
+    public static void showToast(Context context, String message, int duration) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.custom_toast_layout_2, null);
         TextView textView = layout.findViewById(R.id.toastMessage);
@@ -15,7 +16,7 @@ public class CustomToast2 {
 
         Toast toast = new Toast(context);
         toast.setDuration(duration);
-        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 120);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 120);
         toast.setView(layout);
         toast.show();
     }

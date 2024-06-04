@@ -43,12 +43,13 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
     int serverPort = 12345; //>1023 no porte riservate
     private ServerThread serverThread;
     int modalita = 3;
-    String nome_giocatore1, nome_giocatore2;;
+    String nome_giocatore1, nome_giocatore2;
+    ;
     String txt_from_client;
     Context context;
     Socket client;
     //User_vs_User_connect_Activity client = new User_vs_User_connect_Activity();
-    public  boolean connessione_instaurata;
+    public boolean connessione_instaurata;
     Animation scale_up, scale_down;
     TextView lbl_codiceConn;
     ConnectionFirebase connectionFirebase;
@@ -63,12 +64,17 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+
         context = this.getApplicationContext();
 
-        lbl_ip_sv = (TextView) findViewById(R.id.lbl_server_ip);
-        lbl_ip_sv_box = (TextView) findViewById(R.id.lbl_server_ip_box);
-        lbl_porta_sv = (TextView) findViewById(R.id.lbl_porta_server);
-        lbl_porta_sv_box = (TextView) findViewById(R.id.lbl_server_porta_box);
         lbl_conn = (TextView) findViewById(R.id.lbl_connessioni);
         lbl_conn_box = (TextView) findViewById(R.id.lbl_connessioni_box);
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);
@@ -85,7 +91,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
 
     }
 
-    public void onClickStartServer(View view){
+    public void onClickStartServer(View view) {
         btn_start_sv.startAnimation(scale_down);
         btn_start_sv.startAnimation(scale_up);
 
@@ -112,6 +118,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
                     ChangePage(nomeGiocatore2);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -120,48 +127,43 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         lbl_codiceConn.setText(codiceConn);
     }
 
-    public void SetAddressPort(String sIP, int sPort)
-    {
+    public void SetAddressPort(String sIP, int sPort) {
         lbl_ip_sv_box.setText(sIP);
         lbl_porta_sv_box.setText(String.valueOf(sPort));
     }
 
-    public void onClickStopServer(View view)
-    {
+    public void onClickStopServer(View view) {
         btn_stop_sv.startAnimation(scale_down);
         btn_stop_sv.startAnimation(scale_up);
-        if(serverThread != null){
-            if(serverThread.isServerRunning()){
+        if (serverThread != null) {
+            if (serverThread.isServerRunning()) {
                 serverThread.StopServer();
-            }
-            else {
+            } else {
                 CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
             }
-        }
-        else{
+        } else {
             CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
         }
     }
 
-    public void ChangeLabelText(String message)
-    {
+    public void ChangeLabelText(String message) {
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                lbl_conn_box.setText(message);
-            }
-        }
+                          @Override
+                          public void run() {
+                              lbl_conn_box.setText(message);
+                          }
+                      }
         );
     }
-    public void ChangePage(String nome_giocatore2)
-    {
+
+    public void ChangePage(String nome_giocatore2) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Intent personaggi = new Intent(User_vs_User_host_Activity.this, PersonaggiActivity.class);
                 personaggi.putExtra("mod", modalita);
-                personaggi.putExtra("nome1",nome_giocatore1);
-                personaggi.putExtra("nome2",nome_giocatore2);
+                personaggi.putExtra("nome1", nome_giocatore1);
+                personaggi.putExtra("nome2", nome_giocatore2);
                 personaggi.putExtra("attacco", true);
                 //personaggi.putExtra("comms", serverThread);
                 startActivity(personaggi);
@@ -169,8 +171,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         });
     }
 
-    public void ShowToast(String text)
-    {
+    public void ShowToast(String text) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -179,11 +180,12 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         });
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);
     }
+
     public static String generaTreLettere() {
         Random random = new Random();
         StringBuilder lettere = new StringBuilder(3);

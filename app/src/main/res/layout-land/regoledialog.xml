@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@android:color/transparent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardView"
+        android:layout_width="693dp"
+        android:layout_height="372dp"
+        android:foreground="@drawable/bordo_rettangolo_textbox"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:orientation="vertical"/>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="100dp"
+            app:srcCompat="@drawable/nave_colpita" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="180dp"
+            app:srcCompat="@drawable/nave_affondata" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="260dp"
+            app:srcCompat="@drawable/cellaattaccata" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="335dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="La mossa speciale sarà disponibile solamente dopo 5 colpi andati a segno da parte di una delle due parti. Non è possibile attaccare nello stesso punto e la vittoria va al giocatore che abbatte le flotte nemiche per primo, la mossa speciale varia in base al personaggio selezionato.Al momento della selezione se una nave viene cliccata verrà routata di 90 gradi"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/selected" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="18dp"
+            android:layout_marginStart="95dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Questa immagine indica che la casella è selezionata e/o il colpo ha fatto acqua"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="104dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Questa immagine indica che la nave è stata colpita ma non affondata"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="180dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Questa immagine indica che la nave è stata colpita e affondata"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="260dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Questa immagine indica la presenza di una nave alleata nella griglia"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="420dp"
+            android:layout_marginTop="260dp"
+            android:backgroundTint="@android:color/transparent"
+            android:fontFamily="@font/orbitron_bold"
+            android:foreground="@drawable/bordo_rettangolo_textbox"
+            android:text="ESCI"
+            android:textColor="@color/white" />
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

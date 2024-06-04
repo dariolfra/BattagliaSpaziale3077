@@ -7,81 +7,81 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="634dp"
-        android:layout_height="910dp"
+        android:layout_width="584dp"
+        android:layout_height="904dp"
+        android:rotation="90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.507"
         app:srcCompat="@drawable/background" />
 
     <Button
-        android:id="@+id/btn_connettiti"
-        android:layout_width="286dp"
-        android:layout_height="70dp"
+        android:id="@+id/btn_gioca"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:text="UNISCITI ALLA PARTITA"
+        android:text="GIOCA"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="19dp"
+        android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.732" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/txt_input_nome"
-        android:layout_width="268dp"
-        android:layout_height="45dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/orbitron_regular"
-        android:foreground="@drawable/bordo_rettangolo_textbox"
-        android:inputType="textShortMessage"
-        android:paddingStart="10dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.304" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/lbl_codiceDiConn"
-        android:layout_width="268dp"
-        android:layout_height="45dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/orbitron_regular"
-        android:foreground="@drawable/bordo_rettangolo_textbox"
-        android:inputType="textShortMessage"
-        android:paddingStart="10dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintVertical_bias="0.612" />
 
     <TextView
         android:id="@+id/lbl_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:fontFamily="@font/orbitron_regular"
         android:text="NOME"
         android:textColor="@color/white"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_input_nome"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_nome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_titolo_pagina_host"
+        app:layout_constraintVertical_bias="0.811" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/txt_nome"
+        android:layout_width="268dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/orbitron_regular"
+        android:foreground="@drawable/bordo_rettangolo_textbox"
+        android:inputType="textShortMessage"
+        android:paddingStart="10dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.628" />
+
+    <TextView
+        android:id="@+id/lbl_titolo_pagina_host"
+        android:layout_width="309dp"
+        android:layout_height="63dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:paddingTop="14dp"
+        android:text="GIOCA CONTRO AI"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.238" />
 
     <Button
         android:id="@+id/btn_regole"
@@ -96,23 +96,8 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.002" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/orbitron_regular"
-        android:text="CODICE STANZA"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/lbl_codiceDiConn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.378"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_input_nome"
-        app:layout_constraintVertical_bias="0.842" />
-
+        app:layout_constraintTop_toTopOf="@+id/background"
+        app:layout_constraintVertical_bias="0.406" />
 </androidx.constraintlayout.widget.ConstraintLayout>

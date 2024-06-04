@@ -34,8 +34,8 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.Optional;
 
-public class User_vs_User_connect_Activity extends AppCompatActivity implements Serializable{
-    TextInputEditText txt_nome, txt_ip_server, txt_porta_server,lbl_codiceConn;
+public class User_vs_User_connect_Activity extends AppCompatActivity implements Serializable {
+    TextInputEditText txt_nome, txt_ip_server, txt_porta_server, lbl_codiceConn;
     String serverName, nome_giocatore1, nome_giocatore2;
     int serverPort;
     Button btn_connettiti, btn_regole;
@@ -57,8 +57,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
 
         btn_connettiti = (Button) findViewById(R.id.btn_connettiti);
         txt_nome = (TextInputEditText) findViewById(R.id.txt_input_nome);
-        txt_ip_server = (TextInputEditText) findViewById(R.id.txt_input_ip_server);
-        txt_porta_server = (TextInputEditText) findViewById(R.id.txt_input_porta_server);
         btn_regole = (Button) findViewById(R.id.btn_regole);
 
 
@@ -74,6 +72,15 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
         context = this.getApplicationContext();
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+
         btn_connettiti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +90,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
                 String codice = String.valueOf(lbl_codiceConn.getText());
                 nome_giocatore2 = txt_nome.getText().toString();
                 //metodo per unirmi alla partita
-                connectionFirebase.unisciAPartita(codice,nome_giocatore2, new ValueEventListener() {
+                connectionFirebase.unisciAPartita(codice, nome_giocatore2, new ValueEventListener() {
 
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         // Verifica se il nome del giocatore 1 è stato impostato
@@ -93,7 +100,8 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
                             ChangePage(nomeGiocatore1);
                         }
                     }
-                @Override
+
+                    @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
@@ -102,20 +110,20 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
             }
         });
     }
-    public void onClickConnect()  {
-        try{
+
+    public void onClickConnect() {
+        try {
             nome_giocatore1 = txt_nome.getText().toString();
             serverName = txt_ip_server.getText().toString();
             serverPort = Integer.valueOf(txt_porta_server.getText().toString());
             if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
                 throw new Exception();
-            }
-            else {
+            } else {
                 comms = new ClientThread(nome_giocatore1, serverPort, serverName);
                 comms.SetActivity(this);
                 comms.start();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -125,8 +133,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         }
     }
 
-    public void ShowToast(String text)
-    {
+    public void ShowToast(String text) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -135,8 +142,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         });
     }
 
-    public void ResetTxb()
-    {
+    public void ResetTxb() {
         txt_nome.setText("");
         txt_ip_server.setText("");
         txt_porta_server.setText("");
@@ -152,7 +158,7 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
         startActivity(personaggi);
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);

@@ -26,22 +26,19 @@ public class ConnectionThread extends Thread implements Parcelable {
     public ConnectionThread() {
     }
 
-    public void InviaMessaggio(String messaggio)
-    {
+    public void InviaMessaggio(String messaggio) {
 
     }
 
-    public void RiceviRisposta()
-    {
+    public void RiceviRisposta() {
 
     }
 
-    public String GetMessage()
-    {
+    public String GetMessage() {
         return "";
     }
-    public void Abbandona()
-    {
+
+    public void Abbandona() {
 
     }
 

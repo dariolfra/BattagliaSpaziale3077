@@ -51,13 +51,13 @@ public class GridAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public boolean ControllaSeLiberi(int position, int size,int index, int rotation, int[] arrayGridView) {
-        if (position < 0 || position >= arrayGridView.length){
+    public boolean ControllaSeLiberi(int position, int size, int index, int rotation, int[] arrayGridView) {
+        if (position < 0 || position >= arrayGridView.length) {
             return false;
         }
         //Per risolvere bug
         boolean celleLibere = true;
-        if(index == 0 && (rotation == 0 || rotation == 180 || rotation == 90) ||
+        if (index == 0 && (rotation == 0 || rotation == 180 || rotation == 90) ||
                 index == 1 && (rotation == 0 || rotation == 180) ||
                 index == 2 && (rotation == 0 || rotation == 90) ||
                 index == 3 && (rotation == 0 || rotation == 180) ||
@@ -73,7 +73,7 @@ public class GridAdapter extends BaseAdapter {
 
         //Verifica se le celle dove la nave deve essere inserita sono libere
         for (int i = 0; i < size; i++) {
-            if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5) && rotation == 0 || (index == 1 || index == 3) && rotation == 180 || index == 2 && rotation == 270)  {
+            if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5) && rotation == 0 || (index == 1 || index == 3) && rotation == 180 || index == 2 && rotation == 270) {
                 if (CellaOccupata(position + i, arrayGridView)) {
                     return false;
                 }
@@ -114,30 +114,29 @@ public class GridAdapter extends BaseAdapter {
         }
         return celleLibere;
     }
-    public int AggiustaPosizioni(int index,int rotation,int position){
+
+    public int AggiustaPosizioni(int index, int rotation, int position) {
         //Aggiustamenti di posizioni altrimenti l'immagine non verrà posizionata dove l'utente ha messo la nave
         int posizione = position;
-        if ((index == 0 || index == 1 || index == 2) && rotation == 90){
-            if(position % 10 == 0){
+        if ((index == 0 || index == 1 || index == 2) && rotation == 90) {
+            if (position % 10 == 0) {
                 posizione = position - 10;
-            }
-            else {
+            } else {
                 posizione = position - 9;
             }
         } else if (index == 3 && rotation == 90) {
-            if(position % 10 == 0 || position % 9 == 0){
+            if (position % 10 == 0 || position % 9 == 0) {
                 posizione = position - 20;
-            }
-            else {
+            } else {
                 posizione = position - 19;
             }
-        } else if(index == 3 && (rotation == 0 || rotation == 180)){
+        } else if (index == 3 && (rotation == 0 || rotation == 180)) {
             posizione = position - 1;
         } else if (index == 4 && rotation == 90) {
-            posizione = position - 20 ;
-        } else if (index == 5 && rotation == 90|| index == 5 && rotation == 180 && position < 99|| index == 0 && rotation == 180 && position < 99){ //altrimenti la nave la mette una riga sotto
+            posizione = position - 20;
+        } else if (index == 5 && rotation == 90 || index == 5 && rotation == 180 && position < 99 || index == 0 && rotation == 180 && position < 99) { //altrimenti la nave la mette una riga sotto
             posizione = position - 10;
-        } else if ((index == 5 || index == 0 ) && rotation == 270){
+        } else if ((index == 5 || index == 0) && rotation == 270) {
             posizione = position - 9;
         } else if (index == 4 && rotation == 180) {
             posizione = position - 11;
@@ -146,18 +145,17 @@ public class GridAdapter extends BaseAdapter {
         }
         return posizione;
     }
+
     public int getColumnFromPosition(int position) {
         return position % 10;
     } //colonne da 0 a 9
-    public boolean CellaOccupata(int posizione,int[] immaginiCasella){
-        if(posizione > 99 || posizione < 0)
-        {
+
+    public boolean CellaOccupata(int posizione, int[] immaginiCasella) {
+        if (posizione > 99 || posizione < 0) {
             return true; //per risolvere bug
-        }
-        else if(immaginiCasella[posizione] != 0){
+        } else if (immaginiCasella[posizione] != 0) {
             return true; //se è occupata
-        }
-        else {
+        } else {
             return false;
         }
     }

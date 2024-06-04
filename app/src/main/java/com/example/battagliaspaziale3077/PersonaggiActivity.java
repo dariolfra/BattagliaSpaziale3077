@@ -23,6 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,6 +69,15 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
 
         context = this.getApplicationContext();
 
@@ -198,9 +210,22 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 // } catch (InterruptedException e) {
                 //ignoro l'errore
                 // }
-
+                btn_seleziona_personaggio.startAnimation(scale_down);
+                btn_seleziona_personaggio.startAnimation(scale_up);
+                Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
+                gioco.putExtra("personaggio", indice);
+                gioco.putExtra("mod", modalita);
+                gioco.putExtra("nome1", nome_g1);
+                gioco.putExtra("nome2", nome_g2);
+                // gioco.putExtra("comms", comms);
+                gioco.putExtra("attacco", attacco);
+                suono_personaggio(indice);
+                startActivity(gioco);
             }
         });
+        // } catch (InterruptedException e) {
+        //ignoro l'errore
+        // }
     }
 
     public void btn_regole_pressed(View v) {
