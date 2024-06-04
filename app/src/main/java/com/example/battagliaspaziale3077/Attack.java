@@ -207,7 +207,7 @@ public class Attack extends Game implements Serializable {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (Exception e) {
-                    CustomToast.showToast(context, "Casella non selezionata", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -266,7 +266,7 @@ public class Attack extends Game implements Serializable {
                     pos = -1;
                     gridAdapterAttacco.notifyDataSetChanged();
                 } else {
-                    CustomToast.showToast(context, "Attacco già sferrato in questo punto", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "CELLA GIA' ATTACCATA", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -429,6 +429,7 @@ public class Attack extends Game implements Serializable {
                     Nave_Affondata(posizioni_nave_IA);
                     id_navi_affondate.add(id);
                     Log.i("NAVI AFFONDATE", String.valueOf(navi_affondate));
+                    CustomToast2.showToast(context, "NAVI AFFONDATE : " + navi_affondate, Toast.LENGTH_SHORT);
                 }
             }
         }
@@ -476,7 +477,6 @@ public class Attack extends Game implements Serializable {
         for (String s : posizioni) {
             casellaColpita[Integer.valueOf(s)] = 3;
         }
-        CustomToast2.showToast(context, "NAVE AFFONDATA", Toast.LENGTH_SHORT);
     }
 
     public void popola_mosse_speciale() {
@@ -524,7 +524,7 @@ public class Attack extends Game implements Serializable {
             }
             attacchi_a_segno -= 5;
         } else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this, "ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI/O", Toast.LENGTH_LONG);
+            CustomToast.showToast(this, "ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI", Toast.LENGTH_LONG);
         }
     }
 

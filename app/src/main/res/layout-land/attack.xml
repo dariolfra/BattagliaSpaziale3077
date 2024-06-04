@@ -29,10 +29,10 @@
         android:numColumns="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.934"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.531" />
+        app:layout_constraintVertical_bias="0.528" />
 
     <TextView
         android:id="@+id/textView6"
@@ -45,14 +45,14 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeG1"
-        app:layout_constraintVertical_bias="0.921" />
+        app:layout_constraintVertical_bias="0.911" />
 
     <TextView
-        android:layout_width="86dp"
-        android:layout_height="22dp"
+        android:layout_width="32dp"
+        android:layout_height="19dp"
         android:fontFamily="@font/orbitron_bold"
         android:text="Tu"
         android:textAlignment="center"
@@ -60,10 +60,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNomeG1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintHorizontal_bias="0.205"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.72" />
+        app:layout_constraintVertical_bias="0.888" />
 
     <TextView
         android:id="@+id/txtNomeG1"
@@ -77,10 +77,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridView"
-        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintHorizontal_bias="0.847"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.199" />
 
     <TextView
         android:id="@+id/txtNomeG2"
@@ -94,10 +94,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridView"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.564"
         app:layout_constraintStart_toEndOf="@+id/img_pers"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.43" />
 
     <Button
         android:id="@+id/btn_attacco_speciale"
@@ -114,10 +114,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attacco"
-        app:layout_constraintVertical_bias="0.293" />
+        app:layout_constraintVertical_bias="0.531" />
 
     <ImageView
         android:id="@+id/img_pers"
@@ -126,10 +126,10 @@
         android:foreground="@drawable/bordo_img_pers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridView"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.095" />
+        app:layout_constraintVertical_bias="0.21" />
 
     <Button
         android:id="@+id/attacco"
@@ -147,7 +147,7 @@
         app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_pers"
-        app:layout_constraintVertical_bias="0.148" />
+        app:layout_constraintVertical_bias="0.271" />
 
     <ImageView
         android:id="@+id/img_mossa_speciale"
@@ -157,10 +157,10 @@
         android:rotation="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridView"
-        app:layout_constraintHorizontal_bias="0.836"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeG2"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintVertical_bias="0.71" />
 
     <Button
         android:id="@+id/button2"
@@ -175,9 +175,9 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.002"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.986" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

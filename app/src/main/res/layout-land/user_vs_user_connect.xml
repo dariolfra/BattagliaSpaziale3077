@@ -25,15 +25,15 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/orbitron_bold"
         android:foreground="@drawable/bordo_rettangolo"
-        android:text="UNISCITI ALLA PARTITA"
+        android:text="UNISCITI ALLA STANZA"
         android:textColor="@color/white"
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.563" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/txt_input_nome"
@@ -50,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.336" />
+        app:layout_constraintVertical_bias="0.453" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/lbl_codiceDiConn"
@@ -67,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.756" />
+        app:layout_constraintVertical_bias="0.841" />
 
     <TextView
         android:id="@+id/lbl_nome"
@@ -98,10 +98,10 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.002" />
+        app:layout_constraintVertical_bias="0.008" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -116,5 +116,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_nome"
         app:layout_constraintVertical_bias="0.819" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="406dp"
+        android:layout_height="59dp"
+        android:fontFamily="@font/orbitron_bold"
+        android:foreground="@drawable/bordo_rettangolo"
+        android:paddingTop="12dp"
+        android:text="GIOCA CONTRO UTENTE"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.122" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

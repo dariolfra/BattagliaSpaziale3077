@@ -132,7 +132,7 @@ public class Defence extends Game implements Serializable {
         try {
             Gioca();
         } catch (InterruptedException e) {
-            CustomToast.showToast(context, "Errore", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "ERRORE", Toast.LENGTH_SHORT);
         }
 
         btn_torna_attacco.setOnClickListener(new View.OnClickListener() {
@@ -216,14 +216,14 @@ public class Defence extends Game implements Serializable {
                     colpita = true;
                     colpo_a_segno = true;
                     vittoria = Controllo_Fine_Gioco_AI();
-                    CustomToast2.showToast(context, "AI: COLPITO!" + posizione, Toast.LENGTH_SHORT);
+                    CustomToast3.showToast(context, "AI: COLPITO!" , Toast.LENGTH_SHORT);
                     break;
                 }
             }
         }
         if (!colpita) {
             tabella[posizione] = R.drawable.selected;
-            CustomToast2.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
+            CustomToast3.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
         }
         if (vittoria) {
             Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);
@@ -405,7 +405,7 @@ public class Defence extends Game implements Serializable {
         if (blocchi_nave_colpiti == size_navi.get(ID)) {
             NaviColpite.remove(ID);
             NaviAffondate.put(ID, posizioni);
-            CustomToast2.showToast(context, "AI: NAVE AFFONDATA!", Toast.LENGTH_SHORT);
+            CustomToast3.showToast(context, "AI: NAVE AFFONDATA!", Toast.LENGTH_SHORT);
             colpo_a_segno = false;
         }
         return mess;
