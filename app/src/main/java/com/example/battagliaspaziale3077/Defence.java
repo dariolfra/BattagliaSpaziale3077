@@ -183,7 +183,16 @@ public class Defence extends Game implements Serializable {
         }
         else
         {
-            int pos = genera_pos_attacco_ai_random();
+            int pos = -1;
+            boolean finito = false;
+            while(!finito)
+            {
+                pos = genera_pos_attacco_ai_random();
+                if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.x && casellaColpita[pos] != R.drawable.buconero)
+                {
+                    finito = true;
+                }
+            }
             AttaccoAI(pos);
             attacco_ai_effettuato = true;
         }
@@ -203,17 +212,15 @@ public class Defence extends Game implements Serializable {
                     String s = NaveColpitaAffondata(i);
                     colpita = true;
                     colpo_a_segno = true;
-                    casella_a_segno = posizione;
                     vittoria = Controllo_Fine_Gioco_AI();
+                    CustomToast2.showToast(context, "AI: COLPITO!" + posizione, Toast.LENGTH_SHORT);
                     break;
                 }
             }
         }
         if(!colpita){
-            tabella[posizione] = R.drawable.selected;
-            CustomToast2.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
-            colpo_a_segno = false;
-            casella_a_segno = 0;
+            tabella[posizione] = R.drawable.buconero;
+            CustomToast2.showToast(context, "AI: ACQUA!" + posizione, Toast.LENGTH_SHORT);
         }
         if(vittoria){
             Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);
@@ -224,7 +231,7 @@ public class Defence extends Game implements Serializable {
     }
 
     public int genera_pos_attacco_ai_random(){
-        Random rnd = new Random();
+        /*Random rnd = new Random();
         int pos = -1;
         boolean corretta = false;
         while(!corretta){
@@ -251,6 +258,68 @@ public class Defence extends Game implements Serializable {
                 corretta = true;
                 casellaColpita[pos] = R.drawable.selected;
             }
+        }
+        return pos;*/
+
+        Random rnd = new Random();
+        int pos = -1;
+        if(colpo_a_segno)
+        {
+            for (int nave:NaveIDs)
+            {
+                if(NaviColpite.containsKey(nave) && NaviColpite.get(nave).size() > 0)
+                {
+                    List<Integer> posizioniColpite = NaviColpite.get(nave);
+                    pos = posizioniColpite.get(rnd.nextInt(posizioniColpite.size()));
+                    switch (rnd.nextInt(4))
+                    {
+                        case 0:
+                            if(pos % 10 != 9)
+                            {
+                                pos+=1;
+                            }
+                            else
+                            {
+                                pos-=1;
+                            }
+                            break;
+                        case 1:
+                            if(pos % 10 != 0)
+                            {
+                                pos-=1;
+                            }
+                            else
+                            {
+                                pos+=1;
+                            }
+                            break;
+                        case 2:
+                            if(pos > 10)
+                            {
+                                pos-=10;
+                            }
+                            else
+                            {
+                                pos+=10;
+                            }
+                            break;
+                        case 3:
+                            if(pos < 89)
+                            {
+                                pos+=10;
+                            }
+                            else
+                            {
+                                pos-=10;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            pos = rnd.nextInt(100);
         }
         return pos;
     }
@@ -348,6 +417,7 @@ public class Defence extends Game implements Serializable {
             NaviColpite.remove(ID);
             NaviAffondate.put(ID, posizioni);
             CustomToast2.showToast(context, "AI: NAVE AFFONDATA!", Toast.LENGTH_SHORT);
+            colpo_a_segno = false;
         }
         return mess;
     }

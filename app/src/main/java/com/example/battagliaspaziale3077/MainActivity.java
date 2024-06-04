@@ -178,7 +178,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
                     }
                 }
-
+                else
+                {
+                    ChangePage(true);
+                }
             }
         });
 

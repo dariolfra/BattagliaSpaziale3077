@@ -73,11 +73,10 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         modalita = mod.getIntExtra("mod", 1);
         //comms = (ConnectionThread) mod.getParcelableExtra("comms");
         boolean attacco = mod.getBooleanExtra("attacco", true);
-        if(modalita == 1){
+        if (modalita == 1) {
             nome_g1 = mod.getStringExtra("nome");
             nome_g2 = "AI";
-        }
-        else{
+        } else {
             nome_g1 = mod.getStringExtra("nome1");
             nome_g2 = mod.getStringExtra("nome2");
         }
@@ -107,13 +106,12 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             public void onClick(View v) {
                 btn_pers_succ.startAnimation(scale_down);
                 btn_pers_succ.startAnimation(scale_up);
-                if(indice == 10){
+                if (indice == 10) {
                     indice = 1;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
-                }
-                else{
+                } else {
                     indice++;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
@@ -127,13 +125,12 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             public void onClick(View v) {
                 btn_pers_prec.startAnimation(scale_down);
                 btn_pers_prec.startAnimation(scale_up);
-                if(indice == 1){
+                if (indice == 1) {
                     indice = 10;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
-                }
-                else{
+                } else {
                     indice--;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
@@ -145,73 +142,74 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         btn_seleziona_personaggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(modalita != 1){
-                        if (modalita == 2){
-                            //quello che si unisce alla partita
+                if (modalita != 1) {
+                    if (modalita == 2) {
+                        //quello che si unisce alla partita
 
-                            //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
-                            connectionFirebase.personaggioGiocatore2(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    // Verifica se il campo PersonaggioGiocatore2 è stato impostato
-                                    String personaggioGiocatore1 = snapshot.child("PersonaggioGiocatore1").getValue(String.class);
-                                    if (personaggioGiocatore1.equals("true")) {
-                                        // Passa alla schermata di gioco per il Giocatore 2
-                                        ChangePage(attacco);
-                                    }
+                        //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
+                        connectionFirebase.personaggioGiocatore2(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Verifica se il campo PersonaggioGiocatore2 è stato impostato
+                                String personaggioGiocatore1 = snapshot.child("PersonaggioGiocatore1").getValue(String.class);
+                                if (personaggioGiocatore1.equals("true")) {
+                                    // Passa alla schermata di gioco per il Giocatore 2
+                                    ChangePage(false);
                                 }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    // Gestisci l'errore del database
-                                    System.err.println("Errore del database: " + error.getMessage());
-                                }
-                            });
-                            if(connectionFirebase.PersonaggioG1() == "true"){
-                                ChangePage(attacco);
                             }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                // Gestisci l'errore del database
+                                System.err.println("Errore del database: " + error.getMessage());
+                            }
+                        });
+                        if (connectionFirebase.PersonaggioG1() == "true") {
+                            ChangePage(false);
                         }
-                        else if(modalita == 3){
-                            //quello che la crea
-                            connectionFirebase.personaggioGiocatore1(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    // Verifica se il nome del giocatore 1 è stato impostato
-                                    String PersonaggioGiocatore2 = snapshot.child("PersonaggioGiocatore2").getValue(String.class);
-                                    if (PersonaggioGiocatore2.equals("true")){
-                                        // Passa alla schermata di gioco per il Giocatore 2
-                                        ChangePage(attacco);
-                                    }
 
+                    } else if (modalita == 3) {
+                        //quello che la crea
+                        connectionFirebase.personaggioGiocatore1(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Verifica se il nome del giocatore 1 è stato impostato
+                                String PersonaggioGiocatore2 = snapshot.child("PersonaggioGiocatore2").getValue(String.class);
+                                if (PersonaggioGiocatore2.equals("true")) {
+                                    // Passa alla schermata di gioco per il Giocatore 2
+                                    ChangePage(true);
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                            if(connectionFirebase.PersonaggioG2() == "true"){
-                                ChangePage(attacco);
                             }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        if (connectionFirebase.PersonaggioG2() == "true") {
+                            ChangePage(true);
                         }
-                        }
-                   // } catch (InterruptedException e) {
-                        //ignoro l'errore
-                   // }
+
+                    }
+                } else {
+                    ChangePage(true);
+                }
+                // } catch (InterruptedException e) {
+                //ignoro l'errore
+                // }
 
             }
         });
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);
     }
 
-    public void popola_hashmap_immagini(){
+    public void popola_hashmap_immagini() {
         indici_immagini = new HashMap<>();
         indici_immagini.put(1, getResources().getDrawable(R.drawable.blur, context.getTheme()));
         indici_immagini.put(2, getResources().getDrawable(R.drawable.meloni, context.getTheme()));
@@ -225,7 +223,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         indici_immagini.put(10, getResources().getDrawable(R.drawable.panda, context.getTheme()));
     }
 
-    public void popola_hashmap_descrizioni(){
+    public void popola_hashmap_descrizioni() {
         indici_descrizione = new HashMap<>();
         indici_descrizione.put(1, "Giammarco Tocco aka Blur è uno streamer italiano, è in grado di creare contenuti orginali e divertenti senza l'utilizzo di termini come bestemmie o senza il riciclo di contenuti altrui. E' un grande amico di TheRealMarzaa.");
         indici_descrizione.put(2, "Giorgia Meloni è l'attuale presidente del consiglio in italia, è a capo del governo e combina la grinta di un leone con la determinazione di un bambino che vuole un gelato a dicembre. Al suo fianco amici fedeli come Matteo Salvini e Silvio Berlusconi ormai scomparso.");
@@ -239,7 +237,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         indici_descrizione.put(10, "Po, protagonista dei diversi film intitolati Kung Fu Panda, è un panda figlio adottivo di un'oca, sin da piccolo dimostra un'immenso appetito e farebbe di tutto per il cibo, in lui risiede una forza ineguagliabe e viene soprannominato Il Guerriero Dragone.");
     }
 
-    public void popola_hasmap_abilita(){
+    public void popola_hasmap_abilita() {
         indici_abilita = new HashMap<>();
         indici_abilita.put(1, "La sua abilità speciale è neutralizzare le flotte nemiche attraverso l'urlo degli stalloni.");
         indici_abilita.put(2, "La sua abilità speciale è sconfiggere le flotte nemiche attraverso una politica perfetta e impeccabile.");
@@ -253,49 +251,41 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         indici_abilita.put(10, "La sua abilità speciale è sbaragliare le flotte nemiche attraverso il suo Kung Fu.");
     }
 
-    public void suono_personaggio(int indice){
-        if(indice == 1){
+    public void suono_personaggio(int indice) {
+        if (indice == 1) {
             mp = MediaPlayer.create(context, R.raw.blur);
             mp.start();
-        }
-        else if (indice == 2){
+        } else if (indice == 2) {
             mp = MediaPlayer.create(context, R.raw.meloni);
             mp.start();
-        }
-        else if(indice == 3){
+        } else if (indice == 3) {
             mp = MediaPlayer.create(context, R.raw.brasiliano);
             mp.start();
-        }
-        else if(indice == 4){
+        } else if (indice == 4) {
             mp = MediaPlayer.create(context, R.raw.ciccio);
             mp.start();
-        }
-        else if(indice == 5){
+        } else if (indice == 5) {
             mp = MediaPlayer.create(context, R.raw.marza);
             mp.start();
-        }
-        else if(indice == 6){
+        } else if (indice == 6) {
             mp = MediaPlayer.create(context, R.raw.optimusprime);
             mp.start();
-        }
-        else if(indice == 7){
+        } else if (indice == 7) {
             mp = MediaPlayer.create(context, R.raw.papa);
             mp.start();
-        }
-        else if(indice == 8){
+        } else if (indice == 8) {
             mp = MediaPlayer.create(context, R.raw.pefforza);
             mp.start();
-        }
-        else if(indice == 9) {
+        } else if (indice == 9) {
             mp = MediaPlayer.create(context, R.raw.shiva);
             mp.start();
-        }
-        else if(indice == 10){
+        } else if (indice == 10) {
             mp = MediaPlayer.create(context, R.raw.kungfupanda);
             mp.start();
         }
 
     }
+
     public void ChangePage(boolean attacco) {
         btn_seleziona_personaggio.startAnimation(scale_down);
         btn_seleziona_personaggio.startAnimation(scale_up);
