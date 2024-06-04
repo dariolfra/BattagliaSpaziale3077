@@ -6,7 +6,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -17,8 +19,59 @@ public class ConnectionFirebase {
 
     private static String personaggioG2;
 
-    public void inviaHashMapFormazione(/*HashMap<Integer, List<Integer>> formazione*/) {
-        databaseReference.setValue("dfmdmf");
+    public void inviaHashMapFormazione(int modalità,ValueEventListener listener) {
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = instance.getReference(codiceConn);
+        if(modalità == 2){
+            //si collega alla partita
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Se la partita esiste, aggiorna solo il campo nomeGiocatore2
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("Formazioneg2", "true");
+                        databaseReference.updateChildren(updates);
+
+                    } else {
+                        // Se la partita non esiste, gestisci l'errore
+                        System.err.println("Partita non trovata: " + codiceConn);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Gestisci l'errore
+                    System.err.println("Errore durante il recupero dei dati: " + databaseError.getMessage());
+                }
+            });
+
+        }
+        else if(modalità == 3){
+            //crea la partita
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Se la partita esiste, aggiorna solo il campo nomeGiocatore2
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("Formazioneg1", "true");
+                        databaseReference.updateChildren(updates);
+                    } else {
+                        // Se la partita non esiste, gestisci l'errore
+                        System.err.println("Partita non trovata: " + codiceConn);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Gestisci l'errore
+                    System.err.println("Errore durante il recupero dei dati: " + databaseError.getMessage());
+                }
+            });
+
+        }
+        databaseReference.addValueEventListener(listener);
     }
 
     public void CreaPartita(String codice, String nomeGiocatore1, ValueEventListener listener) {
@@ -30,14 +83,19 @@ public class ConnectionFirebase {
             //metto in codice dell'istanza
             codiceConn = codice;
 
+            List<Integer> i = new ArrayList<>();
+
             //dichiaro le variabili
             Map<String, Object> data = new HashMap<>();
             data.put("nomeGiocatore1", nomeGiocatore1);
             data.put("nomeGiocatore2", "");
             data.put("PersonaggioGiocatore1", "");
             data.put("PersonaggioGiocatore2", "");
+            data.put("Formazioneg1","");
+            data.put("Formazioneg2","");
 
             databaseReference.setValue(data);
+
             databaseReference.addValueEventListener(listener);
 
         } else {

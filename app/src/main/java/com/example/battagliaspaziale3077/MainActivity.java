@@ -17,11 +17,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.battagliaspaziale3077.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
     boolean attacco;
     boolean primaVolta;
+    ConnectionFirebase connectionFirebase;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -73,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         background = (ImageView) findViewById(R.id.imageView8);
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, getTheme()));
 
-        ConnectionFirebase connectionFirebase = new ConnectionFirebase();
+        connectionFirebase = new ConnectionFirebase();
 
         //Inizializzazione delle navi
         navi = new ImageView[6];
@@ -130,41 +137,48 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         btnConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                connectionFirebase.inviaHashMapFormazione();
                 btnConferma.startAnimation(scale_down);
                 btnConferma.startAnimation(scale_up);
-                Intent gioco;
-                if(attacco)
-                {
-                    gioco =  new Intent(MainActivity.this, Attack.class);
+                if (modalita != 1) {
+                    if (modalita == 2) {
+                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Verifica se il nome del giocatore 1 è stato impostato
+                                String Formazioneg1 = snapshot.child("Formazioneg1").getValue(String.class);
+                                if (Formazioneg1.equals("true")) {
+                                    // Passa alla schermata di gioco per il Giocatore 2
+                                    ChangePage(attacco);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    } else if (modalita == 3) {
+                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Verifica se il nome del giocatore 1 è stato impostato
+                                String Formazioneg2 = snapshot.child("Formazioneg2").getValue(String.class);
+                                if (Formazioneg2.equals("true")) {
+                                    // Passa alla schermata di gioco per il Giocatore 2
+                                    ChangePage(attacco);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
                 }
-                else
-                {
-                    gioco =  new Intent(MainActivity.this, Defence.class);
-                }
-                if(modalita != 1){
-                    /*try {
-                        comms.InviaMessaggio("done");
-                        comms.RiceviRisposta();
-                        synchronized (comms){
-                            comms.wait(3000);
-                        }
-                        comms.InviaMessaggio("done");
-                    } catch (InterruptedException e) {
-                        //ignoro l'errore
-                    }*/
-                    //connectionFirebase.inviaHashMapFormazione(shipPositions);
-                }
-                gioco.putExtra("mod", modalita);
-                gioco.putExtra("nome1", nome_giocatore1);
-                gioco.putExtra("nome2", nome_giocatore2);
-                gioco.putExtra("personaggio", personaggio);
-                //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
-                gioco.putExtra("comms", comms);
-                gioco.putExtra("Navi", (Serializable) shipPositions);
-                gioco.putExtra("NaviColpite", NaviColpite);
-                gioco.putExtra("NaviAffondate", NaviAffondate);
-                startActivity(gioco);
+
             }
         });
 
@@ -251,6 +265,28 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
         });
     }
+
+    private void ChangePage(boolean attacco) {
+        Intent gioco;
+        if(attacco)
+        {
+            gioco =  new Intent(MainActivity.this, Attack.class);
+        }
+        else
+        {
+            gioco =  new Intent(MainActivity.this, Defence.class);
+        }
+        gioco.putExtra("mod", modalita);
+        gioco.putExtra("nome1", nome_giocatore1);
+        gioco.putExtra("nome2", nome_giocatore2);
+        gioco.putExtra("personaggio", personaggio);
+        //passare anche posizioni delle navi così comunicarlo anche all'avversario se colpisce una nave alleata
+        gioco.putExtra("Navi", (Serializable) shipPositions);
+        gioco.putExtra("NaviColpite", NaviColpite);
+        gioco.putExtra("NaviAffondate", NaviAffondate);
+        startActivity(gioco);
+    }
+
     // Method to reset ships to their initial positions
     private void resetShips(GridAdapter gridAdapter, int[] immaginiCasella) {
         // Reset the ships' visibility and position
