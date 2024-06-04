@@ -63,12 +63,17 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+
         context = this.getApplicationContext();
 
-        lbl_ip_sv = (TextView) findViewById(R.id.lbl_server_ip);
-        lbl_ip_sv_box = (TextView) findViewById(R.id.lbl_server_ip_box);
-        lbl_porta_sv = (TextView) findViewById(R.id.lbl_porta_server);
-        lbl_porta_sv_box = (TextView) findViewById(R.id.lbl_server_porta_box);
         lbl_conn = (TextView) findViewById(R.id.lbl_connessioni);
         lbl_conn_box = (TextView) findViewById(R.id.lbl_connessioni_box);
         btn_start_sv = (Button) findViewById(R.id.btn_start_server);

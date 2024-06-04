@@ -21,6 +21,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import org.w3c.dom.Text;
 
@@ -59,6 +62,15 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
 
         context = this.getApplicationContext();
 
@@ -139,28 +151,16 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             @Override
             public void onClick(View v) {
                 if(modalita != 1){
-                    //try {
-                        /*comms.InviaMessaggio("done");
-                        comms.RiceviRisposta();
-                        synchronized (comms){
-                            comms.wait(3000);
-                        }
-                        comms.InviaMessaggio("done");*/
-                        if (modalita == 2){
-                            //quello che si unisce alla partita
-
-                            //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
-                            connectionFirebase.personaggioGiocatore2();
-                        }
-                        else if(modalita == 3){
-                            //quello che la crea
-                            connectionFirebase.personaggioGiocatore1();
-
-                        }
-                        }
-                   // } catch (InterruptedException e) {
-                        //ignoro l'errore
-                   // }
+                    if (modalita == 2){
+                        //quello che si unisce alla partita
+                        //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
+                        connectionFirebase.personaggioGiocatore2();
+                    }
+                    else if(modalita == 3){
+                        //quello che la crea
+                        connectionFirebase.personaggioGiocatore1();
+                    }
+                }
                 btn_seleziona_personaggio.startAnimation(scale_down);
                 btn_seleziona_personaggio.startAnimation(scale_up);
                 Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
