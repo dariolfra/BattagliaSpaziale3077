@@ -28,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
     Button btn_gioca, btn_regole;
     Context context;
     Animation scale_down, scale_up;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
 
-        btn_gioca.setOnClickListener(new View.OnClickListener(){
+        btn_gioca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btn_gioca.startAnimation(scale_down);
@@ -65,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);

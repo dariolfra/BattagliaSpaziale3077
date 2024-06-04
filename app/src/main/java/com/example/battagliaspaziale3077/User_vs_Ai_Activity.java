@@ -63,20 +63,19 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
                 btn_gioca.startAnimation(scale_down);
                 btn_gioca.startAnimation(scale_up);
                 nome_corretto = false;
-                try{
+                try {
                     nome_giocatore = String.valueOf(txt_nome.getText());
-                    if(nome_giocatore.isEmpty()){
+                    if (nome_giocatore.isEmpty()) {
                         throw new Exception();
-                    }
-                    else{
+                    } else {
                         nome_corretto = true;
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e.toString());
                     CustomToast.showToast(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
                     nome_corretto = false;
                 }
-                if(nome_corretto){
+                if (nome_corretto) {
                     txt_nome.setText("");
                     Intent gioco = new Intent(User_vs_Ai_Activity.this, PersonaggiActivity.class);
                     gioco.putExtra("mod", modalita);
@@ -87,7 +86,7 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
         });
     }
 
-    public void btn_regole_pressed(View v){
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);

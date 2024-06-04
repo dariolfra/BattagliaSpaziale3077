@@ -30,8 +30,7 @@ class ClientThread extends ConnectionThread implements Parcelable {
     private String mess;
     private boolean gameEnded;
 
-    public ClientThread(String nome, int sPort, String serverIp)
-    {
+    public ClientThread(String nome, int sPort, String serverIp) {
         serverPort = sPort;
         serverName = serverIp;
         nome_giocatore1 = nome;
@@ -70,13 +69,10 @@ class ClientThread extends ConnectionThread implements Parcelable {
     }
 
     @Override
-    public void run()
-    {
-        while(!gameEnded)
-        {
+    public void run() {
+        while (!gameEnded) {
             try {
-                if(primaConnessione)
-                {
+                if (primaConnessione) {
                     //serverName = ClientActivity.GetServerName();
 
                     /*if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
@@ -112,11 +108,8 @@ class ClientThread extends ConnectionThread implements Parcelable {
                     primaConnessione = false;
 
 
-                }
-                else
-                {
-                    if(inviaMessaggio)
-                    {
+                } else {
+                    if (inviaMessaggio) {
                         Connect();
                         try {
                             PrintWriter outputServer = new PrintWriter(client.getOutputStream());
@@ -131,12 +124,10 @@ class ClientThread extends ConnectionThread implements Parcelable {
                         }
                         mess = "";
                         inviaMessaggio = false;
-                    }
-                    else if(riceviMessaggio)
-                    {
+                    } else if (riceviMessaggio) {
                         Connect();
                         try {
-                            while(txtFromServer != "") {
+                            while (txtFromServer != "") {
                                 BufferedReader sv_reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                                 txtFromServer = sv_reader.readLine();
                                 Thread.sleep(100);
@@ -167,16 +158,13 @@ class ClientThread extends ConnectionThread implements Parcelable {
         }
     }
 
-    public void SetActivity(User_vs_User_connect_Activity A)
-    {
+    public void SetActivity(User_vs_User_connect_Activity A) {
         ClientActivity = A;
     }
 
-    public boolean Connect()
-    {
+    public boolean Connect() {
         try {
-            while(txtFromServer == "")
-            {
+            while (txtFromServer == "") {
                 client = new Socket(serverName, serverPort);
 
                 //lettura da server
@@ -192,18 +180,16 @@ class ClientThread extends ConnectionThread implements Parcelable {
         return false;
     }
 
-    public void InviaMessaggio(String messaggio)
-    {
+    public void InviaMessaggio(String messaggio) {
         inviaMessaggio = true;
         mess = messaggio;
     }
 
-    public void RiceviRisposta()
-    {
+    public void RiceviRisposta() {
         riceviMessaggio = true;
     }
 
-    public String Nome_G2(){
+    public String Nome_G2() {
         return nome_giocatore2;
     }
 
@@ -228,8 +214,7 @@ class ClientThread extends ConnectionThread implements Parcelable {
     }
 
     @Override
-    public void Abbandona()
-    {
+    public void Abbandona() {
         InviaMessaggio("vittoria");
     }
 }

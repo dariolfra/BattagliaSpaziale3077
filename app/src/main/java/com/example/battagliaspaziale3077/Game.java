@@ -6,13 +6,11 @@ import android.content.Context;
 import java.io.Serializable;
 
 public class Game extends Activity implements Serializable {
-    public void Abbandona()
-    {
+    public void Abbandona() {
 
     }
 
-    public Context GetContext()
-    {
+    public Context GetContext() {
         return null;
     }
 }

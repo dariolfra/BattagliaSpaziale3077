@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class customDialog {
-    public static void showDialog(Game g){
+    public static void showDialog(Game g) {
         Dialog dialog = new Dialog(g);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -26,11 +26,9 @@ public class customDialog {
         });
 
         Button abbandona = (Button) dialog.findViewById(R.id.abbandona);
-        abbandona.setOnClickListener(new View.OnClickListener()
-        {
+        abbandona.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 g.Abbandona();
             }
         });

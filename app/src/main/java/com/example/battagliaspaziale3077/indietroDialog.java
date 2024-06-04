@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 
 public class indietroDialog {
     static Animation scale_down, scale_up;
+
     public static void showDialog(Context context) {
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

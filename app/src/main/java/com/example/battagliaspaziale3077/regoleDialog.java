@@ -11,9 +11,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 public class regoleDialog {
     static Animation scale_down, scale_up;
-    public static void showDialog(Game g){
+
+    public static void showDialog(Game g) {
         Dialog dialog = new Dialog(g);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -33,8 +35,7 @@ public class regoleDialog {
 
         btn_annulla.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 btn_annulla.startAnimation(scale_down);
                 btn_annulla.startAnimation(scale_up);
                 dialog.dismiss();

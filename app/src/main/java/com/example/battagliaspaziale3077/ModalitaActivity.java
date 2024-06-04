@@ -22,8 +22,9 @@ public class ModalitaActivity extends AppCompatActivity {
     ImageButton btn_User_vs_AI, btn_User_vs_User_connect, btn_User_vs_User_hosted;
     Animation scale_down, scale_up;
     Button btn_regole;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selezione_modalita);
 
@@ -58,9 +59,9 @@ public class ModalitaActivity extends AppCompatActivity {
             }
         });
 
-        btn_User_vs_User_connect.setOnClickListener(new View.OnClickListener(){
+        btn_User_vs_User_connect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 btn_User_vs_User_connect.startAnimation(scale_down);
                 btn_User_vs_User_connect.startAnimation(scale_up);
                 Intent user_vs_user_conn = new Intent(ModalitaActivity.this, User_vs_User_connect_Activity.class);
@@ -79,7 +80,8 @@ public class ModalitaActivity extends AppCompatActivity {
         });
 
     }
-    public void btn_regole_pressed(View v){
+
+    public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
         regoleDialogNoGame.showDialog(this);
