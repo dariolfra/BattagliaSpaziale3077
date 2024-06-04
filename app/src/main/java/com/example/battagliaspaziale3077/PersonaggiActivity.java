@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,9 +19,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -28,6 +34,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PersonaggiActivity extends AppCompatActivity implements Serializable {
 
@@ -139,39 +146,61 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             @Override
             public void onClick(View v) {
                 if(modalita != 1){
-                    //try {
-                        /*comms.InviaMessaggio("done");
-                        comms.RiceviRisposta();
-                        synchronized (comms){
-                            comms.wait(3000);
-                        }
-                        comms.InviaMessaggio("done");*/
                         if (modalita == 2){
                             //quello che si unisce alla partita
 
                             //bisogna sistemare l'inserimento nel db e far aspettare che abbiano finito entrambi
-                            connectionFirebase.personaggioGiocatore2();
+                            connectionFirebase.personaggioGiocatore2(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    // Verifica se il campo PersonaggioGiocatore2 è stato impostato
+                                    String personaggioGiocatore1 = snapshot.child("PersonaggioGiocatore1").getValue(String.class);
+                                    if (personaggioGiocatore1.equals("true")) {
+                                        // Passa alla schermata di gioco per il Giocatore 2
+                                        ChangePage(attacco);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Gestisci l'errore del database
+                                    System.err.println("Errore del database: " + error.getMessage());
+                                }
+                            });
+                            if(connectionFirebase.PersonaggioG1() == "true"){
+                                ChangePage(attacco);
+                            }
+
                         }
                         else if(modalita == 3){
                             //quello che la crea
-                            connectionFirebase.personaggioGiocatore1();
+                            connectionFirebase.personaggioGiocatore1(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    // Verifica se il nome del giocatore 1 è stato impostato
+                                    String PersonaggioGiocatore2 = snapshot.child("PersonaggioGiocatore2").getValue(String.class);
+                                    if (PersonaggioGiocatore2.equals("true")){
+                                        // Passa alla schermata di gioco per il Giocatore 2
+                                        ChangePage(attacco);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            if(connectionFirebase.PersonaggioG2() == "true"){
+                                ChangePage(attacco);
+                            }
 
                         }
                         }
                    // } catch (InterruptedException e) {
                         //ignoro l'errore
                    // }
-                btn_seleziona_personaggio.startAnimation(scale_down);
-                btn_seleziona_personaggio.startAnimation(scale_up);
-                Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
-                gioco.putExtra("personaggio", indice);
-                gioco.putExtra("mod", modalita);
-                gioco.putExtra("nome1", nome_g1);
-                gioco.putExtra("nome2", nome_g2);
-               // gioco.putExtra("comms", comms);
-                gioco.putExtra("attacco", attacco);
-                suono_personaggio(indice);
-                startActivity(gioco);
+
             }
         });
     }
@@ -266,5 +295,18 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             mp.start();
         }
 
+    }
+    public void ChangePage(boolean attacco) {
+        btn_seleziona_personaggio.startAnimation(scale_down);
+        btn_seleziona_personaggio.startAnimation(scale_up);
+        Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
+        gioco.putExtra("personaggio", indice);
+        gioco.putExtra("mod", modalita);
+        gioco.putExtra("nome1", nome_g1);
+        gioco.putExtra("nome2", nome_g2);
+        // gioco.putExtra("comms", comms);
+        gioco.putExtra("attacco", attacco);
+        suono_personaggio(indice);
+        startActivity(gioco);
     }
 }

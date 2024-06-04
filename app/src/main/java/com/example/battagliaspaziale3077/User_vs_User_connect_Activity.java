@@ -86,8 +86,6 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
                 connectionFirebase.unisciAPartita(codice,nome_giocatore2, new ValueEventListener() {
 
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Stampa lo snapshot per controllare i dati ricevuti
-                        Log.d("DataSnapshot", snapshot.toString());
                         // Verifica se il nome del giocatore 1 è stato impostato
                         String nomeGiocatore1 = snapshot.child("nomeGiocatore1").getValue(String.class);
                         if (nomeGiocatore1 != null && !nomeGiocatore1.isEmpty()) {

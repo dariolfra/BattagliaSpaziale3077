@@ -12,31 +12,44 @@ import java.util.Map;
 
 public class ConnectionFirebase {
     private DatabaseReference databaseReference;
+    private static String codiceConn;
+    private static String personaggioG1;
 
-    public void inviaHashMapFormazione(/*HashMap<Integer, List<Integer>> formazione*/){
+    private static String personaggioG2;
+
+    public void inviaHashMapFormazione(/*HashMap<Integer, List<Integer>> formazione*/) {
         databaseReference.setValue("dfmdmf");
     }
-    public void CreaPartita(String codice, String nomeGiocatore1,ValueEventListener listener) {
+
+    public void CreaPartita(String codice, String nomeGiocatore1, ValueEventListener listener) {
         //inizializzo l'istanza
-        if(nomeGiocatore1 != ""){
+        if (nomeGiocatore1 != "") {
             FirebaseDatabase instance = FirebaseDatabase.getInstance();
             databaseReference = instance.getReference(codice);
 
+            //metto in codice dell'istanza
+            codiceConn = codice;
+
+            //dichiaro le variabili
             Map<String, Object> data = new HashMap<>();
             data.put("nomeGiocatore1", nomeGiocatore1);
             data.put("nomeGiocatore2", "");
+            data.put("PersonaggioGiocatore1", "");
+            data.put("PersonaggioGiocatore2", "");
 
             databaseReference.setValue(data);
             databaseReference.addValueEventListener(listener);
-        }
-        else {
+
+        } else {
 
         }
 
     }
+
     public void unisciAPartita(String codice, String nomeGiocatore2, ValueEventListener listener) {
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         databaseReference = instance.getReference(codice);
+        codiceConn = codice;
         databaseReference.addListenerForSingleValueEvent(listener);
         // Aggiunge un listener per verificare se il codice della partita esiste
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -58,45 +71,72 @@ public class ConnectionFirebase {
                 // Gestisci l'errore
                 System.err.println("Errore durante il recupero dei dati: " + databaseError.getMessage());
             }
-        });    }
-
-    public void personaggioGiocatore2() {
-        // Verifica se la HashMap "personaggio scelto" è già stata creata
-        if (databaseReference == null) {
-            FirebaseDatabase instance = FirebaseDatabase.getInstance();
-            databaseReference = instance.getReference().child("personaggio scelto");
-
-            // Creazione dei dati per la HashMap
-            Map<String, Object> data = new HashMap<>();
-            data.put("nomeGiocatore1", "");
-            data.put("nomeGiocatore2", true);
-
-            // Imposta i dati nella HashMap
-            databaseReference.setValue(data);
-        } else {
-            // La HashMap "personaggio scelto" è già stata creata
-            // Quindi aggiorniamo solo il campo "nomeGiocatore2" a true
-            databaseReference.child("nomeGiocatore2").setValue(true);
-        }
+        });
     }
 
-    public void personaggioGiocatore1() {
-        // Verifica se la HashMap "personaggio scelto" è già stata creata
-        if (databaseReference == null) {
-            FirebaseDatabase instance = FirebaseDatabase.getInstance();
-            databaseReference = instance.getReference().child("personaggio scelto");
+    public void personaggioGiocatore2(ValueEventListener listener) {
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = instance.getReference(codiceConn);
 
-            // Creazione dei dati per la HashMap
-            Map<String, Object> data = new HashMap<>();
-            data.put("nomeGiocatore1", true);
-            data.put("nomeGiocatore2", "");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore2
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("PersonaggioGiocatore2", "true");
+                    personaggioG2 = "true";
+                    databaseReference.updateChildren(updates);
+                } else {
+                    // Se la partita non esiste, gestisci l'errore
+                    System.err.println("Partita non trovata: " + codiceConn);
+                }
+            }
 
-            // Imposta i dati nella HashMap
-            databaseReference.setValue(data);
-        } else {
-            // La HashMap "personaggio scelto" è già stata creata
-            // Quindi aggiorniamo solo il campo "nomeGiocatore2" a true
-            databaseReference.child("nomeGiocatore1").setValue(true);
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Gestisci l'errore del database
+                System.err.println("Errore del database: " + databaseError.getMessage());
+            }
+        });
+
+        // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
+        databaseReference.addValueEventListener(listener);
+    }
+
+
+    public void personaggioGiocatore1(ValueEventListener listener) {
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        databaseReference = instance.getReference(codiceConn);
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore1
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("PersonaggioGiocatore1","true" );
+                    personaggioG1 = "true";
+                    databaseReference.updateChildren(updates);
+                }
+                else {
+                    // Se la partita non esiste, gestisci l'errore
+                    System.err.println("Partita non trovata: " + codiceConn);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Gestione dell'errore, se necessario
+            }
+        });
+        // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
+        databaseReference.addValueEventListener(listener);
+    }
+    public String PersonaggioG2(){
+        return personaggioG2;
+    }
+    public String PersonaggioG1(){
+        return personaggioG1;
     }
 }
