@@ -207,20 +207,6 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 } else {
                     ChangePage(true);
                 }
-                // } catch (InterruptedException e) {
-                //ignoro l'errore
-                // }
-                btn_seleziona_personaggio.startAnimation(scale_down);
-                btn_seleziona_personaggio.startAnimation(scale_up);
-                Intent gioco = new Intent(PersonaggiActivity.this, MainActivity.class);
-                gioco.putExtra("personaggio", indice);
-                gioco.putExtra("mod", modalita);
-                gioco.putExtra("nome1", nome_g1);
-                gioco.putExtra("nome2", nome_g2);
-                // gioco.putExtra("comms", comms);
-                gioco.putExtra("attacco", attacco);
-                suono_personaggio(indice);
-                startActivity(gioco);
             }
         });
         // } catch (InterruptedException e) {
