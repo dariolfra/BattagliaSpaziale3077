@@ -177,12 +177,12 @@ public class Defence extends Game implements Serializable {
 
     public void Gioca() throws InterruptedException {
         if (multiplayer) {
-            String mess = AspettaMessaggio();
-            Rispondi(mess);
+            //String mess = AspettaMessaggio();
+            //Rispondi(mess);
             String done = "";
-            while (done != "done") {
+            /*while (done != "done") {
                 done = AspettaMessaggio();
-            }
+            }*/
         }
         else
         {
@@ -350,13 +350,13 @@ public class Defence extends Game implements Serializable {
         return risultato;
     }
 
-    public String AspettaMessaggio() throws InterruptedException {
-        comms.RiceviRisposta();
+    /*public String AspettaMessaggio() throws InterruptedException {
+        //comms.RiceviRisposta();
         synchronized (comms) {
             comms.wait(3000);
         }
         return comms.GetMessage();
-    }
+    }*/
 
     public void Rispondi(String mess) {
         for (Integer i : NaveIDs) {

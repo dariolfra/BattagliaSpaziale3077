@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.zip.Inflater;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     //Variabili per il gioco
     ActivityMainBinding binding;
-    ImageView[] navi;
+    public static ImageView[] navi = new ImageView[6];
     float startX, startY;
     float[] initialX, initialY;
     Button btnConferma, btn_regole, btnRipristina;
@@ -60,13 +61,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     Animation scale_down, scale_up;
     ImageView background;
     // HashMap per memorizzare le posizioni delle navi con l'ID dell'immagine come chiave
-    HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
-    HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
+    private static HashMap<Integer, List<Integer>> shipPositions = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> shipPositionsAI = new HashMap<>(); //per Users Vs AI
     private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
     private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
     boolean attacco;
     boolean primaVolta;
     ConnectionFirebase connectionFirebase;
+    public static Boolean EseguiOncreate = true;
+    public static int[] immaginiCasella = new int[100];
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -77,8 +80,52 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
+        btnConferma = findViewById(R.id.btnConferma);
 
-        int[] immaginiCasella = new int[100];
+        if(EseguiOncreate){
+            EseguiOncreate = false;
+            btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
+
+            //Inizializzazione delle navi
+            navi[0] = findViewById(R.id.navecap);
+            navi[1] = findViewById(R.id.naveda2);
+            navi[2] = findViewById(R.id.naveangolo);
+            navi[3] = findViewById(R.id.naveda4);
+            navi[4] = findViewById(R.id.navedaottorino);
+            navi[5] = findViewById(R.id.navel);
+
+            // Inizializza gli array per le posizioni iniziali
+            initialX = new float[navi.length];
+            initialY = new float[navi.length];
+
+
+            ViewTreeObserver viewTreeObserver = binding.getRoot().getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Memorizza le posizioni iniziali delle navi
+                    for (int i = 0; i < navi.length; i++) {
+                        initialX[i] = navi[i].getX();
+                        initialY[i] = navi[i].getY();
+                    }
+                    // Rimuovi il listener per evitare che venga chiamato più volte
+                    binding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }else {
+            //Inizializzazione delle navi
+            navi[0] = findViewById(R.id.navecap);
+            navi[1] = findViewById(R.id.naveda2);
+            navi[2] = findViewById(R.id.naveangolo);
+            navi[3] = findViewById(R.id.naveda4);
+            navi[4] = findViewById(R.id.navedaottorino);
+            navi[5] = findViewById(R.id.navel);
+            for (ImageView nave : navi) {
+                if (nave != null) {
+                    nave.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
 
         GridAdapter gridAdapter = new GridAdapter(this, immaginiCasella);
         background = (ImageView) findViewById(R.id.imageView8);
@@ -86,17 +133,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         connectionFirebase = new ConnectionFirebase();
 
-        //Inizializzazione delle navi
-        navi = new ImageView[6];
-        navi[0] = findViewById(R.id.navecap);
-        navi[1] = findViewById(R.id.naveda2);
-        navi[2] = findViewById(R.id.naveangolo);
-        navi[3] = findViewById(R.id.naveda4);
-        navi[4] = findViewById(R.id.navedaottorino);
-        navi[5] = findViewById(R.id.navel);
 
-        btnConferma = findViewById(R.id.btnConferma);
-        btnConferma.setVisibility(View.GONE); // Stato Iniziale nascosto
+
         btn_regole = findViewById(R.id.btn_regole);
         btnRipristina = findViewById(R.id.btnRipristina);
 
@@ -113,9 +151,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
 
-        // Inizializza gli array per le posizioni iniziali
-        initialX = new float[navi.length];
-        initialY = new float[navi.length];
+
 
         primaVolta = false;
         context = this.getApplicationContext();
@@ -145,73 +181,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
         });
 
-        //Metodo per confermare e per far partire il gioco
-        btnConferma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnConferma.startAnimation(scale_down);
-                btnConferma.startAnimation(scale_up);
-                if (modalita != 1) {
-                    if (modalita == 2) {
-                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                // Verifica se il nome del giocatore 1 è stato impostato
-                                String Formazioneg1 = snapshot.child("Formazioneg1").getValue(String.class);
-                                if (Formazioneg1.equals("true")) {
-                                    // Passa alla schermata di gioco per il Giocatore 2
-                                    ChangePage(attacco);
-                                }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                    } else if (modalita == 3) {
-                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                // Verifica se il nome del giocatore 1 è stato impostato
-                                String Formazioneg2 = snapshot.child("Formazioneg2").getValue(String.class);
-                                if (Formazioneg2.equals("true")) {
-                                    // Passa alla schermata di gioco per il Giocatore 2
-                                    ChangePage(attacco);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                    }
-                }
-                else
-                {
-                    ChangePage(true);
-                }
-            }
-        });
 
         binding.gridView.setAdapter(gridAdapter);
         // Utilizza un ViewTreeObserver per memorizzare le posizioni iniziali dopo il layout
-        ViewTreeObserver viewTreeObserver = binding.getRoot().getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // Memorizza le posizioni iniziali delle navi
-                for (int i = 0; i < navi.length; i++) {
-                    initialX[i] = navi[i].getX();
-                    initialY[i] = navi[i].getY();
-                }
-                // Rimuovi il listener per evitare che venga chiamato più volte
-                binding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
+
 
 
         for (int i = 0; i < navi.length; i++) {
@@ -279,6 +253,69 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 resetShips(gridAdapter, immaginiCasella);
             }
         });
+        //Metodo per confermare e per far partire il gioco
+        btnConferma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnConferma.startAnimation(scale_down);
+                btnConferma.startAnimation(scale_up);
+                if (modalita != 1) {
+                    if(modalita == 2){
+                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                boolean formazioneg1 = "true".equals(snapshot.child("Formazioneg1").getValue(String.class));
+                                boolean formazioneg2 = "true".equals(snapshot.child("Formazioneg2").getValue(String.class));
+
+                                if (formazioneg1 && formazioneg2) {
+                                    // Passa alla schermata di gioco solo se entrambe le condizioni sono soddisfatte
+                                    ChangePage(attacco);
+                                }
+                            }
+
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                System.err.println("Errore durante il recupero dei dati: " + error.getMessage());
+                            }
+                        });
+                    } else if (modalita == 3) {
+                        connectionFirebase.inviaHashMapFormazione(modalita, new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                boolean formazioneg1 = "true".equals(snapshot.child("Formazioneg1").getValue(String.class));
+                                boolean formazioneg2 = "true".equals(snapshot.child("Formazioneg2").getValue(String.class));
+
+                                if (formazioneg1 && formazioneg2) {
+                                    // Passa alla schermata di gioco solo se entrambe le condizioni sono soddisfatte
+                                    ChangePage(attacco);
+                                }
+                            }
+
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                System.err.println("Errore durante il recupero dei dati: " + error.getMessage());
+                            }
+                        });
+                    }
+
+
+                } else {
+                    ChangePage(true);
+                }
+                /*if(modalita == 2){
+                    if (Objects.equals(connectionFirebase.FormazioneG1(), "true")) {
+                        ChangePage(attacco);
+                    }
+                } else if (modalita == 3) {
+                    if (Objects.equals(connectionFirebase.FormazioneG2(), "true")) {
+                        ChangePage(attacco);
+                    }
+                }*/
+            }
+        });
+
     }
 
     private void ChangePage(boolean attacco) {

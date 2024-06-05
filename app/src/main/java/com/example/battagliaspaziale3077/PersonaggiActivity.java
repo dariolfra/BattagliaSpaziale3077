@@ -57,15 +57,21 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
     Animation scale_down, scale_up;
     ConnectionFirebase connectionFirebase;
 
+    public static int ultimoIndice = 1;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personaggi);
-
-        connectionFirebase = new ConnectionFirebase();
-
+        btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
+        btn_pers_succ = (ImageButton) findViewById(R.id.btn_pers_succ);
+        lbl_descr_pers = (TextView) findViewById(R.id.lbl_descr_pers);
+        lbl_abilita_pers = (TextView) findViewById(R.id.lbl_abilita);
+        img_personaggio = (ImageView) findViewById(R.id.img_pers);
+        btn_seleziona_personaggio = (Button) findViewById(R.id.btn_seleziona_personaggio);
+        btn_regole = (Button) findViewById(R.id.btn_regole);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
@@ -78,8 +84,9 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
-
         context = this.getApplicationContext();
+        connectionFirebase = new ConnectionFirebase();
+
 
         Intent mod = getIntent();
         modalita = mod.getIntExtra("mod", 1);
@@ -92,15 +99,6 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
             nome_g1 = mod.getStringExtra("nome1");
             nome_g2 = mod.getStringExtra("nome2");
         }
-
-        btn_pers_prec = (ImageButton) findViewById(R.id.btn_pers_prec);
-        btn_pers_succ = (ImageButton) findViewById(R.id.btn_pers_succ);
-        lbl_descr_pers = (TextView) findViewById(R.id.lbl_descr_pers);
-        lbl_abilita_pers = (TextView) findViewById(R.id.lbl_abilita);
-        img_personaggio = (ImageView) findViewById(R.id.img_pers);
-        btn_seleziona_personaggio = (Button) findViewById(R.id.btn_seleziona_personaggio);
-        btn_regole = (Button) findViewById(R.id.btn_regole);
-
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up);
 
@@ -108,11 +106,10 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         popola_hashmap_descrizioni();
         popola_hasmap_abilita();
 
-        indice = 1;
+        indice = ultimoIndice;
         img_personaggio.setImageDrawable(indici_immagini.get(indice));
         lbl_descr_pers.setText(indici_descrizione.get(indice));
         lbl_abilita_pers.setText(indici_abilita.get(indice));
-
         btn_pers_succ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,11 +117,13 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 btn_pers_succ.startAnimation(scale_up);
                 if (indice == 10) {
                     indice = 1;
+                    ultimoIndice = indice;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
                 } else {
                     indice++;
+                    ultimoIndice = indice;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
@@ -139,11 +138,13 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                 btn_pers_prec.startAnimation(scale_up);
                 if (indice == 1) {
                     indice = 10;
+                    ultimoIndice = indice;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
                 } else {
                     indice--;
+                    ultimoIndice = indice;
                     img_personaggio.setImageDrawable(indici_immagini.get(indice));
                     lbl_descr_pers.setText(indici_descrizione.get(indice));
                     lbl_abilita_pers.setText(indici_abilita.get(indice));
@@ -163,6 +164,7 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 // Verifica se il campo PersonaggioGiocatore2 è stato impostato
+                                Log.i("OnDataChange","Sono entrato");
                                 String personaggioGiocatore1 = snapshot.child("PersonaggioGiocatore1").getValue(String.class);
                                 if (personaggioGiocatore1.equals("true")) {
                                     // Passa alla schermata di gioco per il Giocatore 2
@@ -185,9 +187,10 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
                         connectionFirebase.personaggioGiocatore1(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Log.i("OnDataChange","Sono entrato");
                                 // Verifica se il nome del giocatore 1 è stato impostato
                                 String PersonaggioGiocatore2 = snapshot.child("PersonaggioGiocatore2").getValue(String.class);
-                                if (PersonaggioGiocatore2.equals("true")) {
+                                if (PersonaggioGiocatore2.equals("true") && PersonaggioGiocatore2 != "") {
                                     // Passa alla schermata di gioco per il Giocatore 2
                                     ChangePage(true);
                                 }
@@ -213,7 +216,6 @@ public class PersonaggiActivity extends AppCompatActivity implements Serializabl
         //ignoro l'errore
         // }
     }
-
     public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
