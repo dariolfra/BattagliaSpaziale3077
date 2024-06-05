@@ -47,6 +47,8 @@ public class HomeActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
 
+        getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+
         context = this.getApplicationContext();
 
         btn_gioca = findViewById(id.btn_Gioca);

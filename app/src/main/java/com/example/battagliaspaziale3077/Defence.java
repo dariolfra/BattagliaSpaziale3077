@@ -53,6 +53,7 @@ public class Defence extends Game implements Serializable {
     private static int casella_a_segno = 0;
     private static int navi_affondate = 0;
     private static List<Integer> id_navi_affondate = new ArrayList<>();
+    private static final int delay = 500;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +133,7 @@ public class Defence extends Game implements Serializable {
         try {
             Gioca();
         } catch (InterruptedException e) {
-            CustomToast.showToast(context, "ERRORE", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "ERRORE", delay);
         }
 
         btn_torna_attacco.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +156,7 @@ public class Defence extends Game implements Serializable {
                     }
                     startActivity(attack);
                 } else {
-                    CustomToast.showToast(context, "ATTACCO DI AI NON EFFETTUATO", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "ATTACCO DI AI NON EFFETTUATO", delay);
                 }
             }
         });
@@ -216,14 +217,14 @@ public class Defence extends Game implements Serializable {
                     colpita = true;
                     colpo_a_segno = true;
                     vittoria = Controllo_Fine_Gioco_AI();
-                    CustomToast3.showToast(context, "AI: COLPITO!" , Toast.LENGTH_SHORT);
+                    CustomToast3.showToast(context, "AI: COLPITO!" , delay);
                     break;
                 }
             }
         }
         if (!colpita) {
             tabella[posizione] = R.drawable.selected;
-            CustomToast3.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
+            CustomToast3.showToast(context, "AI: ACQUA!", delay);
         }
         if (vittoria) {
             Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);
@@ -405,7 +406,7 @@ public class Defence extends Game implements Serializable {
         if (blocchi_nave_colpiti == size_navi.get(ID)) {
             NaviColpite.remove(ID);
             NaviAffondate.put(ID, posizioni);
-            CustomToast3.showToast(context, "AI: NAVE AFFONDATA!", Toast.LENGTH_SHORT);
+            CustomToast3.showToast(context, "AI: NAVE AFFONDATA!",delay);
             colpo_a_segno = false;
         }
         return mess;

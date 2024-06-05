@@ -77,6 +77,7 @@ public class Attack extends Game implements Serializable {
     private static List<Integer> id_navi_affondate = new ArrayList<>();
     private boolean mossaSpeciale = false;
     private ArrayList<Integer> posSpeciale;
+    private static final int delay = 500;
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +208,7 @@ public class Attack extends Game implements Serializable {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (Exception e) {
-                    CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", delay);
                 }
             }
         });
@@ -266,7 +267,7 @@ public class Attack extends Game implements Serializable {
                     pos = -1;
                     gridAdapterAttacco.notifyDataSetChanged();
                 } else {
-                    CustomToast.showToast(context, "CELLA GIA' ATTACCATA", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "CELLA GIA' ATTACCATA", delay);
                 }
             }
         });
@@ -357,7 +358,7 @@ public class Attack extends Game implements Serializable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
-            CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", delay);
         }
     }
 
@@ -388,25 +389,25 @@ public class Attack extends Game implements Serializable {
         if (mossaSpeciale) {
             for (int posSpec : posSpeciale) {
                 if (arrayFormazioneIA[posSpec] != 0) {
-                    CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
+                    CustomToast2.showToast(context, "BERSAGLIO COLPITO!", delay);
                     casellaColpita[posSpec] = R.drawable.nave_colpita;
                     posizioni_colpite.add(posSpec);
                 } else {
-                    CustomToast2.showToast(context, "ACQUA!", 5);
+                    CustomToast2.showToast(context, "ACQUA!", delay);
                     casellaColpita[posSpec] = R.drawable.naveda1;
                 }
             }
         } else {
             if (arrayFormazioneIA[selectedPos] != 0) {
-                CustomToast2.showToast(context, "BERSAGLIO COLPITO!", 5);
+                CustomToast2.showToast(context, "BERSAGLIO COLPITO!", delay);
                 casellaColpita[selectedPos] = R.drawable.nave_colpita;
                 attacchi_a_segno++;
                 if (attacchi_a_segno == 5) {
-                    CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", 5);
+                    CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", delay);
                 }
                 posizioni_colpite.add(selectedPos);
             } else {
-                CustomToast2.showToast(context, "ACQUA!", 5);
+                CustomToast2.showToast(context, "ACQUA!", delay);
                 casellaColpita[selectedPos] = R.drawable.naveda1;
             }
         }
@@ -429,7 +430,7 @@ public class Attack extends Game implements Serializable {
                     Nave_Affondata(posizioni_nave_IA);
                     id_navi_affondate.add(id);
                     Log.i("NAVI AFFONDATE", String.valueOf(navi_affondate));
-                    CustomToast2.showToast(context, "NAVI AFFONDATE : " + navi_affondate, Toast.LENGTH_SHORT);
+                    CustomToast2.showToast(context, "NAVI AFFONDATE : " + navi_affondate, delay);
                 }
             }
         }
@@ -457,14 +458,14 @@ public class Attack extends Game implements Serializable {
 
     public void Attacco(String result) {
         if (selectedPos != -1) {
-            CustomToast2.showToast(context, "BERSAGLIO COLPITO!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "BERSAGLIO COLPITO!", delay);
             casellaColpita[selectedPos] = 2;
             attacchi_a_segno += 1;
             if (attacchi_a_segno >= 5) {
-                CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", Toast.LENGTH_SHORT);
+                CustomToast2.showToast(context, "ATTACCO SPECIALE DISPONIBILE!", delay);
             }
         } else if (result == "acqua") {
-            CustomToast2.showToast(context, "ACQUA!", Toast.LENGTH_SHORT);
+            CustomToast2.showToast(context, "ACQUA!", delay);
             casellaColpita[selectedPos] = 1;
         } else //esempio stringa: "colpita e affondata|coordinata1-coordinata2-coordinata3..."
         {
@@ -524,7 +525,7 @@ public class Attack extends Game implements Serializable {
             }
             attacchi_a_segno -= 5;
         } else { //se non è ancora tempo della mossa speciale
-            CustomToast.showToast(this, "ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI", Toast.LENGTH_LONG);
+            CustomToast.showToast(this, "ATTACCO SPECIALE DISPONIBILE TRA " + (attacchi_necessari_att_speciale - attacchi_a_segno) + " ATTACCHI", delay);
         }
     }
 
