@@ -191,7 +191,7 @@ public class Defence extends Game implements Serializable {
             while(!finito)
             {
                 pos = genera_pos_attacco_ai_random();
-                if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.x && casellaColpita[pos] != R.drawable.buconero)
+                if(casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.buconero)
                 {
                     finito = true;
                 }
@@ -214,7 +214,6 @@ public class Defence extends Game implements Serializable {
                     NaveColpita(i, posizione);
                     String s = NaveColpitaAffondata(i);
                     colpita = true;
-                    colpo_a_segno = true;
                     vittoria = Controllo_Fine_Gioco_AI();
                     CustomToast3.showToast(context, "AI: COLPITO!" , Toast.LENGTH_SHORT);
                     break;
@@ -222,8 +221,9 @@ public class Defence extends Game implements Serializable {
             }
         }
         if (!colpita) {
-            tabella[posizione] = R.drawable.selected;
-            CustomToast3.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
+            tabella[posizione] = R.drawable.buconero;
+            casellaColpita[posizione] = R.drawable.buconero;
+            CustomToast2.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);\
         }
         if (vittoria) {
             Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);
@@ -267,52 +267,56 @@ public class Defence extends Game implements Serializable {
         {
             for (int nave:NaveIDs)
             {
-                if(NaviColpite.containsKey(nave) && NaviColpite.get(nave).size() > 0)
+                if(NaviColpite.containsKey(nave))
                 {
-                    List<Integer> posizioniColpite = NaviColpite.get(nave);
-                    pos = posizioniColpite.get(rnd.nextInt(posizioniColpite.size()));
-                    switch (rnd.nextInt(4))
+                    if(NaviColpite.get(nave).size() > 0)
                     {
-                        case 0:
-                            if(pos % 10 != 9)
-                            {
-                                pos+=1;
-                            }
-                            else
-                            {
-                                pos-=1;
-                            }
-                            break;
-                        case 1:
-                            if(pos % 10 != 0)
-                            {
-                                pos-=1;
-                            }
-                            else
-                            {
-                                pos+=1;
-                            }
-                            break;
-                        case 2:
-                            if(pos > 10)
-                            {
-                                pos-=10;
-                            }
-                            else
-                            {
-                                pos+=10;
-                            }
-                            break;
-                        case 3:
-                            if(pos < 89)
-                            {
-                                pos+=10;
-                            }
-                            else
-                            {
-                                pos-=10;
-                            }
-                            break;
+                        List<Integer> posizioniColpite = NaviColpite.get(nave);
+                        pos = posizioniColpite.get(rnd.nextInt(posizioniColpite.size()));
+                        int spostamento = rnd.nextInt(4);
+                        switch (spostamento)
+                        {
+                            case 0:
+                                if(pos % 10 != 9)
+                                {
+                                    pos+=1;
+                                }
+                                else
+                                {
+                                    pos-=1;
+                                }
+                                break;
+                            case 1:
+                                if(pos % 10 != 0)
+                                {
+                                    pos-=1;
+                                }
+                                else
+                                {
+                                    pos+=1;
+                                }
+                                break;
+                            case 2:
+                                if(pos > 10)
+                                {
+                                    pos-=10;
+                                }
+                                else
+                                {
+                                    pos+=10;
+                                }
+                                break;
+                            case 3:
+                                if(pos < 90)
+                                {
+                                    pos+=10;
+                                }
+                                else
+                                {
+                                    pos-=10;
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -324,8 +328,12 @@ public class Defence extends Game implements Serializable {
         return pos;
     }
 
-    public void Attacco_Speciale_AI() {
+    public void Attacco_Speciale_AI()
+    {
+        if(casella_a_segno == 5)
+        {
 
+        }
     }
 
     public void btn_regole_pressed(View v) {
@@ -390,6 +398,10 @@ public class Defence extends Game implements Serializable {
                 posizioni.remove(i);
                 break;
             }
+        }
+        if(modalita == 1)
+        {
+            colpo_a_segno = true;
         }
     }
 
