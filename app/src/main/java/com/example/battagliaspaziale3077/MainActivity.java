@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     attacco = personaggi.getBooleanExtra("attacco", true);
                     dati_arrivati_correttamente = true;
                 } catch (Exception e) {
-                    CustomToast.showToast(context, "Dati non passati correttamente", Toast.LENGTH_LONG);
+                    CustomToast.showToast(context, "ERRORE PASSAGGIO DATI!", Toast.LENGTH_LONG);
                 }
             }
         });

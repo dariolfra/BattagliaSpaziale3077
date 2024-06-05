@@ -72,7 +72,7 @@ public class User_vs_Ai_Activity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     System.out.println(e.toString());
-                    CustomToast.showToast(context, "Nome Giocatore inserito non valido", Toast.LENGTH_SHORT);
+                    CustomToast.showToast(context, "INSERISCI NOME GIOCATORE", Toast.LENGTH_SHORT);
                     nome_corretto = false;
                 }
                 if (nome_corretto) {

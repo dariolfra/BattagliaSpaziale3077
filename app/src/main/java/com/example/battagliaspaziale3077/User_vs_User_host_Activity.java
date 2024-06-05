@@ -64,14 +64,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(window.getContext(), R.color.black));
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                        View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         context = this.getApplicationContext();
 
@@ -96,40 +89,31 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         btn_start_sv.startAnimation(scale_up);
 
         nome_giocatore1 = String.valueOf(txt_nome_giocatore.getText());
-        /*serverThread = new ServerThread(nome_giocatore1, serverPort);
-        serverThread.SetActivity(this);
-        serverThread.startServer();
+        if (nome_giocatore1.isEmpty()) {
+            CustomToast.showToast(context, "INSERISCI UN NOME!", Toast.LENGTH_SHORT);
+        } else {
+            //stringa per creare il codice della partita
+            String codiceConn = generaTreLettere() + generaTreNumeri();
+            //metodo per creare la partita
 
-        lbl_ip_sv_box.setText(serverIP);
-        lbl_porta_sv_box.setText(String.valueOf(serverPort));*/
-
-
-        //stringa per creare il codice della partita
-        String codiceConn = generaTreLettere() + generaTreNumeri();
-        //metodo per creare la partita
-
-        connectionFirebase.CreaPartita(codiceConn, nome_giocatore1, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Verifica se il nome del giocatore 2 è stato impostato
-                String nomeGiocatore2 = snapshot.child("nomeGiocatore2").getValue(String.class);
-                if (nomeGiocatore2 != null && !nomeGiocatore2.isEmpty()) {
-                    // Passa alla schermata di gioco per il Giocatore 1
-                    ChangePage(nomeGiocatore2);
+            connectionFirebase.CreaPartita(codiceConn, nome_giocatore1, new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // Verifica se il nome del giocatore 2 è stato impostato
+                    String nomeGiocatore2 = snapshot.child("nomeGiocatore2").getValue(String.class);
+                    if (nomeGiocatore2 != null && !nomeGiocatore2.isEmpty()) {
+                        // Passa alla schermata di gioco per il Giocatore 1
+                        ChangePage(nomeGiocatore2);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        lbl_codiceConn.setText(codiceConn);
-    }
-
-    public void SetAddressPort(String sIP, int sPort) {
-        lbl_ip_sv_box.setText(sIP);
-        lbl_porta_sv_box.setText(String.valueOf(sPort));
+                }
+            });
+            lbl_codiceConn.setText(codiceConn);
+        }
     }
 
     public void onClickStopServer(View view) {
@@ -138,22 +122,19 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
         if (serverThread != null) {
             if (serverThread.isServerRunning()) {
                 serverThread.StopServer();
-            } else {
-                CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
             }
         } else {
-            CustomToast.showToast(context, "Server non avviato", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "STANZA NON CRETA!", Toast.LENGTH_SHORT);
         }
     }
 
     public void ChangeLabelText(String message) {
         runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              lbl_conn_box.setText(message);
-                          }
-                      }
-        );
+            @Override
+            public void run() {
+                lbl_conn_box.setText(message);
+            }
+        });
     }
 
     public void ChangePage(String nome_giocatore2) {

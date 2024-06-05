@@ -86,51 +86,30 @@ public class User_vs_User_connect_Activity extends AppCompatActivity implements 
             public void onClick(View v) {
                 btn_connettiti.startAnimation(scale_down);
                 btn_connettiti.startAnimation(scale_up);
-                //onClickConnect();
                 String codice = String.valueOf(lbl_codiceConn.getText());
                 nome_giocatore2 = txt_nome.getText().toString();
-                //metodo per unirmi alla partita
-                connectionFirebase.unisciAPartita(codice, nome_giocatore2, new ValueEventListener() {
+                if (nome_giocatore2.isEmpty() || codice.isEmpty()) {
+                    CustomToast.showToast(context, "COMPILA TUTTI I CAMPI!", Toast.LENGTH_SHORT);
+                } else {
+                    //metodo per unirmi alla partita
+                    connectionFirebase.unisciAPartita(codice, nome_giocatore2, new ValueEventListener() {
 
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Verifica se il nome del giocatore 1 è stato impostato
-                        String nomeGiocatore1 = snapshot.child("nomeGiocatore1").getValue(String.class);
-                        if (nomeGiocatore1 != null && !nomeGiocatore1.isEmpty()) {
-                            // Passa alla schermata di gioco per il Giocatore 2
-                            ChangePage(nomeGiocatore1);
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            // Verifica se il nome del giocatore 1 è stato impostato
+                            String nomeGiocatore1 = snapshot.child("nomeGiocatore1").getValue(String.class);
+                            if (nomeGiocatore1 != null && !nomeGiocatore1.isEmpty()) {
+                                // Passa alla schermata di gioco per il Giocatore 2
+                                ChangePage(nomeGiocatore1);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
             }
         });
-    }
-
-    public void onClickConnect() {
-        try {
-            nome_giocatore1 = txt_nome.getText().toString();
-            serverName = txt_ip_server.getText().toString();
-            serverPort = Integer.valueOf(txt_porta_server.getText().toString());
-            if (nome_giocatore1.isEmpty() || serverName.isEmpty() || Optional.ofNullable(serverPort).orElse(0) == 0) {
-                throw new Exception();
-            } else {
-                comms = new ClientThread(nome_giocatore1, serverPort, serverName);
-                comms.SetActivity(this);
-                comms.start();
-            }
-        } catch (Exception e) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    CustomToast.showToast(context, "Inserisci tutti i valori", Toast.LENGTH_SHORT);
-                }
-            });
-        }
     }
 
     public void ShowToast(String text) {
