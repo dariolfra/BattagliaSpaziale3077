@@ -29,6 +29,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +46,8 @@ import java.util.Random;
 public class Attack extends Game implements Serializable {
     private int id_pers, modalita;
     private String nome_giocatore1, nome_giocatore2;
-    private ConnectionThread comms;
+    private ConnectionFirebase connectionFirebase;
+
     private Context context;
     private HashMap<Integer, Drawable> indici_mossaspeciale;
     private HashMap<Integer, Drawable> indici_personaggi;
@@ -54,6 +59,8 @@ public class Attack extends Game implements Serializable {
     private boolean multiplayer;
     private static int[] casellaColpita = new int[100];
     private static final int[] arrayFormazioneIA = new int[100];
+    private static final int[] arrayFormazione = new int[100];
+
     private static final int[] id_navi = new int[]{2131165439, 2131165441, 2131165438, 2131165442, 2131165443, 2131165440};
     private Animation scale_down, scale_up;
     private ImageView background;
@@ -87,6 +94,7 @@ public class Attack extends Game implements Serializable {
 
         //context per visualizzare toast
         context = this.getApplicationContext();
+        connectionFirebase = new ConnectionFirebase();
 
         //parte di codice che imposta header color = black
         Window window = this.getWindow();
@@ -123,7 +131,6 @@ public class Attack extends Game implements Serializable {
         Navi = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("Navi");
         id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
-        comms = (ConnectionThread) gioco.getParcelableExtra("comms");
 
         if (modalita == 1) {
             nome_giocatore1 = gioco.getStringExtra("nome1");
@@ -168,15 +175,59 @@ public class Attack extends Game implements Serializable {
         btn_attacca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
                     btn_attacca.startAnimation(scale_down);
                     btn_attacca.startAnimation(scale_up);
                     if (multiplayer) {
+                        if(modalita == 3){
+                            //quello che crea la partita g1
+                            connectionFirebase.ComunicaAttg1(selectedPos, new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    // Verifica se il nome del giocatore 1 è stato impostato
+                                    int rispostag2 = snapshot.child("rispostag2").getValue(Integer.class);
+                                    if (rispostag2 != -1) {
+                                        arrayFormazione[selectedPos] = rispostag2;
+                                        if(rispostag2 != 0){
+                                            casellaColpita[selectedPos] = R.drawable.nave_colpita;
+                                        } else {
+                                            casellaColpita[selectedPos] = R.drawable.naveda1;
+                                        }
+                                    }
 
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        } else if (modalita == 2) {
+                            //giocatore g2
+                            connectionFirebase.ComunicaAttg2(selectedPos, new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    // Verifica se il nome del giocatore 1 è stato impostato
+                                    int rispostag1 = snapshot.child("rispostag1").getValue(Integer.class);
+                                    if (rispostag1 != -1) {
+                                        arrayFormazione[selectedPos] = rispostag1;
+                                        if (rispostag1 != 0) {
+                                            casellaColpita[selectedPos] = R.drawable.nave_colpita;
+                                        } else {
+                                            casellaColpita[selectedPos] = R.drawable.naveda1;
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
                     } else {
                         contrallaSeColpita();
                     }
-                    if (Controllo_Fine_Gioco_AI()) {
+                    if (modalita == 1 && Controllo_Fine_Gioco_AI()) {
                         Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
                         vittoria.putExtra("nome", nome_giocatore1);
                         vittoria.putExtra("risultato", true);
@@ -188,7 +239,6 @@ public class Attack extends Game implements Serializable {
                         defence.putExtra("mod", modalita);
                         defence.putExtra("nome1", nome_giocatore1);
                         if (multiplayer) {
-                            defence.putExtra("nome2", comms.getName());
                         } else {
                             defence.putExtra("nome2", nome_giocatore2);
                         }
@@ -197,7 +247,6 @@ public class Attack extends Game implements Serializable {
                         defence.putExtra("Navi", (Serializable) Navi);
                         defence.putExtra("NaviColpite", (Serializable) NaviColpite);
                         defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
-                        defence.putExtra("comms", comms);
                         startActivity(defence);
                     }
                 } catch (Exception e) {
@@ -319,42 +368,6 @@ public class Attack extends Game implements Serializable {
         });
     }
 
-    /*public void confermaAttacco(View v) {
-        try {
-            btn_attacca.startAnimation(scale_down);
-            btn_attacca.startAnimation(scale_up);
-            if (multiplayer) {
-                comms.InviaMessaggio(String.valueOf(selectedPos));
-                comms.RiceviRisposta();
-                synchronized (comms) {
-                    comms.wait(3000);
-                }
-                Attacco(comms.GetMessage());
-            } else {
-                contrallaSeColpita();
-            }
-            //dopo invio messaggio e ricezione risposta si sposta da attacco a difesa
-            Intent defence = new Intent(Attack.this, Defence.class);
-            defence.putExtra("mod", modalita);
-            defence.putExtra("nome1", nome_giocatore1);
-            if (multiplayer) {
-                defence.putExtra("nome2", comms.getName());
-            } else {
-                defence.putExtra("nome2", nome_giocatore2);
-            }
-            defence.putExtra("personaggio", id_pers);
-            defence.putExtra("casellaColpita", casellaColpita);
-            defence.putExtra("Navi", (Serializable) Navi);
-            defence.putExtra("NaviColpite", (Serializable) NaviColpite);
-            defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
-            defence.putExtra("comms", comms);
-            startActivity(defence);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", delay);
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -370,7 +383,6 @@ public class Attack extends Game implements Serializable {
 
     public void Abbandona() {
         if (modalita != 1) {
-            comms.Abbandona();
         }
         Intent vittoria = new Intent(Attack.this, Fine_Gioco_Activity.class);
         vittoria.putExtra("nome", nome_giocatore1);

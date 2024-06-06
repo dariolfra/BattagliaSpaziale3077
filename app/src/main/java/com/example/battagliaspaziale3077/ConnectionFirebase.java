@@ -20,7 +20,7 @@ public class ConnectionFirebase {
     private static String personaggioG2;
     private static String formazioneG1;
     private static String formazioneG2;
-    private Defence defence = new Defence();
+    private Defence defence;
 
 
     public void inviaHashMapFormazione(int modalità, ValueEventListener listener) {
@@ -228,12 +228,6 @@ public class ConnectionFirebase {
                     updates.put("azioneg1", posizione);
                     databaseReference.updateChildren(updates);
 
-                    // Verifica se la posizione è presente in Navi e aggiorna rispostag2
-                    int rispostag2Value = defence.posizioneColpita(posizione);
-                    Map<String, Object> responseUpdate = new HashMap<>();
-                    responseUpdate.put("rispostag2", rispostag2Value);
-                    databaseReference.updateChildren(responseUpdate);
-
                 } else {
                     // Se la partita non esiste, gestisci l'errore
                     System.err.println("Partita non trovata: " + codiceConn);
@@ -247,6 +241,36 @@ public class ConnectionFirebase {
         });
         // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
         databaseReference.addValueEventListener(listener);
+    }
+    // Listener per rispondere al cambiamento di azioneg1
+    public boolean setupAzioneg1Listener() {
+        boolean eseguito = false;
+        defence = new Defence();
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        databaseReference = instance.getReference(codiceConn).child("azioneg1");
+        eseguito = true;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int posizione = dataSnapshot.getValue(Integer.class);
+                    if(posizione != -1){
+                        int rispostag1Value = defence.posizioneColpita(posizione);
+                        Map<String, Object> responseUpdate = new HashMap<>();
+                        responseUpdate.put("risposta2", rispostag1Value);
+                        databaseReference.getParent().updateChildren(responseUpdate);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("Errore nel recupero dei dati: " + databaseError.getMessage());
+            }
+
+        });
+        return eseguito;
+
     }
 
     public void ComunicaAttg2(int posizione, ValueEventListener listener) {
@@ -272,5 +296,34 @@ public class ConnectionFirebase {
         });
         // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
         databaseReference.addValueEventListener(listener);
+    }
+
+    public boolean setupAzioneg2Listener() {
+        boolean eseguito = false;
+        defence = new Defence();
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        databaseReference = instance.getReference(codiceConn).child("azioneg2");
+        eseguito = true;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int posizione = dataSnapshot.getValue(Integer.class);
+                    if(posizione != -1){
+                        int rispostag1Value = defence.posizioneColpita(posizione);
+                        Map<String, Object> responseUpdate = new HashMap<>();
+                        responseUpdate.put("risposta1", rispostag1Value);
+                        databaseReference.getParent().updateChildren(responseUpdate);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("Errore nel recupero dei dati: " + databaseError.getMessage());
+            }
+
+        });
+        return eseguito;
     }
 }
