@@ -41,6 +41,9 @@ public class Defence extends Game implements Serializable {
     private static HashMap<Integer, List<Integer>> Navi = new HashMap<Integer, List<Integer>>();
     private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
     private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
+    private static HashMap<Integer, List<Integer>> Navi_def = new HashMap<Integer, List<Integer>>();
+    private static HashMap<Integer, List<Integer>> NaviColpite_Def = new HashMap<Integer, List<Integer>>();
+    private static HashMap<Integer, List<Integer>> NaviAffondate_Def = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, Drawable> indici_personaggi;
     private ConnectionFirebase connectionFirebase;
     private int id_pers;
@@ -62,6 +65,7 @@ public class Defence extends Game implements Serializable {
     private static List<Integer> id_navi_affondate = new ArrayList<>();
     private static final int delay = 500;
     private static boolean primaVolta = true;
+    private int selectedPos;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,24 +101,27 @@ public class Defence extends Game implements Serializable {
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         Intent attack = getIntent();
-        Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
-        NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
-        NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
-        id_pers = attack.getIntExtra("personaggio", 1);
         modalita = attack.getIntExtra("mod", 1);
+
         if (modalita == 1) {
+            Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
+            NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
+            NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
+            id_pers = attack.getIntExtra("personaggio", 1);
             nome_giocatore1 = attack.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = "AI";
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
         } else {
+            Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
             btn_torna_attacco.setVisibility(View.GONE);
             nome_giocatore1 = attack.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = attack.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;
+            selectedPos = attack.getIntExtra("selectedPos", 0);
             //quello che si unisce alla partita
             if(connectionFirebase.setupAzioneg1Listener() && !primaVolta && modalita == 2){
                 ChangePage();
@@ -145,6 +152,18 @@ public class Defence extends Game implements Serializable {
                 Log.i("AFFONDATE", i.toString());
             }
         }
+        if (NaviColpite_Def.isEmpty()) {
+            for (Integer i : NaveIDs) {
+                NaviColpite_Def.put(i, new ArrayList<>());
+                Log.i("COLPITE", i.toString());
+            }
+        }
+        if (NaviAffondate_Def.isEmpty()) {
+            for (Integer i : NaveIDs) {
+                NaviAffondate_Def.put(i, new ArrayList<>());
+                Log.i("AFFONDATE", i.toString());
+            }
+        }
 
         AggiornaTabella();
 
@@ -154,29 +173,36 @@ public class Defence extends Game implements Serializable {
             CustomToast.showToast(context, "ERRORE", delay);
         }
 
-        btn_torna_attacco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_torna_attacco.startAnimation(scale_down);
-                btn_torna_attacco.startAnimation(scale_up);
-                if (attacco_ai_effettuato) {
-                    Intent attack = new Intent(Defence.this, Attack.class);
-                    attack.putExtra("Navi", (Serializable) Navi);
-                    attack.putExtra("defenceOrNot", true);
-                    attack.putExtra("mod", modalita);
-                    attack.putExtra("personaggio", id_pers);
-                    attack.putExtra("nome1", nome_giocatore1);
-                    attack.putExtra("NaviColpite", (Serializable) NaviColpite);
-                    attack.putExtra("NaviAffondate", (Serializable) NaviAffondate);
+        if(modalita == 1){
+
+            btn_torna_attacco.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btn_torna_attacco.startAnimation(scale_down);
+                    btn_torna_attacco.startAnimation(scale_up);
+                    if (attacco_ai_effettuato) {
+                        Intent attack = new Intent(Defence.this, Attack.class);
+                        attack.putExtra("Navi", (Serializable) Navi);
+                        attack.putExtra("defenceOrNot", true);
+                        attack.putExtra("mod", modalita);
+                        attack.putExtra("personaggio", id_pers);
+                        attack.putExtra("nome1", nome_giocatore1);
+                        attack.putExtra("NaviColpite", (Serializable) NaviColpite);
+                        attack.putExtra("NaviAffondate", (Serializable) NaviAffondate);
                     /*if (multiplayer) {
                         attack.putExtra("nome2", nome_giocatore2);
                     }*/
-                    startActivity(attack);
-                } else {
-                    CustomToast.showToast(context, "ATTACCO DI AI NON EFFETTUATO", delay);
+                        startActivity(attack);
+                    } else {
+                        CustomToast.showToast(context, "ATTACCO DI AI NON EFFETTUATO", delay);
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+
+        }
+
         primaVolta = false;
     }
 
@@ -208,8 +234,8 @@ public class Defence extends Game implements Serializable {
 
     public void Gioca() throws InterruptedException {
         if (multiplayer) {
-
-            String done = "";
+            int risultato = posizioneColpita(selectedPos);
+            CustomToast.showToast(context, "BOMBA " + risultato, delay);
         }
         else
         {
@@ -414,25 +440,49 @@ public class Defence extends Game implements Serializable {
     }
 
     public void AggiornaTabella() {
-        for (Integer i : NaveIDs) {
-            for (Integer pos : Navi.get(i)) {
-                tabella[pos] = R.drawable.naveda1;
+        if (modalita == 1) {
+            for (Integer i : NaveIDs) {
+                for (Integer pos : Navi.get(i)) {
+                    tabella[pos] = R.drawable.naveda1;
+                }
+            }
+            if (!NaviColpite.isEmpty()) {
+                NaviColpite.forEach((k, v) -> {
+                    for (Integer pos : v) {
+                        tabella[pos] = R.drawable.nave_colpita;
+                    }
+                });
+            }
+            if (!NaviAffondate.isEmpty()) {
+                NaviAffondate.forEach((k, v) -> {
+                    for (Integer pos : v) {
+                        tabella[pos] = R.drawable.x;
+                    }
+                });
             }
         }
-        if (!NaviColpite.isEmpty()) {
-            NaviColpite.forEach((k, v) -> {
-                for (Integer pos : v) {
-                    tabella[pos] = R.drawable.nave_colpita;
+        else{
+            for (Integer i : NaveIDs) {
+                for (Integer pos : Navi_def.get(i)) {
+                    tabella[pos] = R.drawable.naveda1;
                 }
-            });
+            }
+            if (!NaviColpite_Def.isEmpty()) {
+                NaviColpite_Def.forEach((k, v) -> {
+                    for (Integer pos : v) {
+                        tabella[pos] = R.drawable.nave_colpita;
+                    }
+                });
+            }
+            if (!NaviAffondate_Def.isEmpty()) {
+                NaviAffondate_Def.forEach((k, v) -> {
+                    for (Integer pos : v) {
+                        tabella[pos] = R.drawable.x;
+                    }
+                });
+            }
         }
-        if (!NaviAffondate.isEmpty()) {
-            NaviAffondate.forEach((k, v) -> {
-                for (Integer pos : v) {
-                    tabella[pos] = R.drawable.x;
-                }
-            });
-        }
+
         gridAdapterDifesa.notifyDataSetChanged();
     }
 
@@ -461,7 +511,7 @@ public class Defence extends Game implements Serializable {
     public int posizioneColpita(int pos){
         int posizioneAtt = 0;
         if (tabella[pos] == R.drawable.naveda1) {
-            for (Map.Entry<Integer, List<Integer>> entry : Navi.entrySet()) {
+            for (Map.Entry<Integer, List<Integer>> entry : Navi_def.entrySet()) {
                 if (entry.getValue().contains(pos)) {
                     posizioneAtt = entry.getKey();
                     break;  // Exit the loop once we find the position

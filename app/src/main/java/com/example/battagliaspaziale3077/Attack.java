@@ -1,9 +1,6 @@
 package com.example.battagliaspaziale3077;
 
-import static java.lang.Thread.sleep;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -20,13 +17,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.database.DataSnapshot;
@@ -35,12 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
 public class Attack extends Game implements Serializable {
@@ -76,6 +66,9 @@ public class Attack extends Game implements Serializable {
     private HashMap<Integer, List<Integer>> Navi;
     private HashMap<Integer, List<Integer>> NaviColpite = new HashMap<>();
     private HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> Navi_Att;
+    private static HashMap<Integer, List<Integer>> NaviColpite_Att = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> NaviAffondate_Att = new HashMap<>();
     private static boolean SingolaVolta = false;
     private static int attacchi_a_segno = 0;
     private static int attacchi_necessari_att_speciale = 5;
@@ -128,11 +121,11 @@ public class Attack extends Game implements Serializable {
 
         //parte di codice che recupera i dati dall'activity precedente
         Intent gioco = getIntent();
-        Navi = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("Navi");
-        id_pers = gioco.getIntExtra("personaggio", 1);
         modalita = gioco.getIntExtra("mod", 1);
 
         if (modalita == 1) {
+            Navi = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("Navi");
+            id_pers = gioco.getIntExtra("personaggio", 1);
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = "AI";
@@ -145,6 +138,7 @@ public class Attack extends Game implements Serializable {
                 SingolaVolta = true;
             }
         } else {
+            Navi_Att = (HashMap<Integer, List<Integer>>) gioco.getSerializableExtra("Navi");
             nome_giocatore1 = gioco.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = gioco.getStringExtra("nome2");
@@ -175,10 +169,11 @@ public class Attack extends Game implements Serializable {
         btn_attacca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
                     btn_attacca.startAnimation(scale_down);
                     btn_attacca.startAnimation(scale_up);
                     if (multiplayer) {
-                        if(modalita == 3){
+                        if (modalita == 3) {
                             //quello che crea la partita g1
                             connectionFirebase.ComunicaAttg1(selectedPos, new ValueEventListener() {
                                 @Override
@@ -187,7 +182,7 @@ public class Attack extends Game implements Serializable {
                                     int rispostag2 = snapshot.child("rispostag2").getValue(Integer.class);
                                     if (rispostag2 != -1) {
                                         arrayFormazione[selectedPos] = rispostag2;
-                                        if(rispostag2 != 0){
+                                        if (rispostag2 != 0) {
                                             casellaColpita[selectedPos] = R.drawable.nave_colpita;
                                         } else {
                                             casellaColpita[selectedPos] = R.drawable.naveda1;
@@ -224,6 +219,17 @@ public class Attack extends Game implements Serializable {
                                 }
                             });
                         }
+                        Intent defence = new Intent(Attack.this, Defence.class);
+                        defence.putExtra("pos", selectedPos);
+                        defence.putExtra("mod", modalita);
+                        defence.putExtra("nome1", nome_giocatore1);
+                        defence.putExtra("nome2", nome_giocatore2);
+                        defence.putExtra("personaggio", id_pers);
+                        defence.putExtra("casellaColpita", casellaColpita);
+                        defence.putExtra("Navi", (Serializable) Navi);
+                        defence.putExtra("NaviColpite", (Serializable) NaviColpite);
+                        defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
+                        startActivity(defence);
                     } else {
                         contrallaSeColpita();
                     }
@@ -269,7 +275,9 @@ public class Attack extends Game implements Serializable {
             }
         });
 
-        context = this.getApplicationContext();
+        context = this.
+
+                getApplicationContext();
 
         //animazioni
         scale_down = AnimationUtils.loadAnimation(context, R.anim.scale_down);
@@ -325,7 +333,9 @@ public class Attack extends Game implements Serializable {
                 return true;
             }
         });
-        img_mossa_speciale.setOnTouchListener((v, event) -> {
+        img_mossa_speciale.setOnTouchListener((v, event) ->
+
+        {
             gestureDetector.onTouchEvent(event);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -368,13 +378,11 @@ public class Attack extends Game implements Serializable {
         });
     }
 
-
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         customDialog.showDialog(this);
     }
-
     public void btn_regole_pressed(View v) {
         btn_regole.startAnimation(scale_down);
         btn_regole.startAnimation(scale_up);
