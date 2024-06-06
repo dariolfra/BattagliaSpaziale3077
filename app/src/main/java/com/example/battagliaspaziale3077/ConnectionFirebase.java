@@ -21,8 +21,9 @@ public class ConnectionFirebase {
     private static String formazioneG1;
     private static String formazioneG2;
     private Defence defence;
-
-
+    public ConnectionFirebase() {
+        defence = new Defence();
+    }
     public void inviaHashMapFormazione(int modalità, ValueEventListener listener) {
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = instance.getReference(codiceConn);
@@ -245,7 +246,6 @@ public class ConnectionFirebase {
     // Listener per rispondere al cambiamento di azioneg1
     public boolean setupAzioneg1Listener() {
         boolean eseguito = false;
-        defence = new Defence();
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         databaseReference = instance.getReference(codiceConn).child("azioneg1");
         eseguito = true;
@@ -300,7 +300,6 @@ public class ConnectionFirebase {
 
     public boolean setupAzioneg2Listener() {
         boolean eseguito = false;
-        defence = new Defence();
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         databaseReference = instance.getReference(codiceConn).child("azioneg2");
         eseguito = true;

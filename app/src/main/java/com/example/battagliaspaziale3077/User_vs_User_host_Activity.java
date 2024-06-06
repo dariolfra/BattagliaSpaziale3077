@@ -52,7 +52,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
     public boolean connessione_instaurata;
     Animation scale_up, scale_down;
     TextView lbl_codiceConn;
-    ConnectionFirebase connectionFirebase;
+    public ConnectionFirebase connectionFirebase;
 
     @SuppressLint("MissingInflatedId")
     @Override
