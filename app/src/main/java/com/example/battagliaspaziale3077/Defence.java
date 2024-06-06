@@ -224,7 +224,7 @@ public class Defence extends Game implements Serializable {
         if (!colpita) {
             tabella[posizione] = R.drawable.buconero;
             casellaColpita[posizione] = R.drawable.buconero;
-            CustomToast2.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
+            CustomToast3.showToast(context, "AI: ACQUA!", Toast.LENGTH_SHORT);
         }
         if (vittoria) {
             Intent sconfitta = new Intent(Defence.this, Fine_Gioco_Activity.class);

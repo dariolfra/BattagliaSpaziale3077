@@ -172,12 +172,7 @@ public class Attack extends Game implements Serializable {
                     btn_attacca.startAnimation(scale_down);
                     btn_attacca.startAnimation(scale_up);
                     if (multiplayer) {
-                        comms.InviaMessaggio(String.valueOf(selectedPos));
-                        comms.RiceviRisposta();
-                        synchronized (comms) {
-                            comms.wait(3000);
-                        }
-                        Attacco(comms.GetMessage());
+
                     } else {
                         contrallaSeColpita();
                     }
@@ -204,11 +199,7 @@ public class Attack extends Game implements Serializable {
                         defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
                         defence.putExtra("comms", comms);
                         startActivity(defence);
-                        //ciao mondo
                     }
-
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 } catch (Exception e) {
                     CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", delay);
                 }
@@ -228,6 +219,7 @@ public class Attack extends Game implements Serializable {
                 img_mossa_speciale.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
         context = this.getApplicationContext();
 
         //animazioni
