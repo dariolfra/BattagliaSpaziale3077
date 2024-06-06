@@ -17,7 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.view.Change;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +42,7 @@ public class Defence extends Game implements Serializable {
     private static HashMap<Integer, List<Integer>> NaviColpite = new HashMap<Integer, List<Integer>>();
     private static HashMap<Integer, List<Integer>> NaviAffondate = new HashMap<Integer, List<Integer>>();
     private HashMap<Integer, Drawable> indici_personaggi;
-    private ConnectionThread comms;
+    private ConnectionFirebase connectionFirebase;
     private int id_pers;
     private int modalita;
     private String nome_giocatore1, nome_giocatore2;
@@ -55,6 +61,7 @@ public class Defence extends Game implements Serializable {
     private static int navi_affondate = 0;
     private static List<Integer> id_navi_affondate = new ArrayList<>();
     private static final int delay = 500;
+    private static boolean primaVolta = true;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,7 @@ public class Defence extends Game implements Serializable {
         btn_torna_attacco = (Button) findViewById(R.id.btn_vai_attacco);
         btn_regole = (Button) findViewById(R.id.btn_regole);
         context = this.getApplicationContext();
+        connectionFirebase = new ConnectionFirebase();
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -101,11 +109,21 @@ public class Defence extends Game implements Serializable {
             giocatore2.setText(nome_giocatore2);
             multiplayer = false;
         } else {
+            btn_torna_attacco.setVisibility(View.GONE);
             nome_giocatore1 = attack.getStringExtra("nome1");
             giocatore1.setText(nome_giocatore1);
             nome_giocatore2 = attack.getStringExtra("nome2");
             giocatore2.setText(nome_giocatore2);
             multiplayer = true;
+            //quello che si unisce alla partita
+            if(connectionFirebase.setupAzioneg1Listener() && !primaVolta && modalita == 2){
+                ChangePage();
+            }
+
+            //quello che crea la partita
+            if(connectionFirebase.setupAzioneg2Listener() && !primaVolta && modalita == 3){
+                ChangePage();
+            }
         }
 
         popola_personaggi();
@@ -143,7 +161,6 @@ public class Defence extends Game implements Serializable {
                 btn_torna_attacco.startAnimation(scale_up);
                 if (attacco_ai_effettuato) {
                     Intent attack = new Intent(Defence.this, Attack.class);
-                    attack.putExtra("comms", comms);
                     attack.putExtra("Navi", (Serializable) Navi);
                     attack.putExtra("defenceOrNot", true);
                     attack.putExtra("mod", modalita);
@@ -151,15 +168,29 @@ public class Defence extends Game implements Serializable {
                     attack.putExtra("nome1", nome_giocatore1);
                     attack.putExtra("NaviColpite", (Serializable) NaviColpite);
                     attack.putExtra("NaviAffondate", (Serializable) NaviAffondate);
-                    if (multiplayer) {
+                    /*if (multiplayer) {
                         attack.putExtra("nome2", nome_giocatore2);
-                    }
+                    }*/
                     startActivity(attack);
                 } else {
                     CustomToast.showToast(context, "ATTACCO DI AI NON EFFETTUATO", delay);
                 }
             }
         });
+        primaVolta = false;
+    }
+
+    private void ChangePage() {
+        Intent attack = new Intent(Defence.this, Attack.class);
+        attack.putExtra("Navi", (Serializable) Navi);
+        attack.putExtra("defenceOrNot", true);
+        attack.putExtra("mod", modalita);
+        attack.putExtra("personaggio", id_pers);
+        attack.putExtra("nome1", nome_giocatore1);
+        attack.putExtra("NaviColpite", (Serializable) NaviColpite);
+        attack.putExtra("NaviAffondate", (Serializable) NaviAffondate);
+        attack.putExtra("nome2", nome_giocatore2);
+        startActivity(attack);
     }
 
     @Override
@@ -170,7 +201,6 @@ public class Defence extends Game implements Serializable {
 
     public void Abbandona() {
         if (modalita != 1) {
-            comms.Abbandona();
         }
         Intent HA = new Intent(Defence.this, HomeActivity.class);
         startActivity(HA);
@@ -178,12 +208,8 @@ public class Defence extends Game implements Serializable {
 
     public void Gioca() throws InterruptedException {
         if (multiplayer) {
-            //String mess = AspettaMessaggio();
-            //Rispondi(mess);
+
             String done = "";
-            /*while (done != "done") {
-                done = AspettaMessaggio();
-            }*/
         }
         else
         {
@@ -332,14 +358,6 @@ public class Defence extends Game implements Serializable {
         return risultato;
     }
 
-    /*public String AspettaMessaggio() throws InterruptedException {
-        //comms.RiceviRisposta();
-        synchronized (comms) {
-            comms.wait(3000);
-        }
-        return comms.GetMessage();
-    }*/
-
     public void Rispondi(String mess) {
         for (Integer i : NaveIDs) {
             for (Integer j : Navi.get(i)) {
@@ -353,12 +371,10 @@ public class Defence extends Game implements Serializable {
                         NaveColpita(i, j);
                         answer = "colpita";
                     }
-                    comms.InviaMessaggio(answer);
                     return;
                 }
             }
         }
-        comms.InviaMessaggio("acqua");
     }
 
     public void NaveColpita(Integer ID, Integer pos) {
