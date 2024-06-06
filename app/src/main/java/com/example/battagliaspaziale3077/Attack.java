@@ -394,7 +394,7 @@ public class Attack extends Game implements Serializable {
                     posizioni_colpite.add(posSpec);
                 } else {
                     CustomToast2.showToast(context, "ACQUA!", delay);
-                    casellaColpita[posSpec] = R.drawable.naveda1;
+                    casellaColpita[posSpec] = R.drawable.buconero;
                 }
             }
         } else {
@@ -408,7 +408,7 @@ public class Attack extends Game implements Serializable {
                 posizioni_colpite.add(selectedPos);
             } else {
                 CustomToast2.showToast(context, "ACQUA!", delay);
-                casellaColpita[selectedPos] = R.drawable.naveda1;
+                casellaColpita[selectedPos] = R.drawable.buconero;
             }
         }
     }

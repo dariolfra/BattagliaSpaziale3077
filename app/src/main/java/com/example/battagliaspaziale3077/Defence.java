@@ -235,33 +235,6 @@ public class Defence extends Game implements Serializable {
     }
 	
     public int genera_pos_attacco_ai_random(){
-        /*Random rnd = new Random();
-        int pos = -1;
-        boolean corretta = false;
-        while (!corretta) {
-            if (colpo_a_segno) {
-                Log.i("A SEGNO", "SONO ENTRATO");
-                if ((casella_a_segno + 21) > 100) {
-                    pos = rnd.nextInt(100 - (casella_a_segno - 20)) + casella_a_segno - 20;
-                    Log.i("A SEGNO", "1");
-                } else if (casella_a_segno - 20 < 0) {
-                    pos = rnd.nextInt(casella_a_segno + 21) + casella_a_segno - 20;
-                    Log.i("A SEGNO", "2");
-                } else {
-                    pos = rnd.nextInt(casella_a_segno + 21 - casella_a_segno - 20) + casella_a_segno - 20;
-                    Log.i("A SEGNO", "3");
-                }
-            } else {
-                pos = rnd.nextInt(100);
-                Log.i("NON A SEGNO", "BORGODIO");
-            }
-            if (casellaColpita[pos] != R.drawable.nave_colpita && casellaColpita[pos] != R.drawable.selected && casellaColpita[pos] != R.drawable.x) {
-                corretta = true;
-                casellaColpita[pos] = R.drawable.selected;
-            }
-        }
-        return pos;*/
-
         Random rnd = new Random();
         int pos = -1;
         if(colpo_a_segno)

@@ -124,7 +124,7 @@ public class User_vs_User_host_Activity extends AppCompatActivity implements Ser
                 serverThread.StopServer();
             }
         } else {
-            CustomToast.showToast(context, "STANZA NON CRETA!", Toast.LENGTH_SHORT);
+            CustomToast.showToast(context, "STANZA NON CREATA!", Toast.LENGTH_SHORT);
         }
     }
 
