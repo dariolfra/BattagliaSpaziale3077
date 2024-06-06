@@ -151,6 +151,7 @@ public class Attack extends Game implements Serializable {
         }
 
         popola_mosse_speciale();
+        //commento
         popola_personaggi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
