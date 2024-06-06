@@ -151,6 +151,7 @@ public class Attack extends Game implements Serializable {
         }
 
         popola_mosse_speciale();
+        //commento
         popola_personaggi();
         immagine_pers.setImageDrawable(indici_personaggi.get(id_pers));
 
@@ -203,6 +204,7 @@ public class Attack extends Game implements Serializable {
                         defence.putExtra("NaviAffondate", (Serializable) NaviAffondate);
                         defence.putExtra("comms", comms);
                         startActivity(defence);
+                        //ciao mondo
                     }
 
                 } catch (InterruptedException e) {
@@ -325,7 +327,7 @@ public class Attack extends Game implements Serializable {
         });
     }
 
-    public void confermaAttacco(View v) {
+    /*public void confermaAttacco(View v) {
         try {
             btn_attacca.startAnimation(scale_down);
             btn_attacca.startAnimation(scale_up);
@@ -360,7 +362,7 @@ public class Attack extends Game implements Serializable {
         } catch (Exception e) {
             CustomToast.showToast(context, "SELEZIONA UNA CASELLA!", delay);
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

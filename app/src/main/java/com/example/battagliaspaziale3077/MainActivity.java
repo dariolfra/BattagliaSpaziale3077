@@ -151,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
 
-
-
         primaVolta = false;
         context = this.getApplicationContext();
 
