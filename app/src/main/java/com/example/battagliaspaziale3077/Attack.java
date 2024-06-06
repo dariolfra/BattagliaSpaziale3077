@@ -239,9 +239,9 @@ public class Attack extends Game implements Serializable {
                         defence.putExtra("mod", modalita);
                         defence.putExtra("nome1", nome_giocatore1);
                         if (multiplayer) {
-                        } else {
                             defence.putExtra("nome2", nome_giocatore2);
                         }
+
                         defence.putExtra("personaggio", id_pers);
                         defence.putExtra("casellaColpita", casellaColpita);
                         defence.putExtra("Navi", (Serializable) Navi);

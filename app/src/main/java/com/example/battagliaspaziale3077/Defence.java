@@ -2,6 +2,7 @@ package com.example.battagliaspaziale3077;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import java.util.HashMap;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
