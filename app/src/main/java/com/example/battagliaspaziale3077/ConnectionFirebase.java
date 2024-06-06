@@ -97,6 +97,7 @@ public class ConnectionFirebase {
             data.put("PersonaggioGiocatore2", "");
             data.put("Formazioneg1", "");
             data.put("Formazioneg2", "");
+            data.put("azione", "");
 
             databaseReference.setValue(data);
 
@@ -180,7 +181,6 @@ public class ConnectionFirebase {
                     // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore1
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("PersonaggioGiocatore1", "true");
-                    personaggioG1 = "true";
                     databaseReference.updateChildren(updates);
                 } else {
                     // Se la partita non esiste, gestisci l'errore
@@ -211,4 +211,30 @@ public class ConnectionFirebase {
         return FormazioneG2();
     }
 
+    public void Comunica(String azione, ValueEventListener listener)
+    {
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        databaseReference = instance.getReference(codiceConn);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore1
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("PersonaggioGiocatore1", "true");
+                    databaseReference.updateChildren(updates);
+                } else {
+                    // Se la partita non esiste, gestisci l'errore
+                    System.err.println("Partita non trovata: " + codiceConn);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Gestione dell'errore, se necessario
+            }
+        });
+        // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
+        databaseReference.addValueEventListener(listener);
+    }
 }
