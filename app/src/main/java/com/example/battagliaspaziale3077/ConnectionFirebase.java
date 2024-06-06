@@ -20,6 +20,7 @@ public class ConnectionFirebase {
     private static String personaggioG2;
     private static String formazioneG1;
     private static String formazioneG2;
+    private Defence defence = new Defence();
 
 
     public void inviaHashMapFormazione(int modalità, ValueEventListener listener) {
@@ -97,7 +98,10 @@ public class ConnectionFirebase {
             data.put("PersonaggioGiocatore2", "");
             data.put("Formazioneg1", "");
             data.put("Formazioneg2", "");
-            data.put("azione", "");
+            data.put("azioneg1", -1);
+            data.put("azioneg2",-1);
+            data.put("rispostag1",-1); //quando g2 attacca lui scrive 0 se la nave non è colpita o id nave
+            data.put("rispostag2",-1);
 
             databaseReference.setValue(data);
 
@@ -205,13 +209,13 @@ public class ConnectionFirebase {
         return personaggioG1;
     }
     public String FormazioneG1() {
-        return FormazioneG1();
+        return formazioneG1;
     }
     public String FormazioneG2() {
-        return FormazioneG2();
+        return formazioneG2;
     }
 
-    public void Comunica(String azione, ValueEventListener listener)
+    public void ComunicaAttg1(int posizione, ValueEventListener listener)
     {
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
         databaseReference = instance.getReference(codiceConn);
@@ -221,7 +225,39 @@ public class ConnectionFirebase {
                 if (dataSnapshot.exists()) {
                     // Se la partita esiste, aggiorna solo il campo PersonaggioGiocatore1
                     Map<String, Object> updates = new HashMap<>();
-                    updates.put("PersonaggioGiocatore1", "true");
+                    updates.put("azioneg1", posizione);
+                    databaseReference.updateChildren(updates);
+
+                    // Verifica se la posizione è presente in Navi e aggiorna rispostag2
+                    int rispostag2Value = defence.posizioneColpita(posizione);
+                    Map<String, Object> responseUpdate = new HashMap<>();
+                    responseUpdate.put("rispostag2", rispostag2Value);
+                    databaseReference.updateChildren(responseUpdate);
+
+                } else {
+                    // Se la partita non esiste, gestisci l'errore
+                    System.err.println("Partita non trovata: " + codiceConn);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Gestione dell'errore, se necessario
+            }
+        });
+        // Attacca il listener fornito per gestire ulteriori azioni basate sul valore aggiornato
+        databaseReference.addValueEventListener(listener);
+    }
+
+    public void ComunicaAttg2(int posizione, ValueEventListener listener) {
+        FirebaseDatabase instance = FirebaseDatabase.getInstance();
+        databaseReference = instance.getReference(codiceConn);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("azioneg2", posizione);
                     databaseReference.updateChildren(updates);
                 } else {
                     // Se la partita non esiste, gestisci l'errore

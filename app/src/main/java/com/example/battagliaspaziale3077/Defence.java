@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -88,7 +89,6 @@ public class Defence extends Game implements Serializable {
         background.setImageDrawable(getResources().getDrawable(R.drawable.background, context.getTheme()));
 
         Intent attack = getIntent();
-        comms = (ConnectionThread) attack.getParcelableExtra("comms");
         Navi = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("Navi");
         NaviColpite = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviColpite");
         NaviAffondate = (HashMap<Integer, List<Integer>>) attack.getSerializableExtra("NaviAffondate");
@@ -441,5 +441,17 @@ public class Defence extends Game implements Serializable {
         size_navi.put(2131165442, 4);
         size_navi.put(2131165438, 3);
         size_navi.put(2131165443, 5);
+    }
+    public int posizioneColpita(int pos){
+        int posizioneAtt = 0;
+        if (tabella[pos] == R.drawable.naveda1) {
+            for (Map.Entry<Integer, List<Integer>> entry : Navi.entrySet()) {
+                if (entry.getValue().contains(pos)) {
+                    posizioneAtt = entry.getKey();
+                    break;  // Exit the loop once we find the position
+                }
+            }
+        }
+        return posizioneAtt;
     }
 }
